@@ -1,0 +1,779 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResumeAI — Professional Resumes & Cover Letters | Infinity Solutions</title>
+<meta name="description" content="AI-powered resumes and cover letters tailored to any job. From $1.99. Land more interviews.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;--bg2:#0e1320;--bg3:#141928;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);
+  --text:#f0f2f8;--muted:#7a8099;--muted2:#a0a8c0;
+  --accent:#34d399;--accent2:#6ee7b7;--accent3:#065f46;
+  --gold:#f0b429;--blue:#4f8eff;--red:#ff6b6b;--purple:#a78bfa;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(8,11,18,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--text);text-decoration:none}
+.logo em{color:var(--accent);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:1.2rem}
+.nav-back{font-size:.8rem;color:var(--muted2);text-decoration:none;transition:color .18s}
+.nav-back:hover{color:var(--text)}
+.nav-badge{font-size:.72rem;font-weight:700;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.22);color:var(--accent2);padding:.25rem .7rem;border-radius:100px}
+
+.hero{padding:7rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:350px;background:radial-gradient(ellipse,rgba(52,211,153,.08) 0%,transparent 70%);pointer-events:none}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,5vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-.025em;margin-bottom:1rem;animation:up .6s ease both}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero-sub{font-size:1rem;color:var(--muted2);max-width:500px;margin:0 auto 1.5rem;line-height:1.7;font-weight:300;animation:up .6s .1s ease both}
+.hero-sub strong{color:var(--text);font-weight:500}
+.price-strip{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;animation:up .6s .15s ease both}
+.price-pill{background:var(--bg2);border:1px solid var(--border2);border-radius:100px;padding:.35rem 1rem;font-size:.8rem;color:var(--muted2)}
+.price-pill strong{color:var(--text);font-weight:600}
+
+/* MODE SELECTOR */
+.mode-tabs{display:flex;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:4px;gap:4px;max-width:600px;margin:0 auto 2rem}
+.mode-tab{flex:1;padding:.7rem .5rem;text-align:center;border-radius:10px;cursor:pointer;transition:all .18s;font-family:inherit}
+.mode-tab:hover{background:var(--bg3)}
+.mode-tab.active{background:var(--accent3);border:1px solid rgba(52,211,153,.3)}
+.mode-icon{font-size:1.2rem;display:block;margin-bottom:.25rem}
+.mode-name{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--text)}
+.mode-desc{font-size:.68rem;color:var(--muted2);margin-top:1px}
+
+.app-wrap{max-width:820px;margin:0 auto;padding:0 1rem 5rem}
+
+/* PANELS */
+.panel{display:none;animation:up .25s ease both}
+.panel.active{display:block}
+
+/* FORM */
+.form-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem}
+.form-card-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.25rem}
+.form-card-sub{font-size:.8rem;color:var(--muted2);margin-bottom:1.2rem;font-weight:300}
+.fg{margin-bottom:.9rem}
+.fg label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);margin-bottom:.35rem}
+.fi{width:100%;padding:.68rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none;transition:border-color .18s;resize:vertical}
+.fi:focus{border-color:var(--accent);background:var(--bg2)}
+.fi::placeholder{color:var(--muted)}
+select.fi option{background:var(--bg2)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* TONE PILLS */
+.tone-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.9rem}
+.tone-btn{background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:.28rem .85rem;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .18s;color:var(--muted2);font-family:inherit}
+.tone-btn:hover{border-color:var(--border2);color:var(--text)}
+.tone-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(52,211,153,.08)}
+
+/* BUTTONS */
+.btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;padding:.78rem 1.8rem;border-radius:100px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;width:100%}
+.btn-p{background:var(--accent);color:#042f2a}
+.btn-p:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(52,211,153,.2)}
+.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--muted2);font-size:.85rem}
+.btn-ghost:hover{color:var(--text)}
+
+/* LOADING */
+.loading{display:none;text-align:center;padding:2.5rem}
+.spinner{width:34px;height:34px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto .8rem}
+.loading p{font-size:.85rem;color:var(--muted2);font-weight:300}
+
+/* OUTPUT */
+.output-wrap{display:none;margin-top:1rem;animation:up .25s ease both}
+.output-tabs{display:flex;gap:6px;margin-bottom:.8rem;flex-wrap:wrap}
+.out-tab{background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.3rem .9rem;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .18s;color:var(--muted2);font-family:inherit}
+.out-tab:hover{color:var(--text)}
+.out-tab.active{background:var(--accent);color:#042f2a;border-color:var(--accent)}
+.out-pane{display:none}
+.out-pane.active{display:block}
+.output-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.5rem;font-size:.88rem;line-height:1.9;white-space:pre-wrap;color:var(--muted2);max-height:520px;overflow-y:auto;margin-bottom:.8rem;font-family:'Instrument Sans',sans-serif}
+.out-actions{display:flex;gap:8px}
+.btn-copy{background:var(--bg2);border:1px solid var(--border2);color:var(--muted2);font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.6rem 1.2rem;border-radius:100px;cursor:pointer;transition:all .18s;flex:1}
+.btn-copy:hover{color:var(--text)}
+.btn-copy.ok{color:var(--accent);border-color:var(--accent)}
+
+/* PAY BOX */
+.pay-box{background:var(--bg2);border:1px solid rgba(52,211,153,.2);border-radius:16px;padding:1.8rem;margin-top:1rem;text-align:center;display:none}
+.pay-box h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.4rem}
+.pay-box p{font-size:.84rem;color:var(--muted2);margin-bottom:1.2rem;font-weight:300}
+.pay-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;max-width:480px;margin:0 auto 1rem}
+.pay-opt{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.85rem .7rem;cursor:pointer;transition:all .18s;text-align:center}
+.pay-opt:hover{border-color:var(--accent)}
+.pay-opt.pw-annual{border-color:rgba(240,180,41,.45);background:rgba(240,180,41,.06)}
+.pay-opt.pw-monthly{border-color:rgba(52,211,153,.35)}
+.pay-opt.pw-session{opacity:.85}
+.pw-badge{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f0b429;margin-bottom:.25rem}
+.pay-price{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--accent)}
+.pay-label{font-size:.68rem;color:var(--muted2);margin-top:3px}
+.pay-email{width:100%;max-width:380px;margin:0 auto .8rem;display:block;padding:.65rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none}
+.pay-email:focus{border-color:var(--accent)}
+
+/* SUB UNLOCK */
+.btn-sub{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.55rem 1.1rem;border-radius:100px;background:var(--accent);color:#042f2a;border:none;cursor:pointer;white-space:nowrap;transition:all .18s}
+.btn-sub:hover{background:var(--accent2)}
+
+.trust{background:var(--bg2);border-top:1px solid var(--border);padding:1.2rem 2rem;display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:2rem}
+.trust-item{font-size:.74rem;color:var(--muted2);display:flex;align-items:center;gap:.4rem}
+.trust-item em{color:var(--accent);font-style:normal}
+footer{text-align:center;padding:1.5rem;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border)}
+footer a{color:var(--accent2);text-decoration:none}
+
+@media(max-width:600px){.form-row,.form-row-3,.pay-grid{grid-template-columns:1fr}nav{padding:1rem 1.2rem}.mode-tab .mode-desc{display:none}}
+
+.btn-sub{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.45rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .18s}
+.btn-sub:hover{background:var(--accent2)}
+.btn-sub.signed-in{background:transparent;border:1px solid rgba(52,211,153,.3);color:var(--green);cursor:default}
+.sub-bar{background:rgba(79,142,255,.06);border:1px solid rgba(79,142,255,.15);border-radius:12px;padding:.75rem 1rem;display:flex;gap:.75rem;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;transition:all .3s}
+.sub-bar.signed-in{background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.2)}
+.sub-bar-lbl{font-size:.8rem;color:var(--muted2);flex:1;line-height:1.5}
+.sub-bar-lbl.ok{color:var(--green)}
+.btn-sub{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.45rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .18s}
+.btn-sub:hover{background:var(--accent2)}
+.btn-sub.signed-in{background:transparent;border:1px solid rgba(52,211,153,.3);color:var(--green)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://infinityhub.dev" class="logo">Infinity<em>.</em>Solutions</a>
+  <div class="nav-right">
+    <a href="https://infinityhub.dev" class="nav-back">← Hub</a>
+    <span class="nav-badge">ResumeAI</span>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="eyebrow">Resumes · Cover Letters · LinkedIn · Interview Prep</div>
+  <h1>Land the job with<br><em>AI-powered docs.</em></h1>
+  <p class="hero-sub">Professional resumes, tailored cover letters, LinkedIn summaries, and interview prep — built around your experience in under 60 seconds. <strong>A fraction of what career coaches charge.</strong></p>
+  <div class="price-strip">
+    <div class="price-pill"><strong>$1.99</strong> per document</div>
+    <div class="price-pill"><strong>$9.99/mo</strong> unlimited</div>
+    <div class="price-pill"><strong>All</strong> doc types included</div>
+  </div>
+</div>
+
+<div class="app-wrap">
+
+  <!-- SUB UNLOCK -->
+  <div class="sub-bar" id="sub-bar">
+    <span class="sub-bar-lbl" id="sub-bar-lbl">Sign in to use this tool.</span>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/account/" id="sub-bar-btn" class="btn-sub">Sign In →</a>
+  </div>
+
+  <!-- MODE TABS -->
+  <div class="mode-tabs">
+    <div class="mode-tab active" onclick="switchMode('resume',this)">
+      <span class="mode-icon">📄</span>
+      <span class="mode-name">Resume</span>
+      <span class="mode-desc">Full resume from scratch</span>
+    </div>
+    <div class="mode-tab" onclick="switchMode('cover',this)">
+      <span class="mode-icon">✉️</span>
+      <span class="mode-name">Cover Letter</span>
+      <span class="mode-desc">Tailored to the job</span>
+    </div>
+    <div class="mode-tab" onclick="switchMode('linkedin',this)">
+      <span class="mode-icon">💼</span>
+      <span class="mode-name">LinkedIn</span>
+      <span class="mode-desc">Headline &amp; summary</span>
+    </div>
+    <div class="mode-tab" onclick="switchMode('interview',this)">
+      <span class="mode-icon">🎤</span>
+      <span class="mode-name">Interview Prep</span>
+      <span class="mode-desc">Questions &amp; answers</span>
+    </div>
+  </div>
+
+  <!-- RESUME -->
+  <div class="panel active" id="panel-resume">
+    <div class="form-card">
+      <div class="form-card-title">Your information</div>
+      <div class="form-card-sub">Fill in what you have — we'll craft a professional resume around it.</div>
+      <div class="form-row">
+        <div class="fg"><label>Full name *</label><input type="text" class="fi" id="r-name" placeholder="Jane Smith"></div>
+        <div class="fg"><label>Email</label><input type="text" class="fi" id="r-email" placeholder="jane@email.com"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Phone</label><input type="text" class="fi" id="r-phone" placeholder="(555) 000-0000"></div>
+        <div class="fg"><label>Location</label><input type="text" class="fi" id="r-location" placeholder="Burlington, VT"></div>
+      </div>
+      <div class="fg"><label>LinkedIn / Portfolio URL</label><input type="text" class="fi" id="r-url" placeholder="linkedin.com/in/janesmith"></div>
+      <div class="fg"><label>Target job title *</label><input type="text" class="fi" id="r-title" placeholder="e.g. Marketing Manager, Software Engineer, RN"></div>
+      <div class="fg"><label>Work experience *</label><textarea class="fi" id="r-experience" rows="5" placeholder="List your jobs: company, title, dates, and key responsibilities or achievements. Even rough notes work — we'll polish it.&#10;&#10;e.g. ABC Company | Sales Associate | 2021–2024&#10;- Exceeded sales targets by 30%&#10;- Managed team of 5"></textarea></div>
+      <div class="fg"><label>Education</label><textarea class="fi" id="r-education" rows="2" placeholder="e.g. B.S. Business Administration, University of Vermont, 2021"></textarea></div>
+      <div class="fg"><label>Skills</label><input type="text" class="fi" id="r-skills" placeholder="e.g. Microsoft Office, customer service, project management, Python, QuickBooks"></div>
+      <div class="fg"><label>Certifications / awards (optional)</label><input type="text" class="fi" id="r-certs" placeholder="e.g. Google Analytics Certified, Employee of the Year 2023"></div>
+      <div class="fg"><label>Resume style</label>
+        <div class="tone-row" id="resume-style-row">
+          <button class="tone-btn active" data-style="professional and polished" onclick="setTone(this,'resume-style-row')">Professional</button>
+          <button class="tone-btn" data-style="modern and achievement-focused" onclick="setTone(this,'resume-style-row')">Achievement-focused</button>
+          <button class="tone-btn" data-style="creative and distinctive" onclick="setTone(this,'resume-style-row')">Creative</button>
+          <button class="tone-btn" data-style="concise and direct" onclick="setTone(this,'resume-style-row')">Concise</button>
+          <button class="tone-btn" data-style="executive and authoritative" onclick="setTone(this,'resume-style-row')">Executive</button>
+        </div>
+      </div>
+      <div id="resume-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;"></div>
+      <button class="btn btn-p" onclick="generate('resume')">Generate My Resume →</button>
+    </div>
+  </div>
+
+  <!-- COVER LETTER -->
+  <div class="panel" id="panel-cover">
+    <div class="form-card">
+      <div class="form-card-title">Cover letter details</div>
+      <div class="form-card-sub">Tailored to the specific job — not a generic template.</div>
+      <div class="form-row">
+        <div class="fg"><label>Your name *</label><input type="text" class="fi" id="c-name" placeholder="Jane Smith"></div>
+        <div class="fg"><label>Job title applying for *</label><input type="text" class="fi" id="c-jobtitle" placeholder="e.g. Marketing Manager"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Company name *</label><input type="text" class="fi" id="c-company" placeholder="e.g. Acme Corp"></div>
+        <div class="fg"><label>Hiring manager name (optional)</label><input type="text" class="fi" id="c-hiring" placeholder="e.g. Sarah Johnson"></div>
+      </div>
+      <div class="fg"><label>Job description / requirements *</label><textarea class="fi" id="c-jobdesc" rows="4" placeholder="Paste the job posting or key requirements here. The more detail you give, the better the letter."></textarea></div>
+      <div class="fg"><label>Your relevant experience *</label><textarea class="fi" id="c-experience" rows="4" placeholder="What experience, skills, or achievements make you the right fit for this specific role?"></textarea></div>
+      <div class="fg"><label>Why this company? (optional)</label><input type="text" class="fi" id="c-why" placeholder="e.g. I've followed their work in sustainability, I use their product daily..."></div>
+      <div class="fg"><label>Tone</label>
+        <div class="tone-row" id="cover-tone-row">
+          <button class="tone-btn active" data-style="professional and confident" onclick="setTone(this,'cover-tone-row')">Professional</button>
+          <button class="tone-btn" data-style="warm and personable" onclick="setTone(this,'cover-tone-row')">Warm</button>
+          <button class="tone-btn" data-style="bold and direct" onclick="setTone(this,'cover-tone-row')">Bold</button>
+          <button class="tone-btn" data-style="enthusiastic and energetic" onclick="setTone(this,'cover-tone-row')">Enthusiastic</button>
+        </div>
+      </div>
+      <div id="cover-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;"></div>
+      <button class="btn btn-p" onclick="generate('cover')">Generate Cover Letter →</button>
+    </div>
+  </div>
+
+  <!-- LINKEDIN -->
+  <div class="panel" id="panel-linkedin">
+    <div class="form-card">
+      <div class="form-card-title">LinkedIn profile copy</div>
+      <div class="form-card-sub">A compelling headline and About section that makes recruiters stop scrolling.</div>
+      <div class="form-row">
+        <div class="fg"><label>Your name *</label><input type="text" class="fi" id="l-name" placeholder="Jane Smith"></div>
+        <div class="fg"><label>Current / target job title *</label><input type="text" class="fi" id="l-title" placeholder="e.g. Software Engineer | Open to Work"></div>
+      </div>
+      <div class="fg"><label>Your experience &amp; background *</label><textarea class="fi" id="l-experience" rows="4" placeholder="What do you do? What have you achieved? What are you known for in your field?"></textarea></div>
+      <div class="fg"><label>Skills &amp; specialties</label><input type="text" class="fi" id="l-skills" placeholder="e.g. Python, data analysis, team leadership, product management"></div>
+      <div class="fg"><label>What are you looking for? (optional)</label><input type="text" class="fi" id="l-looking" placeholder="e.g. Remote SWE roles, marketing leadership, career change into UX"></div>
+      <div class="fg"><label>Tone</label>
+        <div class="tone-row" id="linkedin-tone-row">
+          <button class="tone-btn active" data-style="professional and credible" onclick="setTone(this,'linkedin-tone-row')">Professional</button>
+          <button class="tone-btn" data-style="conversational and approachable" onclick="setTone(this,'linkedin-tone-row')">Conversational</button>
+          <button class="tone-btn" data-style="bold and results-driven" onclick="setTone(this,'linkedin-tone-row')">Bold</button>
+          <button class="tone-btn" data-style="story-driven and personal" onclick="setTone(this,'linkedin-tone-row')">Story-driven</button>
+        </div>
+      </div>
+      <div id="linkedin-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;"></div>
+      <button class="btn btn-p" onclick="generate('linkedin')">Generate LinkedIn Copy →</button>
+    </div>
+  </div>
+
+  <!-- INTERVIEW PREP -->
+  <div class="panel" id="panel-interview">
+    <div class="form-card">
+      <div class="form-card-title">Interview prep</div>
+      <div class="form-card-sub">Get likely interview questions with strong, personalized answers based on your background.</div>
+      <div class="form-row">
+        <div class="fg"><label>Job title *</label><input type="text" class="fi" id="i-title" placeholder="e.g. Registered Nurse"></div>
+        <div class="fg"><label>Company (optional)</label><input type="text" class="fi" id="i-company" placeholder="e.g. Vermont Medical Center"></div>
+      </div>
+      <div class="fg"><label>Your background *</label><textarea class="fi" id="i-background" rows="3" placeholder="Brief overview of your relevant experience and skills for this role."></textarea></div>
+      <div class="fg"><label>Job description / key requirements (optional)</label><textarea class="fi" id="i-jobdesc" rows="3" placeholder="Paste the job posting or key requirements for more targeted questions."></textarea></div>
+      <div class="fg"><label>Interview type</label>
+        <div class="tone-row" id="interview-type-row">
+          <button class="tone-btn active" data-style="general behavioral" onclick="setTone(this,'interview-type-row')">Behavioral</button>
+          <button class="tone-btn" data-style="technical and skills-based" onclick="setTone(this,'interview-type-row')">Technical</button>
+          <button class="tone-btn" data-style="situational (STAR format)" onclick="setTone(this,'interview-type-row')">Situational</button>
+          <button class="tone-btn" data-style="management and leadership" onclick="setTone(this,'interview-type-row')">Leadership</button>
+        </div>
+      </div>
+      <div id="interview-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;"></div>
+      <button class="btn btn-p" onclick="generate('interview')">Generate Interview Prep →</button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div id="gen-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;">Something went wrong. Please try again in a moment.</div>
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p id="loading-msg">Building your document…</p>
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="output-wrap" id="output-wrap">
+    <div class="output-tabs" id="output-tabs"></div>
+    <div id="output-panes"></div>
+    <div style="display:flex;gap:8px;margin-top:.8rem">
+      <button class="btn-copy btn-ghost btn" style="flex:1;padding:.6rem" onclick="resetForm()">← New document</button>
+      <button class="btn-copy btn-ghost btn" style="flex:1;padding:.6rem" onclick="regenerate()">↻ Regenerate</button>
+    </div>
+  </div>
+
+  <!-- PAY BOX -->
+  <div class="pay-box" id="pay-box">
+    <h3>Unlock unlimited documents</h3>
+    <p>One subscription covers <em>all</em> Infinity Hub tools — monthly or annual. Or grab a 24-hour pass.</p>
+    <input type="email" class="pay-email" id="pay-email" placeholder="Your email address">
+    <div class="pay-grid">
+      <div class="pay-opt pw-annual" onclick="handlePay('annual')"><div class="pw-badge">Best Value</div><div class="pay-price">$99/yr</div><div class="pay-label">Annual · save 31%</div></div>
+      <div class="pay-opt pw-monthly" onclick="handlePay('monthly')"><div class="pay-price">$12/mo</div><div class="pay-label">Monthly</div></div>
+      <div class="pay-opt pw-session" onclick="handlePay('session')"><div class="pay-price">$0.99</div><div class="pay-label">24-hr pass</div></div>
+    </div>
+    <p style="font-size:.7rem;color:var(--muted)">Secured by Square · No hidden fees</p>
+  </div>
+
+</div>
+
+<div class="trust">
+  <div class="trust-item"><em>📄</em> ATS-optimized resumes</div>
+  <div class="trust-item"><em>✉️</em> Job-specific cover letters</div>
+  <div class="trust-item"><em>💼</em> LinkedIn optimization</div>
+  <div class="trust-item"><em>🎤</em> Interview prep included</div>
+  <div class="trust-item"><em>💸</em> 95% cheaper than career coaches</div>
+</div>
+
+<footer>
+  <p>© 2026 <a href="https://infinityhub.dev">Infinity Solutions LLC</a> · All Rights Reserved · <a href="https://contact.infinityhub.dev">Support</a> · <a href="https://contactinfinitysolutionsllc-ops.github.io/terms/">Terms</a></p>
+</footer>
+
+<script>
+const WORKER_URL = 'https://justdocs-worker.robertjosephreynolds.workers.dev';
+const APP_NAME          = 'resumeai';
+const APP_URL           = 'https://contactinfinitysolutionsllc-ops.github.io/resumeai/';
+const SQUARE_MONTHLY_URL = 'https://square.link/u/pCpKBYg8'; // replace with Square monthly plan link once created
+const SQUARE_ANNUAL_URL  = 'https://square.link/u/zRrTqrz3'; // replace with Square annual plan link once created
+let currentMode  = 'resume';
+let lastResults  = {};
+let subscribedUnlocked = false;
+
+// ── SUBSCRIPTION ──────────────────────────────────────────
+let _subCache = null;
+// isSubscribed → see getStoredSession() below
+
+
+// ── MODE SWITCH ───────────────────────────────────────────
+function switchMode(mode,tab){
+  currentMode=mode;
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+mode).classList.add('active');
+  document.getElementById('output-wrap').style.display='none';
+  document.getElementById('pay-box').style.display='none';
+  document.getElementById('loading').style.display='none';
+}
+
+function setTone(btn,rowId){
+  document.querySelectorAll('#'+rowId+' .tone-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function getActiveTone(rowId){
+  return document.querySelector('#'+rowId+' .tone-btn.active')?.dataset.style||'professional';
+}
+
+// ── GENERATE ─────────────────────────────────────────────
+const LOADING_MSGS={
+  resume:'Crafting your resume…',
+  cover:'Writing your cover letter…',
+  linkedin:'Optimizing your LinkedIn profile…',
+  interview:'Preparing your interview questions…',
+};
+
+async function generate(mode){
+  const sub=subscribedUnlocked||await isSubscribed();
+  if(!sub){
+    document.getElementById('pay-box').style.display='block';
+    document.getElementById('pay-box').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  runGenerate(mode);
+}
+
+function showFormError(mode, msg) {
+  const el = document.getElementById(mode+'-error');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+function clearFormErrors() {
+  ['resume','cover','linkedin','interview'].forEach(m => {
+    const el = document.getElementById(m+'-error');
+    if (el) el.style.display = 'none';
+  });
+  const ge = document.getElementById('gen-error');
+  if (ge) ge.style.display = 'none';
+}
+
+async function runGenerate(mode){
+  clearFormErrors();
+  document.getElementById('output-wrap').style.display='none';
+  document.getElementById('pay-box').style.display='none';
+  document.getElementById('loading').style.display='block';
+  document.getElementById('loading-msg').textContent=LOADING_MSGS[mode]||'Building your document…';
+  document.querySelectorAll('.btn-p').forEach(b=>b.disabled=true);
+
+  const prompt=buildPrompt(mode);
+  if(!prompt){
+    document.getElementById('loading').style.display='none';
+    document.querySelectorAll('.btn-p').forEach(b=>b.disabled=false);
+    return;
+  }
+
+  try{
+    const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'claude',prompt,email:getStoredSession()?.email||localStorage.getItem('ig_account_email')||''})});
+    const data=await r.json();
+    if(data.result){
+      showOutput(mode,data.result);
+    } else {
+      document.getElementById('gen-error').style.display='block';
+    }
+  }catch{
+    document.getElementById('gen-error').style.display='block';
+  }
+  document.getElementById('loading').style.display='none';
+  document.querySelectorAll('.btn-p').forEach(b=>b.disabled=false);
+}
+
+function buildPrompt(mode){
+  switch(mode){
+    case 'resume':{
+      const name=document.getElementById('r-name').value.trim();
+      const title=document.getElementById('r-title').value.trim();
+      const exp=document.getElementById('r-experience').value.trim();
+      if(!name||!title||!exp){showFormError('resume','Please fill in your name, target job title, and work experience.');return null;}
+      const style=getActiveTone('resume-style-row');
+      return `Create a ${style} resume for ${name} targeting the role of ${title}.
+
+Contact info: ${[document.getElementById('r-email').value,document.getElementById('r-phone').value,document.getElementById('r-location').value,document.getElementById('r-url').value].filter(Boolean).join(' | ')}
+Work experience: ${exp}
+Education: ${document.getElementById('r-education').value||'Not provided'}
+Skills: ${document.getElementById('r-skills').value||'Not provided'}
+Certifications/Awards: ${document.getElementById('r-certs').value||'None'}
+
+Create a complete, ATS-optimized resume with:
+- Professional summary (3-4 compelling sentences tailored to ${title})
+- Work Experience section with bullet points that start with strong action verbs, quantify achievements where possible
+- Education section
+- Skills section (organized by category if applicable)
+- Certifications/Awards if provided
+
+Format clearly with section headers. Make it ready to copy and paste. Use standard resume formatting with clear sections.`;
+    }
+    case 'cover':{
+      const name=document.getElementById('c-name').value.trim();
+      const jobtitle=document.getElementById('c-jobtitle').value.trim();
+      const company=document.getElementById('c-company').value.trim();
+      const jobdesc=document.getElementById('c-jobdesc').value.trim();
+      const exp=document.getElementById('c-experience').value.trim();
+      if(!name||!jobtitle||!company||!exp){showFormError('cover','Please fill in your name, job title, company, and relevant experience.');return null;}
+      const tone=getActiveTone('cover-tone-row');
+      const hiring=document.getElementById('c-hiring').value.trim();
+      const why=document.getElementById('c-why').value.trim();
+      return `Write a ${tone} cover letter from ${name} applying for ${jobtitle} at ${company}.
+${hiring?'Addressed to: '+hiring:'Use "Dear Hiring Manager"'}
+
+Job requirements: ${jobdesc}
+Candidate's relevant experience: ${exp}
+${why?'Why this company: '+why:''}
+
+Write a compelling 3-4 paragraph cover letter that:
+- Opens with a strong hook (not "I am writing to apply for...")
+- Connects their specific experience to the job requirements
+- Shows genuine interest in the company
+- Closes with a confident call to action
+- Includes proper letter formatting with date, salutation, and signature block
+- Is ready to send without editing`;
+    }
+    case 'linkedin':{
+      const name=document.getElementById('l-name').value.trim();
+      const title=document.getElementById('l-title').value.trim();
+      const exp=document.getElementById('l-experience').value.trim();
+      if(!name||!title||!exp){showFormError('linkedin','Please fill in your name, title, and experience.');return null;}
+      const tone=getActiveTone('linkedin-tone-row');
+      return `Create ${tone} LinkedIn profile copy for ${name}, ${title}.
+
+Background: ${exp}
+Skills: ${document.getElementById('l-skills').value||''}
+Looking for: ${document.getElementById('l-looking').value||''}
+
+Generate:
+
+HEADLINE OPTIONS (3 variations, max 220 characters each):
+[3 compelling headlines that include keywords, value proposition, and what makes them stand out]
+
+ABOUT SECTION:
+[A compelling 200-250 word About section written in first person. Should tell their story, highlight key achievements, include relevant keywords for searchability, and end with what they're looking for or how to contact them. No generic phrases like "results-driven professional".]
+
+FEATURED SKILLS (top 10 to add):
+[List of 10 most relevant skills to add to their profile]`;
+    }
+    case 'interview':{
+      const title=document.getElementById('i-title').value.trim();
+      const bg=document.getElementById('i-background').value.trim();
+      if(!title||!bg){showFormError('interview','Please fill in the job title and your background.');return null;}
+      const type=getActiveTone('interview-type-row');
+      const company=document.getElementById('i-company').value.trim();
+      const jd=document.getElementById('i-jobdesc').value.trim();
+      return `Generate ${type} interview prep for someone interviewing for ${title}${company?' at '+company:''}.
+
+Candidate background: ${bg}
+${jd?'Job requirements: '+jd:''}
+
+Create 8 likely interview questions with strong, personalized answer guides:
+
+For each question provide:
+Q: [The interview question]
+WHY THEY ASK: [1 sentence on what they're really evaluating]
+STRONG ANSWER GUIDE: [2-3 paragraph answer framework tailored to this candidate's background. Include specific talking points they should hit, how to structure the answer, and what to avoid.]
+
+Include a mix of: strength/weakness questions, behavioral questions, role-specific questions, and situational questions.
+End with 5 smart questions they should ask the interviewer.`;
+    }
+  }
+}
+
+function showOutput(mode,result){
+  lastResults={};
+  const tabs=document.getElementById('output-tabs');
+  const panes=document.getElementById('output-panes');
+  tabs.innerHTML=''; panes.innerHTML='';
+
+  const outputs={
+    resume:[{key:'resume',label:'Resume'}],
+    cover:[{key:'cover',label:'Cover Letter'}],
+    linkedin:[{key:'headline',label:'Headlines'},{key:'about',label:'About Section'},{key:'skills',label:'Skills'}],
+    interview:[{key:'prep',label:'Interview Prep'}],
+  }[mode]||[{key:'doc',label:'Document'}];
+
+  if(mode==='linkedin'){
+    const labels=['HEADLINE OPTIONS','ABOUT SECTION','FEATURED SKILLS'];
+    const positions=labels.map(l=>({label:l,pos:result.toUpperCase().indexOf(l)}));
+    function extractSection(label,nextLabel){
+      const upper=result.toUpperCase();
+      const start=upper.indexOf(label);
+      if(start===-1) return result;
+      const contentStart=start+label.length;
+      const end=nextLabel?upper.indexOf(nextLabel,contentStart):-1;
+      return result.slice(contentStart, end===-1?undefined:end).replace(/^[:\s]+/,'').trim();
+    }
+    lastResults.headline=extractSection('HEADLINE OPTIONS','ABOUT SECTION');
+    lastResults.about=extractSection('ABOUT SECTION','FEATURED SKILLS');
+    lastResults.skills=extractSection('FEATURED SKILLS',null);
+    // fallback: if any section is empty, use full result
+    if(!lastResults.headline) lastResults.headline=result;
+    if(!lastResults.about) lastResults.about=result;
+    if(!lastResults.skills) lastResults.skills=result;
+  }else{
+    lastResults[outputs[0].key]=result;
+  }
+
+  outputs.forEach((o,i)=>{
+    const tab=document.createElement('button');
+    tab.className='out-tab'+(i===0?' active':'');
+    tab.textContent=o.label;
+    tab.onclick=()=>{
+      document.querySelectorAll('.out-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.out-pane').forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('pane-'+o.key).classList.add('active');
+    };
+    tabs.appendChild(tab);
+    const pane=document.createElement('div');
+    pane.className='out-pane'+(i===0?' active':'');
+    pane.id='pane-'+o.key;
+    pane.innerHTML=`<div class="output-box">${(lastResults[o.key]||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+      <div class="out-actions">
+        <button class="btn-copy" onclick="copyPane('${o.key}',this)">📋 Copy</button>
+        <button class="btn-copy" onclick="downloadPane('${o.key}','${o.label}')">⬇ Download .txt</button>
+      </div>`;
+    panes.appendChild(pane);
+  });
+
+  document.getElementById('output-wrap').style.display='block';
+  document.getElementById('output-wrap').scrollIntoView({behavior:'smooth'});
+}
+
+function copyPane(key,btn){
+  navigator.clipboard.writeText(lastResults[key]||'').then(()=>{
+    const orig=btn.textContent;
+    btn.textContent='✓ Copied!';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('ok');},2000);
+  });
+}
+
+function downloadPane(key,label){
+  const text=lastResults[key]||'';
+  if(!text) return;
+  const filename=label.toLowerCase().replace(/\s+/g,'-')+'-'+new Date().toISOString().slice(0,10)+'.txt';
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(text);
+  a.download=filename;
+  a.click();
+}
+
+function resetForm(){
+  document.getElementById('output-wrap').style.display='none';
+  document.getElementById('pay-box').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function regenerate(){runGenerate(currentMode);}
+
+// ── PAYMENT ──────────────────────────────────────────────
+async function handlePay(plan){
+  const email=document.getElementById('pay-email').value.trim();
+  if(!email||!email.includes('@')){alert('Please enter your email first.');return;}
+  localStorage.setItem('resume_pending_email',email);
+  localStorage.setItem('resume_pending_plan',plan);
+  if(plan==='annual'&&SQUARE_ANNUAL_URL){window.location.href=SQUARE_ANNUAL_URL;return;}
+  if(plan==='monthly'&&SQUARE_MONTHLY_URL){window.location.href=SQUARE_MONTHLY_URL;return;}
+  const amounts={annual:99,monthly:12,session:0.99};
+  const labels={annual:'Infinity Hub – Annual',monthly:'Infinity Hub – Monthly',session:'Infinity Hub – Session Pass'};
+  try{
+    const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'createPaymentLink',docType:labels[plan],amount:amounts[plan],
+        redirectUrl:APP_URL+'?paid=true&plan='+plan})});
+    const data=await r.json();
+    if(data.url) window.location.href=data.url;
+    else alert('Could not create payment link. Please try again.');
+  }catch{alert('Payment error. Please try again.');}
+}
+
+if(window.location.search.includes('paid=true')){
+  const email=localStorage.getItem('resume_pending_email');
+  const plan=new URLSearchParams(window.location.search).get('plan')
+            ||localStorage.getItem('resume_pending_plan')||'monthly';
+  if(email){
+    fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'addSubscriber',email,app:APP_NAME,plan})
+    }).then(()=>{
+      localStorage.setItem('resume_email',email);
+      subscribedUnlocked=true;
+      _subCache=true;
+      localStorage.removeItem('resume_pending_email');
+      localStorage.removeItem('resume_pending_plan');
+    });
+  }
+  window.history.replaceState({},'',window.location.pathname);
+}
+
+// Auto-restore subscription
+// ── SESSION AUTH ─────────────────────────────────────────────────────
+function getStoredSession() {
+  let token = localStorage.getItem('ig_account_token');
+  let email = localStorage.getItem('ig_account_email');
+  let name  = localStorage.getItem('ig_account_name') || email;
+  if (!token) {
+    try {
+      const raw = localStorage.getItem('sb-zcvkgevcrgsujnqovxgd-auth-token');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        const sess = parsed?.currentSession || parsed?.session || parsed;
+        token = sess?.access_token;
+        email = sess?.user?.email;
+        name  = sess?.user?.user_metadata?.name || email;
+        if (token) {
+          localStorage.setItem('ig_account_token', token);
+          localStorage.setItem('ig_account_email', email || '');
+          if (name) localStorage.setItem('ig_account_name', name);
+        }
+      }
+    } catch(e) {}
+  }
+  if (!token || !email) return null;
+  try {
+    const p = JSON.parse(atob(token.split('.')[1]));
+    if (p.exp && Date.now()/1000 > p.exp) {
+      ['ig_account_token','ig_account_email','ig_account_name'].forEach(k=>localStorage.removeItem(k));
+      return null;
+    }
+  } catch(e) { return null; }
+  return { token, email, name };
+}
+function showSignedInBar(name, email) {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) bar.classList.add('signed-in');
+  if (lbl) { lbl.textContent = '✓ Subscribed — ' + (name || email); lbl.classList.add('ok'); }
+  if (btn) { btn.textContent = 'My Account'; btn.classList.add('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/'; }
+}
+function showSignInBar() {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) { bar.classList.remove('signed-in'); bar.classList.remove('warn'); }
+  if (lbl) { lbl.textContent = 'Sign in to use this tool.'; lbl.classList.remove('ok'); }
+  if (btn) { btn.textContent = 'Sign In →'; btn.classList.remove('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/?return=' + encodeURIComponent(window.location.href); }
+}
+function showSubscribeBar(email) {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) { bar.classList.remove('signed-in'); bar.classList.add('warn');
+             bar.style.background='rgba(240,180,41,.07)'; bar.style.borderColor='rgba(240,180,41,.25)'; }
+  if (lbl) { lbl.textContent = 'Signed in as ' + (email||'') + ' — subscribe for unlimited access.'; lbl.classList.remove('ok'); }
+  if (btn) { btn.textContent = 'Subscribe →'; btn.classList.remove('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/'; }
+}
+
+
+async function isSubscribed() {
+  if (_subCache !== null) return _subCache;
+  const session = getStoredSession();
+  const email = session?.email || localStorage.getItem('ig_account_email');
+  if (!email) { _subCache = false; return false; }
+  try {
+    const r = await fetch(WORKER_URL, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({action:'checkSubscriber', email, app: APP_NAME})
+    });
+    const d = await r.json();
+    _subCache = d.active === true;
+    setTimeout(() => { _subCache = null; }, 5 * 60 * 1000);
+    return _subCache;
+  } catch(e) { return false; }
+}
+
+(async () => {
+  const session = getStoredSession();
+  if (session) {
+    const subActive = await isSubscribed();
+    if (subActive) {
+      subscribedUnlocked = true; _subCache = true;
+      showSignedInBar(session.name, session.email);
+    } else {
+      showSubscribeBar(session.email);
+    }
+  } else {
+    showSignInBar();
+    window.addEventListener('ig_signed_in', async (e) => {
+      const sub = await isSubscribed();
+      if (sub) { subscribedUnlocked = true; _subCache = true;
+                 showSignedInBar(e.detail?.name, e.detail?.email); }
+      else { showSubscribeBar(e.detail?.email); }
+    });
+  }
+})();
+</script>
+</body>
+</html>

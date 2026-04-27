@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InfinityGuard — Total Protection. Forever.</title>
+<meta name="description" content="AI-powered cybersecurity suite. Antivirus, VPN, ransomware protection, identity monitoring, and more. $39 lifetime — beta founding price.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#04060d;--bg2:#080c18;--bg3:#0c1020;--bg4:#101525;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.12);
+  --text:#dce4f0;--muted:#5a6480;--muted2:#8892aa;
+  --accent:#00c8f0;--accent2:#40d8ff;--accent3:#006880;
+  --silver:#a8c0d8;--silver2:#c8dff0;
+  --navy:#0a1830;--navy2:#0d2040;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+
+/* ── GRID TEXTURE ── */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(0,200,240,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,200,240,.025) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 0%,transparent 70%);
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 3rem;
+  background:rgba(4,6,13,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:32px;height:32px}
+.nav-logo-text{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;letter-spacing:.02em;color:var(--text)}
+.nav-logo-text span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{font-size:.82rem;font-weight:500;color:var(--muted2);text-decoration:none;letter-spacing:.04em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;padding:.5rem 1.4rem;border-radius:4px;background:var(--accent);color:var(--bg);border:none;cursor:pointer;transition:all .2s;text-decoration:none}
+.nav-cta:hover{background:var(--accent2);transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  padding:8rem 2rem 4rem;
+  position:relative;
+}
+.hero-glow{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:900px;height:500px;
+  background:radial-gradient(ellipse,rgba(0,200,240,.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-glow2{
+  position:absolute;bottom:-100px;left:50%;transform:translateX(-50%);
+  width:600px;height:300px;
+  background:radial-gradient(ellipse,rgba(0,100,160,.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-family:'Rajdhani',sans-serif;
+  font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.2rem;
+  display:inline-flex;align-items:center;gap:.6rem;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:32px;height:1px;background:var(--accent);opacity:.5}
+.hero h1{
+  font-family:'Rajdhani',sans-serif;
+  font-size:clamp(3rem,8vw,6.5rem);
+  font-weight:700;
+  line-height:.95;
+  letter-spacing:-.02em;
+  margin-bottom:1.5rem;
+  color:#fff;
+}
+.hero h1 em{
+  font-style:normal;
+  color:transparent;
+  -webkit-text-stroke:1.5px var(--accent);
+}
+.hero-sub{
+  font-size:1.1rem;font-weight:300;color:var(--muted2);
+  max-width:520px;margin:0 auto 2.5rem;line-height:1.7;
+}
+.hero-sub strong{color:var(--text);font-weight:500}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
+.btn-hero{
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.95rem;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:.8rem 2.2rem;border-radius:4px;border:none;cursor:pointer;
+  transition:all .22s;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;
+}
+.btn-primary{background:var(--accent);color:var(--bg)}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,200,240,.25)}
+.btn-secondary{background:transparent;color:var(--muted2);border:1px solid var(--border2)}
+.btn-secondary:hover{color:var(--text);border-color:rgba(255,255,255,.25)}
+.hero-trust{display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap}
+.trust-item{font-size:.75rem;font-weight:500;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:.4rem}
+.trust-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);opacity:.6}
+
+/* ── SHIELD HERO IMAGE ── */
+.hero-shield{
+  position:absolute;right:8%;top:50%;transform:translateY(-50%);
+  opacity:.15;pointer-events:none;
+}
+
+/* ── STATS BAR ── */
+.stats-bar{
+  background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:1.5rem 3rem;
+  display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;
+  position:relative;z-index:1;
+}
+.stat-item{text-align:center}
+.stat-num{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--accent);letter-spacing:-.02em}
+.stat-lbl{font-size:.72rem;font-weight:500;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+
+/* ── SECTION ── */
+.section{padding:6rem 3rem;position:relative;z-index:1;max-width:1100px;margin:0 auto}
+.section-eyebrow{font-family:'Rajdhani',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem}
+.section-title{font-family:'Rajdhani',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;line-height:1.05;letter-spacing:-.01em;color:#fff;margin-bottom:1rem}
+.section-sub{font-size:1rem;font-weight:300;color:var(--muted2);max-width:540px;line-height:1.7}
+
+/* ── FEATURES GRID ── */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:var(--border);margin-top:3rem;border:1px solid var(--border)}
+.feat-card{background:var(--bg);padding:2rem;transition:background .2s;position:relative;overflow:hidden}
+.feat-card:hover{background:var(--bg2)}
+.feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s}
+.feat-card:hover::before{opacity:1}
+.feat-icon{width:40px;height:40px;border-radius:8px;background:rgba(0,200,240,.08);border:1px solid rgba(0,200,240,.15);display:flex;align-items:center;justify-content:center;margin-bottom:1.1rem;font-size:1.1rem}
+.feat-name{font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:.4rem;letter-spacing:.02em}
+.feat-desc{font-size:.85rem;color:var(--muted2);line-height:1.6;font-weight:300}
+.feat-tag{display:inline-block;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .6rem;border-radius:2px;background:rgba(0,200,240,.08);color:var(--accent);border:1px solid rgba(0,200,240,.2);margin-top:.7rem}
+
+/* ── PRICING ── */
+.pricing-wrap{padding:6rem 3rem;position:relative;z-index:1;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.pricing-inner{max-width:1100px;margin:0 auto}
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1px;background:var(--border);margin-top:3rem;border:1px solid var(--border)}
+.plan-card{background:var(--bg2);padding:2rem;position:relative}
+.plan-card.featured{background:var(--bg3);border-top:2px solid var(--accent)}
+.plan-badge{font-family:'Rajdhani',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);background:rgba(0,200,240,.08);border:1px solid rgba(0,200,240,.2);padding:.2rem .65rem;border-radius:2px;display:inline-block;margin-bottom:.9rem}
+.plan-name{font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:.5rem;letter-spacing:.04em}
+.plan-price{font-family:'Rajdhani',sans-serif;font-size:2.4rem;font-weight:700;color:#fff;line-height:1;margin-bottom:.25rem}
+.plan-price span{font-size:.85rem;font-weight:400;color:var(--muted2)}
+.plan-desc{font-size:.78rem;color:var(--muted);margin-bottom:1.2rem;font-weight:300;line-height:1.5}
+.plan-divider{height:1px;background:var(--border);margin-bottom:1.2rem}
+.plan-feature{font-size:.8rem;color:var(--muted2);padding:.3rem 0;display:flex;align-items:center;gap:.55rem;font-weight:300}
+.plan-feature::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;opacity:.7}
+.plan-feature.dim{opacity:.4}
+.plan-cta{
+  width:100%;margin-top:1.5rem;
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.82rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.65rem 1rem;border-radius:4px;border:none;cursor:pointer;
+  transition:all .2s;
+}
+.plan-cta-p{background:var(--accent);color:var(--bg)}
+.plan-cta-p:hover{background:var(--accent2)}
+.plan-cta-g{background:transparent;color:var(--muted2);border:1px solid var(--border2)}
+.plan-cta-g:hover{color:var(--text);border-color:rgba(255,255,255,.2)}
+
+/* ── PROTECTION PIPELINE ── */
+.pipeline{padding:6rem 3rem;position:relative;z-index:1;max-width:1100px;margin:0 auto}
+.pipeline-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1px;background:var(--border);margin-top:3rem;border:1px solid var(--border)}
+.pipe-step{background:var(--bg);padding:1.5rem 1.2rem;text-align:center;position:relative}
+.pipe-step::after{content:'→';position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:.9rem;z-index:2}
+.pipe-step:last-child::after{display:none}
+.pipe-num{font-family:'Rajdhani',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.14em;color:var(--accent);opacity:.6;margin-bottom:.5rem}
+.pipe-name{font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:700;color:#fff;margin-bottom:.3rem}
+.pipe-desc{font-size:.72rem;color:var(--muted2);line-height:1.4;font-weight:300}
+
+/* ── CTA SECTION ── */
+.cta-section{
+  padding:7rem 3rem;text-align:center;position:relative;z-index:1;
+  background:linear-gradient(180deg,var(--bg) 0%,rgba(0,40,80,.15) 50%,var(--bg) 100%);
+}
+.cta-section h2{font-family:'Rajdhani',sans-serif;font-size:clamp(2rem,5vw,4rem);font-weight:700;color:#fff;letter-spacing:-.01em;margin-bottom:.8rem}
+.cta-section p{font-size:1rem;color:var(--muted2);margin-bottom:2.5rem;font-weight:300;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:2.5rem 3rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-logo{font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:700;color:var(--muted);letter-spacing:.04em}
+.footer-logo span{color:var(--accent)}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+.footer-links a{font-size:.72rem;color:var(--muted);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}
+.footer-links a:hover{color:var(--muted2)}
+.footer-copy{font-size:.7rem;color:var(--muted);letter-spacing:.04em}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(400%)}}
+.anim-1{animation:fadeUp .7s ease both}
+.anim-2{animation:fadeUp .7s .12s ease both}
+.anim-3{animation:fadeUp .7s .22s ease both}
+.anim-4{animation:fadeUp .7s .32s ease both}
+
+/* ── SCAN EFFECT ON HERO SHIELD ── */
+.shield-container{position:relative;display:inline-block}
+.scanline{
+  position:absolute;left:0;right:0;height:60px;
+  background:linear-gradient(180deg,transparent,rgba(0,200,240,.08),transparent);
+  animation:scanline 3s linear infinite;
+  pointer-events:none;
+}
+
+@media(max-width:768px){
+  nav{padding:.9rem 1.2rem}
+  .nav-links{display:none}
+  .stats-bar{gap:2rem;padding:1.2rem}
+  .section,.pipeline{padding:4rem 1.2rem}
+  .pricing-wrap{padding:4rem 1.2rem}
+  .hero{padding:7rem 1.2rem 3rem}
+  .hero-shield{display:none}
+  footer{padding:1.5rem 1.2rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none">
+      <path d="M16 2L28 7V18C28 25 22.5 30 16 31.5C9.5 30 4 25 4 18V7L16 2Z" fill="rgba(0,200,240,.1)" stroke="#00c8f0" stroke-width="1"/>
+      <path d="M16 5L25 9.5V18C25 23.5 21 28 16 29C11 28 7 23.5 7 18V9.5L16 5Z" fill="rgba(0,100,160,.15)" stroke="rgba(0,200,240,.3)" stroke-width="0.5"/>
+      <path d="M16.5 16C16.5 16 14 12 11 12C8 12 6 14 6 16C6 18 8 20 11 20C14 20 16.5 16 16.5 16C16.5 16 19 12 22 12C25 12 27 14 27 16C27 18 25 20 22 20C19 20 16.5 16 16.5 16Z" fill="none" stroke="#00c8f0" stroke-width="1.8" transform="translate(-3,0) scale(0.88)"/>
+    </svg>
+    <span class="nav-logo-text">Infinity<span>Guard</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="https://infinityhub.dev">Hub</a>
+  </div>
+  <a href="#pricing" class="nav-cta">Download Free</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div style="position:relative;z-index:1">
+    <div class="hero-eyebrow anim-1">AI-powered cybersecurity suite</div>
+    <h1 class="anim-2">Total<br>Protection.<br><em>Forever.</em></h1>
+    <p class="hero-sub anim-3">
+      Antivirus, VPN, ransomware AI, identity monitoring, DNS shield, and 10+ more tools —
+      <strong>bundled into one program.</strong> Beta founders get lifetime access for a one-time price. No subscription. Ever.
+    </p>
+    <div class="hero-btns anim-4">
+      <a href="#pricing" class="btn-hero btn-primary">⬇ Download Free</a>
+      <a href="#pricing" class="btn-hero btn-secondary">Beta Lifetime — $39 →</a>
+    </div>
+    <div class="hero-trust anim-4">
+      <div class="trust-item"><div class="trust-dot"></div>Windows 10 / 11</div>
+      <div class="trust-item"><div class="trust-dot"></div>No account required</div>
+      <div class="trust-item"><div class="trust-dot"></div>100% local AI — no cloud</div>
+    </div>
+  </div>
+
+  <div class="hero-shield">
+    <svg width="320" height="380" viewBox="0 0 320 380" fill="none">
+      <path d="M160 10L300 65V170C300 260 234 330 160 355C86 330 20 260 20 170V65L160 10Z" fill="rgba(0,200,240,.04)" stroke="rgba(0,200,240,.15)" stroke-width="1.5"/>
+      <path d="M160 25L285 75V170C285 252 222 318 160 340C98 318 35 252 35 170V75L160 25Z" fill="rgba(0,100,160,.06)" stroke="rgba(0,200,240,.08)" stroke-width="0.5"/>
+      <path d="M162 180C162 180 143 150 124 150C105 150 92 161 92 175C92 189 105 200 124 200C143 200 162 180 162 180C162 180 181 150 200 150C219 150 232 161 232 175C232 189 219 200 200 200C181 200 162 180 162 180Z" fill="none" stroke="rgba(0,200,240,.5)" stroke-width="3"/>
+    </svg>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">99.7%</div><div class="stat-lbl">Threat detection</div></div>
+  <div class="stat-item"><div class="stat-num">50K+</div><div class="stat-lbl">Domains blocked</div></div>
+  <div class="stat-item"><div class="stat-num">&lt;1%</div><div class="stat-lbl">CPU at idle</div></div>
+  <div class="stat-item"><div class="stat-num">10+</div><div class="stat-lbl">Tools bundled</div></div>
+  <div class="stat-item"><div class="stat-num">3</div><div class="stat-lbl">Platforms</div></div>
+</div>
+
+<div class="section" id="features">
+  <div class="section-eyebrow">Everything included</div>
+  <div class="section-title">One program.<br>Total coverage.</div>
+  <div class="section-sub">Every tool you'd normally pay for separately — antivirus, VPN, password manager, identity protection — unified under one interface.</div>
+
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon">🛡️</div>
+      <div class="feat-name">InfinityGuard Core Engine</div>
+      <div class="feat-desc">Multi-layer signature scanning catches known malware, trojans, and spyware with daily automatic definition updates.</div>
+      <div class="feat-tag">Real-time</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🤖</div>
+      <div class="feat-name">AI Defense</div>
+      <div class="feat-desc">Local machine learning model detects ransomware behavior before a single file is encrypted — no cloud, no latency.</div>
+      <div class="feat-tag">On-device AI</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌐</div>
+      <div class="feat-name">Built-in VPN</div>
+      <div class="feat-desc">WireGuard-powered encrypted tunnel. Import any .conf file and connect in one click from inside InfinityGuard.</div>
+      <div class="feat-tag">WireGuard</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🚫</div>
+      <div class="feat-name">DNS Shield</div>
+      <div class="feat-desc">Blocks 75,000+ malicious domains at the network level before they even load. Malware, trackers, and phishing sites.</div>
+      <div class="feat-tag">Network-level</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔑</div>
+      <div class="feat-name">Password Manager</div>
+      <div class="feat-desc">KeePassXC integrated directly into InfinityGuard. Local vault — your passwords never touch a cloud server.</div>
+      <div class="feat-tag">Local vault</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">👤</div>
+      <div class="feat-name">Identity Protection</div>
+      <div class="feat-desc">Dark web monitoring for your emails, password breach checking, and data broker opt-out guides.</div>
+      <div class="feat-tag">Dark web scan</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📡</div>
+      <div class="feat-name">Network Monitor</div>
+      <div class="feat-desc">See every active connection on your device. Flags suspicious ports and known malicious IP addresses instantly.</div>
+      <div class="feat-tag">Live view</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📶</div>
+      <div class="feat-name">Wi-Fi Security Scanner</div>
+      <div class="feat-desc">Scans visible networks for weak encryption, open hotspots, and rogue access points. Know before you connect.</div>
+      <div class="feat-tag">Auto-scan</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔌</div>
+      <div class="feat-name">USB Auto-Scanner</div>
+      <div class="feat-desc">Every USB drive scanned the moment it's inserted. No manual action required — just plug in and you're protected.</div>
+      <div class="feat-tag">Instant</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🧹</div>
+      <div class="feat-name">Privacy Tools</div>
+      <div class="feat-desc">Disk cleaner, DoD-grade secure file deletion, free space wiping, and browser cache cleaning in one panel.</div>
+      <div class="feat-tag">3-pass wipe</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🚀</div>
+      <div class="feat-name">Startup Manager</div>
+      <div class="feat-desc">See and control every program that launches at boot. Risk-rated so you immediately know what's suspicious.</div>
+      <div class="feat-tag">Risk scored</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔧</div>
+      <div class="feat-name">System Hardening</div>
+      <div class="feat-desc">One-click security policies: disable AutoRun, close SMBv1, enable DEP, remove RDP attack surface, and more.</div>
+      <div class="feat-tag">One-click</div>
+    </div>
+  </div>
+</div>
+
+<div style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="pipeline" id="how-it-works" style="padding:5rem 3rem">
+    <div class="section-eyebrow">How InfinityGuard works</div>
+    <div class="section-title">Six layers.<br>Zero gaps.</div>
+    <div class="section-sub">Every file and network packet passes through a staged inspection pipeline — each layer catching what the previous missed.</div>
+
+    <div class="pipeline-steps">
+      <div class="pipe-step">
+        <div class="pipe-num">01</div>
+        <div class="pipe-name">Hash Check</div>
+        <div class="pipe-desc">Instant match against 100K+ known malware hashes</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">02</div>
+        <div class="pipe-name">Entropy Scan</div>
+        <div class="pipe-desc">Detects packed and encrypted malware by statistical analysis</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">03</div>
+        <div class="pipe-name">Pattern Shield</div>
+        <div class="pipe-desc">YARA rules match known threat signatures and behaviors</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">04</div>
+        <div class="pipe-name">Core Engine</div>
+        <div class="pipe-desc">Full signature scan with daily-updated definitions</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">05</div>
+        <div class="pipe-name">AI Defense</div>
+        <div class="pipe-desc">Behavioral analysis catches zero-day ransomware before encryption</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">06</div>
+        <div class="pipe-name">Quarantine</div>
+        <div class="pipe-desc">Threats isolated in encrypted vault, originals removed</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pricing-wrap" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-eyebrow">Beta founding price</div>
+    <div class="section-title">Pay once.<br>Protected forever.</div>
+    <div class="section-sub">Norton charges $100/year. McAfee $80. InfinityGuard is $39 — one time — and includes tools they don't even offer. Beta founders lock in this price permanently. It goes up when beta ends.</div>
+
+    <div class="plans-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));max-width:700px;margin:3rem auto 0">
+
+      <div class="plan-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">$0 <span>/ forever</span></div>
+        <div class="plan-desc">Try it. No account, no card, no nonsense.</div>
+        <div class="plan-divider"></div>
+        <div class="plan-feature">On-demand virus scanning</div>
+        <div class="plan-feature">Core engine + YARA patterns</div>
+        <div class="plan-feature">Password manager (local vault)</div>
+        <div class="plan-feature">Privacy tools + disk cleaner</div>
+        <div class="plan-feature">Startup manager</div>
+        <div class="plan-feature dim">Real-time protection</div>
+        <div class="plan-feature dim">AI ransomware defense</div>
+        <div class="plan-feature dim">Auto-updating definitions</div>
+        <div class="plan-feature dim">VPN + DNS Shield</div>
+        <div class="plan-feature dim">Identity monitoring</div>
+        <a href="https://github.com/contactinfinitysolutionsllc-ops/infinityguard-releases/releases/download/v1.1.3/InfinityGuard-Setup-1.1.3.exe" class="plan-cta plan-cta-g" style="display:block;text-align:center;text-decoration:none;line-height:2.2">⬇ Download Free</a>
+      </div>
+
+      <div class="plan-card featured">
+        <div class="plan-badge">⚡ Beta Founding Price</div>
+        <div class="plan-name">Lifetime Access</div>
+        <div class="plan-price">$39 <span>/ one-time</span></div>
+        <div class="plan-desc">Full protection, forever. Price increases after beta — founding members lock in $39 permanently.</div>
+        <div class="plan-divider"></div>
+        <div class="plan-feature">Everything in Free</div>
+        <div class="plan-feature">Real-time file protection</div>
+        <div class="plan-feature">AI ransomware detection</div>
+        <div class="plan-feature">Auto-updating definitions</div>
+        <div class="plan-feature">VPN + DNS Shield</div>
+        <div class="plan-feature">Identity + breach monitoring</div>
+        <div class="plan-feature">Network monitor + firewall</div>
+        <div class="plan-feature">All future features included</div>
+        <a href="https://infinitysolutions8.gumroad.com/l/sptnbe?wanted=true" class="plan-cta plan-cta-p" style="display:block;text-align:center;text-decoration:none;line-height:2.2">Get Lifetime Access — $39</a>
+      </div>
+
+    </div>
+
+    <div style="max-width:600px;margin:2rem auto 0;background:rgba(0,200,240,.04);border:1px solid rgba(0,200,240,.12);border-radius:4px;padding:1.2rem 1.5rem;text-align:center">
+      <div style="font-family:'Rajdhani',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem">Why support solo development?</div>
+      <div style="font-size:.82rem;color:var(--muted2);line-height:1.7;font-weight:300">InfinityGuard is built by one person with no VC backing and no corporate agenda. Every purchase directly funds development of the kernel driver, Linux version, and network appliance. You're not a customer — you're a founding patron.</div>
+    </div>
+
+    <p style="text-align:center;font-size:.76rem;color:var(--muted);margin-top:1.5rem">Business / multi-device pricing coming post-beta · <a href="mailto:contact@infinityhub.dev" style="color:var(--accent2);text-decoration:none">contact@infinityhub.dev</a></p>
+  </div>
+</div>
+
+<div class="cta-section">
+  <div class="hero-glow"></div>
+  <div style="position:relative;z-index:1">
+    <h2>Start protected.<br>Stay protected.</h2>
+    <p>Download free with no account, no credit card, no nonsense. Or grab lifetime access for $39 before beta ends and the price goes up.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="https://github.com/contactinfinitysolutionsllc-ops/infinityguard-releases/releases/download/v1.1.3/InfinityGuard-Setup-1.1.3.exe" class="btn-hero btn-primary">⬇ Download Free — Windows</a>
+      <a href="https://infinitysolutions8.gumroad.com/l/sptnbe?wanted=true" class="btn-hero btn-secondary">Get Lifetime — $39 →</a>
+    </div>
+    <p style="font-size:.72rem;color:var(--muted);margin-top:1.2rem;letter-spacing:.06em;text-transform:uppercase">Windows 10 / 11 · v1.1.3 Beta</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Infinity<span>Guard</span> — by Infinity Solutions LLC</div>
+  <div class="footer-links">
+    <a href="https://infinityhub.dev">Hub</a>
+    <a href="mailto:support@infinityhub.dev">Support</a>
+    <a href="mailto:contact@infinityhub.dev">Contact</a>
+    <a href="#">Legal Notices</a>
+  </div>
+  <div class="footer-copy">© 2026 Infinity Solutions LLC · All Rights Reserved</div>
+</footer>
+
+</body>
+</html>

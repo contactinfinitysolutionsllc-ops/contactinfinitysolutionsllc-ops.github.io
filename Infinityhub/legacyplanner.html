@@ -1,0 +1,863 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legacy Planner — Grief Support & Memory Preservation | Infinity Solutions</title>
+<meta name="description" content="AI-guided grief support, memory preservation, and end-of-life planning. Save stories, write letters, and find peace — at a price everyone can afford.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;--bg2:#0e1320;--bg3:#141928;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);
+  --text:#f0f2f8;--muted:#7a8099;--muted2:#a0a8c0;
+  --accent:#2dd4bf;--accent2:#5eead4;
+  --gold:#f0b429;--green:#34d399;--red:#ff6b6b;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(8,11,18,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--text);text-decoration:none}
+.logo em{color:var(--accent);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:1.2rem}
+.nav-back{font-size:.8rem;color:var(--muted2);text-decoration:none;transition:color .18s}
+.nav-back:hover{color:var(--text)}
+.nav-badge{font-size:.72rem;font-weight:700;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.22);color:var(--accent2);padding:.25rem .7rem;border-radius:100px}
+
+.hero{padding:7rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:350px;background:radial-gradient(ellipse,rgba(45,212,191,.07) 0%,transparent 70%);pointer-events:none}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,5vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-.025em;margin-bottom:1rem;animation:up .6s ease both}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero-sub{font-size:1rem;color:var(--muted2);max-width:520px;margin:0 auto 1.5rem;line-height:1.75;font-weight:300;animation:up .6s .1s ease both}
+.hero-sub strong{color:var(--text);font-weight:500}
+.price-strip{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;animation:up .6s .15s ease both}
+.price-pill{background:var(--bg2);border:1px solid var(--border2);border-radius:100px;padding:.35rem 1rem;font-size:.8rem;color:var(--muted2)}
+.price-pill strong{color:var(--text);font-weight:600}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.app-wrap{max-width:760px;margin:0 auto;padding:0 1rem 5rem}
+
+/* TOOL TABS */
+.tool-tabs{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:1.5rem}
+.tool-tab{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.8rem .6rem;text-align:center;cursor:pointer;transition:all .18s;font-family:inherit}
+.tool-tab:hover{border-color:var(--border2);background:var(--bg3)}
+.tool-tab.active{border-color:var(--accent);background:rgba(45,212,191,.07)}
+.tool-icon{font-size:1.2rem;display:block;margin-bottom:.3rem}
+.tool-name{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--text);display:block}
+.tool-desc{font-size:.66rem;color:var(--muted2);display:block;margin-top:2px;line-height:1.3}
+
+.panel{display:none;animation:up .25s ease both}
+.panel.active{display:block}
+
+.form-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem}
+.form-card-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.3rem}
+.form-card-sub{font-size:.82rem;color:var(--muted2);margin-bottom:1.2rem;font-weight:300;line-height:1.6}
+
+.form-group{margin-bottom:1rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);margin-bottom:.4rem}
+input[type=text],input[type=email],textarea,select{width:100%;padding:.68rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none;transition:border-color .18s;resize:vertical}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);background:var(--bg2)}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+select option{background:var(--bg2)}
+
+.btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;padding:.78rem 1.8rem;border-radius:100px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;width:100%}
+.btn-primary{background:var(--accent);color:#042f2a}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(45,212,191,.18)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--muted2);font-size:.85rem}
+.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.25)}
+
+.loading{display:none;text-align:center;padding:2.5rem}
+.spinner{width:34px;height:34px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto .8rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{font-size:.85rem;color:var(--muted2);font-weight:300}
+
+.output-wrap{display:none;margin-top:1rem}
+.output-box{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.5rem;font-size:.9rem;line-height:1.9;white-space:pre-wrap;color:var(--muted2);max-height:480px;overflow-y:auto;margin-bottom:.8rem;font-family:'Instrument Sans',sans-serif}
+.out-actions{display:flex;gap:8px}
+.btn-copy{background:var(--bg2);border:1px solid var(--border2);color:var(--muted2);font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.6rem 1.2rem;border-radius:100px;cursor:pointer;transition:all .18s;flex:1}
+.btn-copy:hover{color:var(--text)}
+.btn-copy.copied{color:var(--accent);border-color:var(--accent)}
+.btn-save{background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.25);color:var(--accent);font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.6rem 1.2rem;border-radius:100px;cursor:pointer;transition:all .18s;flex:1}
+.btn-save:hover{background:rgba(45,212,191,.18)}
+
+/* SAVED ENTRIES */
+.saved-section{margin-top:1.5rem}
+.saved-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.8rem;color:var(--muted2)}
+.saved-entry{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;margin-bottom:8px;cursor:pointer;transition:border-color .18s}
+.saved-entry:hover{border-color:var(--border2)}
+.saved-entry-title{font-size:.88rem;font-weight:500;color:var(--text);margin-bottom:3px}
+.saved-entry-meta{font-size:.72rem;color:var(--muted)}
+
+/* FREE BANNER */
+.free-banner{background:rgba(45,212,191,.06);border:1px solid rgba(45,212,191,.15);border-radius:12px;padding:.7rem 1.1rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.5rem}
+.free-left{font-size:.83rem;color:var(--accent2)}
+.free-left strong{color:var(--accent);font-weight:700}
+
+/* PAYWALL */
+.paywall{display:none;background:var(--bg2);border:1px solid rgba(45,212,191,.18);border-radius:16px;padding:1.8rem;margin-top:1.2rem;text-align:center}
+.paywall h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.paywall p{font-size:.85rem;color:var(--muted2);margin-bottom:1.2rem;font-weight:300}
+.pay-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;max-width:480px;margin:0 auto 1rem}
+.pay-opt{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.85rem .7rem;cursor:pointer;transition:all .18s;text-align:center}
+.pay-opt:hover{border-color:var(--accent)}
+.pay-opt.pw-annual{border-color:rgba(240,180,41,.45);background:rgba(240,180,41,.06)}
+.pay-opt.pw-monthly{border-color:rgba(45,212,191,.35)}
+.pay-opt.pw-session{opacity:.85}
+.pw-badge{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f0b429;margin-bottom:.25rem}
+.pay-price{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--accent)}
+.pay-label{font-size:.68rem;color:var(--muted2);margin-top:3px}
+
+/* CRISIS NOTE */
+.crisis-note{background:rgba(240,180,41,.07);border:1px solid rgba(240,180,41,.18);border-radius:10px;padding:.8rem 1rem;font-size:.76rem;color:rgba(240,180,41,.85);line-height:1.6;margin-bottom:1.2rem}
+.crisis-note strong{color:var(--gold)}
+
+.trust{background:var(--bg2);border-top:1px solid var(--border);padding:1.2rem 2rem;display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:2rem}
+.trust-item{font-size:.74rem;color:var(--muted2);display:flex;align-items:center;gap:.4rem}
+.trust-item em{color:var(--accent);font-style:normal}
+footer{text-align:center;padding:1.5rem;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border)}
+footer a{color:var(--accent2);text-decoration:none}
+
+@media(max-width:580px){
+  .form-row{grid-template-columns:1fr}
+  nav{padding:1rem 1.2rem}
+  .tool-tabs{grid-template-columns:repeat(2,1fr)}
+  .pay-grid{grid-template-columns:1fr}
+}
+
+.btn-sub{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.45rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .18s}
+.btn-sub:hover{background:var(--accent2)}
+.btn-sub.signed-in{background:transparent;border:1px solid rgba(52,211,153,.3);color:var(--green);cursor:default}
+.sub-bar{background:rgba(79,142,255,.06);border:1px solid rgba(79,142,255,.15);border-radius:12px;padding:.75rem 1rem;display:flex;gap:.75rem;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;transition:all .3s}
+.sub-bar.signed-in{background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.2)}
+.sub-bar-lbl{font-size:.8rem;color:var(--muted2);flex:1;line-height:1.5}
+.sub-bar-lbl.ok{color:var(--green)}
+.btn-sub{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.45rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .18s}
+.btn-sub:hover{background:var(--accent2)}
+.btn-sub.signed-in{background:transparent;border:1px solid rgba(52,211,153,.3);color:var(--green)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://infinityhub.dev" class="logo">Infinity<em>.</em>Solutions</a>
+  <div class="nav-right">
+    <a href="https://infinityhub.dev" class="nav-back">← Hub</a>
+    <span class="nav-badge">Legacy Planner</span>
+  </div>
+</nav>
+
+<div class="sub-bar" id="sub-bar">
+    <span class="sub-bar-lbl" id="sub-bar-lbl">Sign in to use this tool.</span>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/account/" id="sub-bar-btn" class="btn-sub">Sign In →</a>
+  </div>
+
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="eyebrow">Grief Support · Memory Preservation · Legacy Planning</div>
+  <h1>Honor those you love.<br><em>Preserve what matters.</em></h1>
+  <p class="hero-sub">Guided grief journaling, memory preservation, letters to loved ones, estate checklists, and funeral planning tools — all in one gentle, private space. <strong>Affordable support when you need it most.</strong></p>
+  <div class="price-strip">
+    <div class="price-pill"><strong>5 free</strong> uses/month</div>
+    <div class="price-pill"><strong>$7.99/mo</strong> unlimited</div>
+    <div class="price-pill"><strong>Private</strong> &amp; secure</div>
+  </div>
+</div>
+
+<div class="app-wrap">
+
+  <div class="crisis-note">
+    <strong>Need immediate support?</strong> If you are in crisis, please reach out to the 988 Suicide &amp; Crisis Lifeline by calling or texting <strong>988</strong>, or contact the Crisis Text Line by texting HOME to <strong>741741</strong>. This tool is not a substitute for professional mental health support.
+  </div>
+
+  <div class="free-banner" id="free-banner">
+    <div class="free-left">Free uses remaining this month: <strong id="free-count">5</strong> of 5</div>
+    <div style="font-size:.72rem;color:var(--muted)">Resets monthly</div>
+  </div>
+
+  <!-- TOOL TABS -->
+  <div class="tool-tabs">
+    <div class="tool-tab active" onclick="switchTool('journal',this)">
+      <span class="tool-icon">📓</span>
+      <span class="tool-name">Grief journal</span>
+      <span class="tool-desc">Guided prompts</span>
+    </div>
+    <div class="tool-tab" onclick="switchTool('memory',this)">
+      <span class="tool-icon">🕯️</span>
+      <span class="tool-name">Memory keeper</span>
+      <span class="tool-desc">Preserve stories</span>
+    </div>
+    <div class="tool-tab" onclick="switchTool('letter',this)">
+      <span class="tool-icon">✉️</span>
+      <span class="tool-name">Letters</span>
+      <span class="tool-desc">Write to loved ones</span>
+    </div>
+    <div class="tool-tab" onclick="switchTool('checklist',this)">
+      <span class="tool-icon">📋</span>
+      <span class="tool-name">Estate checklist</span>
+      <span class="tool-desc">What to do next</span>
+    </div>
+    <div class="tool-tab" onclick="switchTool('obituary',this)">
+      <span class="tool-icon">🌿</span>
+      <span class="tool-name">Obituary</span>
+      <span class="tool-desc">Honor their life</span>
+    </div>
+  </div>
+
+  <!-- GRIEF JOURNAL -->
+  <div class="panel active" id="panel-journal">
+    <div class="form-card">
+      <div class="form-card-title">Guided grief journaling</div>
+      <div class="form-card-sub">Share a little about what you're going through and our AI will offer a gentle, personalized journaling prompt — a starting point to help you process your feelings at your own pace.</div>
+      <div class="form-group">
+        <label>Who are you grieving?</label>
+        <input type="text" id="j-who" placeholder="e.g. my mother, my best friend, my dog Charlie">
+      </div>
+      <div class="form-group">
+        <label>How long ago did you lose them?</label>
+        <input type="text" id="j-when" placeholder="e.g. 2 weeks ago, 6 months ago, last year">
+      </div>
+      <div class="form-group">
+        <label>How are you feeling today?</label>
+        <select id="j-feeling">
+          <option value="numb and disconnected">Numb and disconnected</option>
+          <option value="deeply sad">Deeply sad</option>
+          <option value="angry">Angry</option>
+          <option value="guilty">Guilty</option>
+          <option value="lost and uncertain">Lost and uncertain</option>
+          <option value="a mix of everything">A mix of everything</option>
+          <option value="slowly starting to heal">Slowly starting to heal</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Anything you want to focus on today? (optional)</label>
+        <textarea id="j-focus" rows="3" placeholder="e.g. I keep thinking about our last conversation, I'm struggling with the holidays, I miss the small things..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="runTool('journal')">Get My Journal Prompt →</button>
+    </div>
+  </div>
+
+  <!-- MEMORY KEEPER -->
+  <div class="panel" id="panel-memory">
+    <div class="form-card">
+      <div class="form-card-title">Memory keeper</div>
+      <div class="form-card-sub">Tell us about your loved one and a memory you want to preserve. Our AI will help you shape it into a beautiful, lasting story you can save and share with family.</div>
+      <div class="form-group">
+        <label>Their name *</label>
+        <input type="text" id="m-name" placeholder="e.g. Margaret, Dad, Uncle Ray">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Their relationship to you</label>
+          <input type="text" id="m-rel" placeholder="e.g. my grandmother, my husband">
+        </div>
+        <div class="form-group">
+          <label>Years in your life</label>
+          <input type="text" id="m-years" placeholder="e.g. 1948–2024, all my life">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>A memory or story to preserve *</label>
+        <textarea id="m-story" rows="5" placeholder="Tell us the memory — even rough notes are fine. What happened? What did they say or do? What do you want to remember forever?"></textarea>
+      </div>
+      <div class="form-group">
+        <label>What made them unique?</label>
+        <textarea id="m-unique" rows="2" placeholder="e.g. her laugh, his cooking, the way she always knew what to say, his terrible jokes..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="runTool('memory')">Preserve This Memory →</button>
+    </div>
+  </div>
+
+  <!-- LETTERS -->
+  <div class="panel" id="panel-letter">
+    <div class="form-card">
+      <div class="form-card-title">Write a letter</div>
+      <div class="form-card-sub">Sometimes we need to say things we never got to say — or things we want to say to someone still here. Our AI will help you find the words.</div>
+      <div class="form-group">
+        <label>Letter type</label>
+        <select id="l-type">
+          <option value="to someone I lost — things I never got to say">To someone I lost — things I never said</option>
+          <option value="to myself — a message of compassion and healing">To myself — compassion and healing</option>
+          <option value="to a family member — sharing grief together">To a family member — sharing grief</option>
+          <option value="from me to my loved ones — my legacy letter">My legacy letter — to those I'll leave behind</option>
+          <option value="to someone estranged — seeking closure">To someone estranged — seeking closure</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Who is this letter to / about? *</label>
+        <input type="text" id="l-who" placeholder="e.g. my father, myself, my sister Sarah">
+      </div>
+      <div class="form-group">
+        <label>What do you most want to express? *</label>
+        <textarea id="l-express" rows="4" placeholder="Share what's in your heart — love, regret, gratitude, things left unsaid, what they meant to you..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Tone</label>
+        <select id="l-tone">
+          <option value="warm and loving">Warm and loving</option>
+          <option value="reflective and peaceful">Reflective and peaceful</option>
+          <option value="honest and healing">Honest and healing</option>
+          <option value="gentle and forgiving">Gentle and forgiving</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="runTool('letter')">Write This Letter →</button>
+    </div>
+  </div>
+
+  <!-- ESTATE CHECKLIST -->
+  <div class="panel" id="panel-checklist">
+    <div class="form-card">
+      <div class="form-card-title">Estate & after-loss checklist</div>
+      <div class="form-card-sub">Losing someone leaves you with an overwhelming number of things to handle. Tell us your situation and we'll create a personalized, prioritized checklist to help you through it.</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your relationship to the deceased *</label>
+          <input type="text" id="c-rel" placeholder="e.g. spouse, adult child, sibling">
+        </div>
+        <div class="form-group">
+          <label>How recently did they pass?</label>
+          <input type="text" id="c-when" placeholder="e.g. 3 days ago, 2 weeks ago">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>What's already been handled? (optional)</label>
+        <textarea id="c-done" rows="2" placeholder="e.g. funeral arranged, death certificates ordered..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>What are you most overwhelmed by?</label>
+        <select id="c-focus">
+          <option value="everything — I don't know where to start">Everything — I don't know where to start</option>
+          <option value="financial and legal matters">Financial and legal matters</option>
+          <option value="notifying people and organizations">Notifying people and organizations</option>
+          <option value="handling their belongings and property">Handling belongings and property</option>
+          <option value="digital accounts and online presence">Digital accounts and online presence</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="runTool('checklist')">Create My Checklist →</button>
+    </div>
+  </div>
+
+  <!-- OBITUARY -->
+  <div class="panel" id="panel-obituary">
+    <div class="form-card">
+      <div class="form-card-title">Obituary writer</div>
+      <div class="form-card-sub">Writing an obituary while grieving is one of the hardest things to do. Share what you know and we'll help you craft something beautiful that truly honors them.</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full name *</label>
+          <input type="text" id="o-name" placeholder="Their full name">
+        </div>
+        <div class="form-group">
+          <label>Years (birth – passing)</label>
+          <input type="text" id="o-years" placeholder="e.g. 1945 – 2024">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Hometown / where they lived</label>
+        <input type="text" id="o-place" placeholder="e.g. Burlington, Vermont">
+      </div>
+      <div class="form-group">
+        <label>Tell us about their life *</label>
+        <textarea id="o-life" rows="4" placeholder="Career, passions, hobbies, what they loved, what they were known for, funny or tender things people will remember..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Survived by</label>
+        <input type="text" id="o-survived" placeholder="e.g. her husband of 40 years, two daughters, four grandchildren">
+      </div>
+      <div class="form-group">
+        <label>Service details (optional)</label>
+        <input type="text" id="o-service" placeholder="e.g. Memorial service Saturday March 22nd at 2pm, St. Michael's Church">
+      </div>
+      <button class="btn btn-primary" onclick="runTool('obituary')">Write the Obituary →</button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Taking a moment to craft something meaningful…</p>
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="output-wrap" id="output-wrap">
+    <div class="output-box" id="output-box"></div>
+    <div class="out-actions">
+      <button class="btn-copy" id="copy-btn" onclick="copyOutput()">📋 Copy</button>
+      <button class="btn-copy" onclick="downloadOutput()">⬇ Download .txt</button>
+      <button class="btn-save" onclick="saveEntry()">💾 Save</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn-ghost btn" style="flex:1;padding:.6rem;font-size:.82rem" onclick="newEntry()">← New</button>
+      <button class="btn-ghost btn" style="flex:1;padding:.6rem;font-size:.82rem" onclick="printOutput()">🖨 Print</button>
+    </div>
+  </div>
+
+  <!-- SAVED ENTRIES -->
+  <div class="saved-section" id="saved-section" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem">
+      <div class="saved-title" style="margin-bottom:0">Your saved entries</div>
+      <button class="btn-copy" onclick="exportAllEntries()" style="font-size:.72rem;padding:.4rem .9rem">⬇ Export all</button>
+    </div>
+    <div id="saved-list"></div>
+  </div>
+
+  <!-- PAYWALL -->
+  <div class="paywall" id="paywall">
+    <h3>You've used your 5 free uses</h3>
+    <p>Already subscribed? Enter your email to unlock. Subscribe for unlimited access to all tools — journaling, memories, letters, and more.</p>
+    <div style="display:flex;gap:8px;margin-bottom:1rem;max-width:400px;margin-left:auto;margin-right:auto">
+      <input type="email" id="unlock-email" placeholder="Your email address" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.65rem .9rem;font-family:inherit;font-size:.9rem;color:var(--text);outline:none">
+      <button id="unlock-btn" onclick="unlockWithEmail()" style="background:var(--accent);color:#042f2a;font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;padding:.65rem 1.1rem;border-radius:100px;border:none;cursor:pointer;white-space:nowrap">Unlock</button>
+    </div>
+    <input type="email" id="pay-email" placeholder="Your email (to access your subscription)" style="max-width:400px;margin:0 auto .8rem;display:block;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.65rem .9rem;font-family:inherit;font-size:.9rem;color:var(--text);outline:none;width:100%">
+    <div class="pay-grid">
+      <div class="pay-opt pw-annual" onclick="handlePay('annual')"><div class="pw-badge">Best Value</div><div class="pay-price">$99/yr</div><div class="pay-label">Annual · save 31%</div></div>
+      <div class="pay-opt pw-monthly" onclick="handlePay('monthly')"><div class="pay-price">$12/mo</div><div class="pay-label">Monthly</div></div>
+      <div class="pay-opt pw-session" onclick="handlePay('session')"><div class="pay-price">$0.99</div><div class="pay-label">24-hr pass</div></div>
+    </div>
+    <p style="font-size:.7rem;color:var(--muted)">Secured by Square · Cancel anytime · Your entries are yours</p>
+  </div>
+
+</div>
+
+<div class="trust">
+  <div class="trust-item"><em>🔒</em> Private and secure</div>
+  <div class="trust-item"><em>💾</em> Save your entries</div>
+  <div class="trust-item"><em>🌿</em> Gentle, human-centered AI</div>
+  <div class="trust-item"><em>💸</em> A fraction of therapy costs</div>
+</div>
+
+<footer>
+  <p>© 2026 <a href="https://infinityhub.dev">Infinity Solutions LLC</a> · All Rights Reserved · This tool is not a substitute for professional mental health care. · <a href="https://contact.infinityhub.dev">Support</a> · <a href="https://contactinfinitysolutionsllc-ops.github.io/terms/">Terms</a></p>
+</footer>
+
+<script>
+const WORKER_URL = 'https://justdocs-worker.robertjosephreynolds.workers.dev';
+const APP_NAME          = 'legacyplanner';
+const APP_URL           = 'https://contactinfinitysolutionsllc-ops.github.io/legacyplanner/';
+const SQUARE_MONTHLY_URL = 'https://square.link/u/pCpKBYg8'; // replace with Square monthly plan link once created
+const SQUARE_ANNUAL_URL  = 'https://square.link/u/zRrTqrz3'; // replace with Square annual plan link once created
+const FREE_KEY   = 'legacy_free';
+const FREE_LIMIT = 5;
+let currentTool  = 'journal';
+let lastOutput   = '';
+
+// ── FREE COUNTER ─────────────────────────────────────────
+function getFree(){
+  const d=JSON.parse(localStorage.getItem(FREE_KEY)||'{}');
+  const m=new Date().toISOString().slice(0,7);
+  return d.month===m?(d.count||0):0;
+}
+function incFree(){
+  const m=new Date().toISOString().slice(0,7);
+  localStorage.setItem(FREE_KEY,JSON.stringify({month:m,count:getFree()+1}));
+}
+function updateFreeUI(){
+  document.getElementById('free-count').textContent=Math.max(0,FREE_LIMIT-getFree());
+}
+
+// ── SUBSCRIBER ────────────────────────────────────────────
+let _subCache = null;
+// isSubscribed → see getStoredSession() below
+
+async function unlockWithEmail(){
+  const email=document.getElementById('unlock-email').value.trim();
+  if(!email||!email.includes('@')){alert('Please enter a valid email.');return;}
+  const btn=document.getElementById('unlock-btn');
+  btn.textContent='Checking…';btn.disabled=true;
+  try{
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'checkSubscriber',email,app:'legacyplanner'})});
+    const data=await res.json();
+    if(data.active){
+      localStorage.setItem('legacy_email',email);
+      _subCache=true;
+      document.getElementById('paywall').style.display='none';
+      document.getElementById('free-banner').innerHTML='<div class="free-left">✓ <strong>Unlimited</strong> — subscribed as '+email+'</div>';
+      alert('Unlocked. Take all the time you need.');
+    }else{
+      alert('No active subscription found for that email. Please subscribe below.');
+    }
+  }catch{alert('Error checking. Please try again.');}
+  btn.textContent='Unlock';btn.disabled=false;
+}
+
+// ── TOOL SWITCH ──────────────────────────────────────────
+function switchTool(tool,tab){
+  currentTool=tool;
+  document.querySelectorAll('.tool-tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tool).classList.add('active');
+  document.getElementById('output-wrap').style.display='none';
+  document.getElementById('loading').style.display='none';
+}
+
+// ── PROMPTS ──────────────────────────────────────────────
+function buildPrompt(tool){
+  switch(tool){
+    case 'journal':{
+      const who=document.getElementById('j-who').value.trim();
+      const when=document.getElementById('j-when').value.trim();
+      const feeling=document.getElementById('j-feeling').value;
+      const focus=document.getElementById('j-focus').value.trim();
+      if(!who) return null;
+      return `You are a gentle, compassionate grief counselor creating a personalized journaling prompt. The person is grieving ${who}${when?', who they lost '+when:''}. They are feeling ${feeling} today.${focus?' They shared: "'+focus+'"':''} 
+
+Write a warm, deeply personalized journaling prompt that:
+- Acknowledges their specific loss and feelings with genuine compassion
+- Offers 3-4 gentle, specific questions to explore (not generic)
+- Is written in second person, as if speaking directly to them
+- Ends with a single gentle encouragement
+- Is about 200-250 words total
+- Does NOT feel clinical or like a self-help book
+
+Begin with a brief compassionate acknowledgment, then the prompts.`;
+    }
+    case 'memory':{
+      const name=document.getElementById('m-name').value.trim();
+      const rel=document.getElementById('m-rel').value.trim();
+      const years=document.getElementById('m-years').value.trim();
+      const story=document.getElementById('m-story').value.trim();
+      const unique=document.getElementById('m-unique').value.trim();
+      if(!name||!story) return null;
+      return `You are helping preserve a precious memory. Transform the following notes into a beautifully written, lasting memory story.
+
+About: ${name}${rel?', '+rel:''}${years?' ('+years+')':''}
+The memory: ${story}
+${unique?'What made them unique: '+unique:''}
+
+Write a warm, vivid memory story (200-300 words) that:
+- Captures the specific details and emotions of this memory
+- Preserves their personality and what made them unique
+- Uses sensory details to bring the memory to life
+- Reads like something worth framing or sharing with family
+- Is written in first person from the perspective of the person sharing it
+- Honors the person with dignity and love`;
+    }
+    case 'letter':{
+      const type=document.getElementById('l-type').value;
+      const who=document.getElementById('l-who').value.trim();
+      const express=document.getElementById('l-express').value.trim();
+      const tone=document.getElementById('l-tone').value;
+      if(!who||!express) return null;
+      return `Write a heartfelt, ${tone} letter. Type: ${type}. To/about: ${who}. The person wants to express: ${express}
+
+Write a genuine, moving letter (250-350 words) that:
+- Feels personal and specific, not generic
+- Captures what the person is trying to say with clarity and heart
+- Uses natural, human language — not poetic or flowery unless it fits
+- Leaves space for the person to edit and make it their own
+- Ends with a meaningful closing appropriate to the letter type`;
+    }
+    case 'checklist':{
+      const rel=document.getElementById('c-rel').value.trim();
+      const when=document.getElementById('c-when').value.trim();
+      const done=document.getElementById('c-done').value.trim();
+      const focus=document.getElementById('c-focus').value;
+      if(!rel) return null;
+      return `Create a compassionate, practical after-loss checklist for someone who is a ${rel}${when?', '+when+' after the loss':''}. Their main overwhelm: ${focus}.${done?' Already handled: '+done:''}
+
+Write a clear, prioritized checklist that:
+- Is organized by urgency (immediate, within 1 week, within 1 month, ongoing)
+- Focuses specifically on ${focus}
+- Uses gentle, human language — not cold or bureaucratic
+- Includes specific actionable items, not vague advice
+- Notes which items may need professional help (attorney, accountant, etc.)
+- Is realistic about what one grieving person can actually handle
+- Skips items already done: ${done||'none mentioned'}`;
+    }
+    case 'obituary':{
+      const name=document.getElementById('o-name').value.trim();
+      const years=document.getElementById('o-years').value.trim();
+      const place=document.getElementById('o-place').value.trim();
+      const life=document.getElementById('o-life').value.trim();
+      const survived=document.getElementById('o-survived').value.trim();
+      const service=document.getElementById('o-service').value.trim();
+      if(!name||!life) return null;
+      return `Write a beautiful, dignified obituary for ${name}${years?' ('+years+')':''}${place?', of '+place:''}.
+
+About their life: ${life}
+${survived?'Survived by: '+survived:''}
+${service?'Service: '+service:''}
+
+Write a warm, genuine obituary (250-350 words) that:
+- Opens with a memorable, dignified first sentence
+- Captures who they truly were as a person, not just a list of facts
+- Includes the specific details provided naturally in the flow
+- Honors their life with warmth and specificity
+- Reads like it was written by someone who loved them
+- Ends gracefully, optionally with service details if provided
+- Does NOT use clichés like "passed peacefully" or "gone too soon" unless specifically fitting`;
+    }
+  }
+}
+
+// ── RUN TOOL ─────────────────────────────────────────────
+async function runTool(tool){
+  const prompt=buildPrompt(tool);
+  if(!prompt){alert('Please fill in the required fields.');return;}
+
+  const subscribed=await isSubscribed();
+  if(!subscribed&&getFree()>=FREE_LIMIT){
+    document.getElementById('paywall').style.display='block';
+    document.getElementById('paywall').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+
+  document.getElementById('output-wrap').style.display='none';
+  document.getElementById('loading').style.display='block';
+  document.querySelector('#panel-'+tool+' .btn-primary').disabled=true;
+
+  try{
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'claude',prompt,email:getStoredSession()?.email||localStorage.getItem('ig_account_email')||''})});
+    const data=await res.json();
+    lastOutput=data.result||'Something went wrong. Please try again.';
+  }catch{
+    lastOutput='There was an error. Please try again.';
+  }
+
+  document.getElementById('loading').style.display='none';
+  document.querySelector('#panel-'+tool+' .btn-primary').disabled=false;
+  document.getElementById('output-box').textContent=lastOutput;
+  document.getElementById('output-wrap').style.display='block';
+  document.getElementById('output-wrap').scrollIntoView({behavior:'smooth'});
+
+  if(!subscribed){incFree();updateFreeUI();}
+}
+
+// ── COPY ─────────────────────────────────────────────────
+function copyOutput(){
+  navigator.clipboard.writeText(lastOutput).then(()=>{
+    const btn=document.getElementById('copy-btn');
+    btn.textContent='✓ Copied';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='📋 Copy';btn.classList.remove('copied');},2000);
+  });
+}
+
+// ── SAVE (localStorage) ──────────────────────────────────
+function saveEntry(){
+  if(!lastOutput) return;
+  const entries=JSON.parse(localStorage.getItem('legacy_entries')||'[]');
+  const toolNames={journal:'Journal prompt',memory:'Memory',letter:'Letter',checklist:'Checklist',obituary:'Obituary'};
+  entries.unshift({
+    id:Date.now(),
+    tool:currentTool,
+    title:toolNames[currentTool]+' — '+new Date().toLocaleDateString(),
+    content:lastOutput,
+    date:new Date().toISOString()
+  });
+  localStorage.setItem('legacy_entries',JSON.stringify(entries.slice(0,50)));
+  loadSaved();
+  const btn=document.querySelector('.btn-save');
+  btn.textContent='✓ Saved';
+  setTimeout(()=>btn.textContent='💾 Save',2000);
+}
+
+function loadSaved(){
+  const entries=JSON.parse(localStorage.getItem('legacy_entries')||'[]');
+  const section=document.getElementById('saved-section');
+  const list=document.getElementById('saved-list');
+  if(entries.length===0){section.style.display='none';return;}
+  section.style.display='block';
+  list.innerHTML=entries.map(e=>`
+    <div class="saved-entry" onclick="viewEntry(${e.id})">
+      <div class="saved-entry-title">${e.title}</div>
+      <div class="saved-entry-meta">${new Date(e.date).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</div>
+    </div>`).join('');
+}
+
+function viewEntry(id){
+  const entries=JSON.parse(localStorage.getItem('legacy_entries')||'[]');
+  const entry=entries.find(e=>e.id===id);
+  if(!entry) return;
+  lastOutput=entry.content;
+  document.getElementById('output-box').textContent=entry.content;
+  document.getElementById('output-wrap').style.display='block';
+  document.getElementById('output-wrap').scrollIntoView({behavior:'smooth'});
+}
+
+function newEntry(){
+  document.getElementById('output-wrap').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function downloadOutput(){
+  if(!lastOutput) return;
+  const toolNames={journal:'journal-prompt',memory:'memory',letter:'letter',checklist:'checklist',obituary:'obituary'};
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(lastOutput);
+  a.download=(toolNames[currentTool]||'legacy')+'-'+new Date().toISOString().slice(0,10)+'.txt';
+  a.click();
+}
+
+function printOutput(){
+  if(!lastOutput) return;
+  const win=window.open('','_blank');
+  win.document.write('<html><head><title>Legacy Planner</title><style>body{font-family:Georgia,serif;max-width:680px;margin:2rem auto;line-height:1.9;color:#111;font-size:1rem}h2{font-size:1rem;font-weight:700;margin-bottom:1rem;color:#444}pre{white-space:pre-wrap;font-family:inherit}</style></head><body>');
+  win.document.write('<h2>Legacy Planner — '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'</h2>');
+  win.document.write('<pre>'+lastOutput.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</pre>');
+  win.document.write('</body></html>');
+  win.document.close();
+  win.print();
+}
+
+function exportAllEntries(){
+  const entries=JSON.parse(localStorage.getItem('legacy_entries')||'[]');
+  if(!entries.length){alert('No saved entries to export.');return;}
+  const text=entries.map(e=>[
+    '='.repeat(60),
+    e.title,
+    new Date(e.date).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),
+    '='.repeat(60),
+    e.content
+  ].join('\n')).join('\n\n');
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(text);
+  a.download='legacy-planner-entries-'+new Date().toISOString().slice(0,10)+'.txt';
+  a.click();
+}
+
+// ── PAYMENT ──────────────────────────────────────────────
+async function handlePay(plan){
+  const email=document.getElementById('pay-email').value.trim();
+  if(!email||!email.includes('@')){alert('Please enter your email first.');return;}
+  localStorage.setItem('legacy_pending_email',email);
+  localStorage.setItem('legacy_pending_plan',plan);
+  if(plan==='annual'&&SQUARE_ANNUAL_URL){window.location.href=SQUARE_ANNUAL_URL;return;}
+  if(plan==='monthly'&&SQUARE_MONTHLY_URL){window.location.href=SQUARE_MONTHLY_URL;return;}
+  const amounts={annual:99,monthly:12,session:0.99};
+  const labels={annual:'Infinity Hub – Annual',monthly:'Infinity Hub – Monthly',session:'Infinity Hub – Session Pass'};
+  try{
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'createPaymentLink',docType:labels[plan],amount:amounts[plan],
+        redirectUrl:APP_URL+'?paid=true&plan='+plan})});
+    const data=await res.json();
+    if(data.url) window.location.href=data.url;
+    else alert('Could not create payment link. Please try again.');
+  }catch{alert('Payment error. Please try again.');}
+}
+
+if(window.location.search.includes('paid=true')){
+  const email=localStorage.getItem('legacy_pending_email');
+  const plan=new URLSearchParams(window.location.search).get('plan')
+            ||localStorage.getItem('legacy_pending_plan')||'monthly';
+  if(email){
+    fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'addSubscriber',email,app:APP_NAME,plan})
+    }).then(()=>{
+      localStorage.setItem('legacy_email',email);
+      _subCache=true;
+      localStorage.removeItem('legacy_pending_email');
+      localStorage.removeItem('legacy_pending_plan');
+      updateFreeUI();
+    });
+  }
+  window.history.replaceState({},'',window.location.pathname);
+}
+
+updateFreeUI();
+loadSaved();
+
+async function isSubscribed() {
+  if (_subCache !== null) return _subCache;
+  const session = getStoredSession();
+  const email = session?.email || localStorage.getItem('ig_account_email');
+  if (!email) { _subCache = false; return false; }
+  try {
+    const r = await fetch(WORKER_URL, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({action:'checkSubscriber', email, app: APP_NAME})
+    });
+    const d = await r.json();
+    _subCache = d.active === true;
+    setTimeout(() => { _subCache = null; }, 5*60*1000);
+    return _subCache;
+  } catch(e) { return false; }
+}
+
+function getStoredSession() {
+  let token = localStorage.getItem('ig_account_token');
+  let email = localStorage.getItem('ig_account_email');
+  let name  = localStorage.getItem('ig_account_name') || email;
+  if (!token) {
+    try {
+      const raw = localStorage.getItem('sb-zcvkgevcrgsujnqovxgd-auth-token');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        const sess = parsed?.currentSession || parsed?.session || parsed;
+        token = sess?.access_token; email = sess?.user?.email;
+        name = sess?.user?.user_metadata?.name || email;
+        if (token) { localStorage.setItem('ig_account_token', token);
+          localStorage.setItem('ig_account_email', email || '');
+          if (name) localStorage.setItem('ig_account_name', name); }
+      }
+    } catch(e) {}
+  }
+  if (!token || !email) return null;
+  try {
+    const p = JSON.parse(atob(token.split('.')[1]));
+    if (p.exp && Date.now()/1000 > p.exp) {
+      ['ig_account_token','ig_account_email','ig_account_name'].forEach(k=>localStorage.removeItem(k));
+      return null; }
+  } catch(e) { return null; }
+  return { token, email, name };
+}
+function showSignedInBar(name, email) {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) bar.classList.add('signed-in');
+  if (lbl) { lbl.textContent = '✓ Signed in as ' + (name || email); lbl.classList.add('ok'); }
+  if (btn) { btn.textContent = 'My Account'; btn.classList.add('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/'; }
+}
+function showSignInBar() {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) bar.classList.remove('signed-in');
+  if (lbl) { lbl.textContent = 'Sign in to use this tool.'; lbl.classList.remove('ok'); }
+  if (btn) { btn.textContent = 'Sign In →'; btn.classList.remove('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/?return=' + encodeURIComponent(window.location.href); }
+}
+function showSubscribeBar(email) {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) { bar.classList.remove('signed-in'); bar.style.background='rgba(240,180,41,.07)'; bar.style.borderColor='rgba(240,180,41,.25)'; }
+  if (lbl) { lbl.textContent = 'Signed in as ' + (email||'') + ' — subscribe for unlimited access.'; lbl.classList.remove('ok'); }
+  if (btn) { btn.textContent = 'Subscribe →'; btn.classList.remove('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/'; }
+}
+
+(async () => {
+  const session = getStoredSession();
+  if (session) {
+    const subActive = await isSubscribed();
+    if (subActive) {
+      _subCache = true;
+      showSignedInBar(session.name, session.email);
+      document.getElementById('free-banner').style.display = 'none';
+    } else {
+      showSubscribeBar(session.email);
+    }
+  } else {
+    showSignInBar();
+    window.addEventListener('ig_signed_in', async (e) => {
+      const sub = await isSubscribed();
+      if (sub) { _subCache = true; showSignedInBar(e.detail?.name, e.detail?.email); document.getElementById('free-banner').style.display='none'; }
+      else { showSubscribeBar(e.detail?.email); }
+    });
+  }
+})();
+</script>
+</body>
+</html>

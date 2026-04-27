@@ -1,0 +1,787 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Matched with a Contractor — InfinityMatch</title>
+<meta name="description" content="Describe your project, upload photos, and get matched with a verified local contractor. Free for homeowners. No spam, no fake leads.">
+<link rel="canonical" href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch-submit/">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080e;--bg2:#0c0e18;--bg3:#111422;--bg4:#171b2e;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --text:#eef0f8;--muted:#6b7280;--muted2:#9ca3b8;
+  --accent:#f97316;--accent2:#fb923c;--accent3:#7c2d12;
+  --blue:#4f8eff;--green:#34d399;--red:#ff6b6b;
+  --gold:#f0b429;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* ── NOISE TEXTURE ── */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+/* ── NAV ── */
+nav{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem;border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}
+.logo-mark{width:28px;height:28px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+.logo em{color:var(--accent);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:1rem}
+.nav-link{font-size:.8rem;color:var(--muted2);text-decoration:none;transition:color .18s}
+.nav-link:hover{color:var(--text)}
+.nav-cta{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.38rem .9rem;border-radius:100px;background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.3);color:var(--accent2);text-decoration:none;transition:all .18s}
+.nav-cta:hover{background:rgba(249,115,22,.2)}
+
+/* ── HERO ── */
+.hero{position:relative;z-index:1;padding:4rem 2rem 3rem;text-align:center;overflow:hidden}
+.hero-glow{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(249,115,22,.1) 0%,transparent 65%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);border-radius:100px;padding:.3rem .9rem;font-size:.72rem;font-weight:600;color:var(--accent2);letter-spacing:.04em;margin-bottom:1.2rem;animation:up .5s ease both}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.06;letter-spacing:-.03em;margin-bottom:.9rem;animation:up .6s .05s ease both}
+.hero h1 em{color:var(--accent);font-style:normal;position:relative}
+.hero p{font-size:.98rem;color:var(--muted2);max-width:520px;margin:0 auto 2rem;line-height:1.75;font-weight:300;animation:up .6s .1s ease both}
+
+/* ── TRUST STRIP ── */
+.trust-strip{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:3rem;animation:up .6s .15s ease both}
+.trust-item{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--muted2)}
+.trust-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* ── MAIN LAYOUT ── */
+.main{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 1.2rem 5rem}
+
+/* ── STEPS ── */
+.steps{display:flex;gap:0;margin-bottom:2.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:.35rem;animation:up .5s .2s ease both}
+.step{flex:1;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.55rem .5rem;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;color:var(--muted);transition:all .2s;cursor:default;text-align:center}
+.step.active{background:var(--accent);color:#fff}
+.step.done{color:var(--green)}
+.step-num{width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:.62rem;flex-shrink:0}
+.step.done .step-num{background:var(--green);border-color:var(--green);color:#fff}
+
+/* ── FORM SECTIONS ── */
+.form-section{display:none;animation:up .3s ease both}
+.form-section.active{display:block}
+
+.section-head{margin-bottom:1.5rem}
+.section-head h2{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:700;margin-bottom:.3rem}
+.section-head p{font-size:.85rem;color:var(--muted2);font-weight:300;line-height:1.6}
+
+/* ── FORM ELEMENTS ── */
+.fg{margin-bottom:1rem}
+.fg label{display:block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:.4rem}
+.fg label span{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)}
+.fi{width:100%;padding:.72rem .9rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.92rem;color:var(--text);outline:none;transition:all .18s;resize:vertical}
+.fi:focus{border-color:var(--accent);background:var(--bg3)}
+.fi::placeholder{color:var(--muted)}
+select.fi{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .9rem center;padding-right:2.5rem}
+select.fi option{background:var(--bg2)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ── CATEGORY GRID ── */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:.5rem}
+.cat-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.85rem .7rem;cursor:pointer;transition:all .18s;text-align:center;position:relative}
+.cat-card:hover{border-color:var(--border2);transform:translateY(-1px)}
+.cat-card.selected{border-color:var(--accent);background:rgba(249,115,22,.07)}
+.cat-card.selected::after{content:'✓';position:absolute;top:6px;right:8px;font-size:.62rem;color:var(--accent);font-weight:700}
+.cat-icon{font-size:1.4rem;margin-bottom:.35rem}
+.cat-name{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700}
+
+/* ── BUDGET / TIMELINE PILLS ── */
+.pill-row{display:flex;gap:7px;flex-wrap:wrap}
+.pill{background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.4rem 1rem;font-size:.8rem;color:var(--muted2);cursor:pointer;transition:all .18s;font-family:'Syne',sans-serif;font-weight:600}
+.pill:hover{border-color:var(--border2);color:var(--text)}
+.pill.selected{border-color:var(--accent);background:rgba(249,115,22,.08);color:var(--accent2)}
+
+/* ── PHOTO UPLOAD ── */
+.upload-zone{border:2px dashed var(--border);border-radius:14px;padding:2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg2);position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(249,115,22,.04)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2rem;margin-bottom:.5rem;opacity:.6}
+.upload-text{font-size:.88rem;color:var(--muted2);margin-bottom:.2rem}
+.upload-sub{font-size:.72rem;color:var(--muted)}
+.photo-previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:.8rem}
+.photo-thumb{width:80px;height:80px;border-radius:8px;object-fit:cover;border:1px solid var(--border);position:relative}
+.photo-thumb-wrap{position:relative;display:inline-block}
+.photo-remove{position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+
+/* ── AI ASSESSMENT ── */
+.ai-assessment{background:rgba(79,142,255,.06);border:1px solid rgba(79,142,255,.18);border-radius:14px;padding:1.2rem;margin-top:1rem;display:none;animation:up .3s ease both}
+.ai-assessment.show{display:block}
+.ai-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem}
+.ai-badge{font-size:.62rem;font-weight:700;background:rgba(79,142,255,.15);color:var(--blue);border:1px solid rgba(79,142,255,.25);padding:.2rem .6rem;border-radius:100px;letter-spacing:.05em}
+.ai-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700}
+.ai-body{font-size:.82rem;color:var(--muted2);line-height:1.7;white-space:pre-wrap}
+.ai-loading{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--muted2)}
+.ai-spinner{width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+
+/* ── CONTACT FORM ── */
+.contact-note{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);border-radius:10px;padding:.75rem 1rem;font-size:.78rem;color:var(--green);margin-bottom:1.2rem;line-height:1.5}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;gap:8px;margin-top:1.5rem}
+.btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;padding:.78rem 1.6rem;border-radius:100px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:.4rem}
+.btn-primary{background:var(--accent);color:#fff;flex:1;justify-content:center}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(249,115,22,.25)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:var(--bg2);border:1px solid var(--border2);color:var(--muted2)}
+.btn-ghost:hover{color:var(--text)}
+.spinner-btn{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+
+.agree-row{display:flex;align-items:flex-start;gap:.8rem;padding:.7rem .9rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:border-color .18s;margin-bottom:.5rem}
+.agree-row:hover{border-color:var(--border2)}
+.agree-row.checked{border-color:var(--green)}
+.agree-check{width:20px;height:20px;border-radius:6px;border:2px solid var(--border2);background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s;margin-top:1px;font-size:.7rem}
+.agree-row.checked .agree-check{background:var(--green);border-color:var(--green);color:#fff}
+.agree-text{font-size:.8rem;color:var(--muted2);line-height:1.5}
+.agree-text a{color:var(--accent2);text-decoration:none}
+/* ── SUCCESS SCREEN ── */
+#screen-success{display:none;text-align:center;padding:3rem 1rem;animation:up .4s ease both}
+.success-icon{font-size:3.5rem;margin-bottom:1rem}
+.success-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.5rem}
+.success-sub{font-size:.92rem;color:var(--muted2);line-height:1.7;margin-bottom:2rem;max-width:440px;margin-left:auto;margin-right:auto}
+.success-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.4rem;max-width:400px;margin:0 auto 1.5rem;text-align:left}
+.success-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.success-row:last-child{border-bottom:none}
+.success-row-label{color:var(--muted2)}
+.success-row-value{font-weight:600;color:var(--text);text-align:right;max-width:200px}
+.next-steps{display:flex;flex-direction:column;gap:8px;max-width:400px;margin:0 auto}
+.next-step{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;display:flex;align-items:flex-start;gap:.7rem;text-align:left}
+.ns-num{width:22px;height:22px;border-radius:50%;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:.7rem;color:var(--accent);flex-shrink:0;margin-top:1px}
+.ns-text{font-size:.82rem;color:var(--muted2);line-height:1.5}
+.ns-text strong{color:var(--text)}
+
+footer{text-align:center;padding:1.5rem 1rem;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);position:relative;z-index:1}
+footer a{color:var(--accent2);text-decoration:none}
+
+@media(max-width:520px){
+  nav{padding:.9rem 1rem}
+  .hero{padding:3rem 1.2rem 2rem}
+  .trust-strip{gap:1rem}
+  .form-row{grid-template-columns:1fr}
+  .cat-grid{grid-template-columns:repeat(3,1fr)}
+  .step span{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://infinityhub.dev" class="logo">
+    <div class="logo-mark">🔨</div>
+    Infinity<em>Match</em>
+  </a>
+  <div class="nav-right">
+    <a href="https://infinityhub.dev" class="nav-link">← Hub</a>
+    <a href="#" class="nav-cta" href='mailto:contact.infinitysolutionsllc@gmail.com?subject=Contractor+Inquiry+via+InfinityMatch'>Are you a contractor?</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">🔒 Free for homeowners · No spam · Verified contractors only</div>
+  <h1>Get matched with a<br><em>verified contractor</em></h1>
+  <p>Describe your project, upload a few photos, and we'll match you with a verified local contractor within hours — not a list of strangers who bought your number.</p>
+</div>
+
+<div class="trust-strip">
+  <div class="trust-item"><div class="trust-dot"></div>Licensed &amp; insured contractors only</div>
+  <div class="trust-item"><div class="trust-dot"></div>One contractor at a time — no bidding wars</div>
+  <div class="trust-item"><div class="trust-dot"></div>Respond within 2 hours or we find another</div>
+  <div class="trust-item"><div class="trust-dot"></div>100% free for homeowners</div>
+</div>
+
+<div class="main">
+
+  <!-- STEPS -->
+  <div class="steps" id="steps-bar">
+    <div class="step active" id="step-1"><div class="step-num">1</div><span>Project</span></div>
+    <div class="step" id="step-2"><div class="step-num">2</div><span>Details</span></div>
+    <div class="step" id="step-3"><div class="step-num">3</div><span>Photos</span></div>
+    <div class="step" id="step-4"><div class="step-num">4</div><span>Contact</span></div>
+  </div>
+
+  <!-- ── SECTION 1: WHAT KIND OF PROJECT ── -->
+  <div class="form-section active" id="section-1">
+    <div class="section-head">
+      <h2>What kind of project is it?</h2>
+      <p>Select the category that best fits. Don't worry if it's not perfect.</p>
+    </div>
+
+    <div class="cat-grid" id="cat-grid">
+      <div class="cat-card" onclick="selectCat(this,'plumbing')"><div class="cat-icon">🔧</div><div class="cat-name">Plumbing</div></div>
+      <div class="cat-card" onclick="selectCat(this,'electrical')"><div class="cat-icon">⚡</div><div class="cat-name">Electrical</div></div>
+      <div class="cat-card" onclick="selectCat(this,'roofing')"><div class="cat-icon">🏠</div><div class="cat-name">Roofing</div></div>
+      <div class="cat-card" onclick="selectCat(this,'hvac')"><div class="cat-icon">❄️</div><div class="cat-name">HVAC</div></div>
+      <div class="cat-card" onclick="selectCat(this,'carpentry')"><div class="cat-icon">🪚</div><div class="cat-name">Carpentry</div></div>
+      <div class="cat-card" onclick="selectCat(this,'painting')"><div class="cat-icon">🎨</div><div class="cat-name">Painting</div></div>
+      <div class="cat-card" onclick="selectCat(this,'flooring')"><div class="cat-icon">🏗️</div><div class="cat-name">Flooring</div></div>
+      <div class="cat-card" onclick="selectCat(this,'landscaping')"><div class="cat-icon">🌿</div><div class="cat-name">Landscaping</div></div>
+      <div class="cat-card" onclick="selectCat(this,'masonry')"><div class="cat-icon">🧱</div><div class="cat-name">Masonry</div></div>
+      <div class="cat-card" onclick="selectCat(this,'remodeling')"><div class="cat-icon">🔨</div><div class="cat-name">Remodeling</div></div>
+      <div class="cat-card" onclick="selectCat(this,'handyman')"><div class="cat-icon">🛠️</div><div class="cat-name">Handyman</div></div>
+      <div class="cat-card" onclick="selectCat(this,'other')"><div class="cat-icon">📋</div><div class="cat-name">Other</div></div>
+    </div>
+
+    <div class="fg" style="margin-top:1.2rem">
+      <label>Project title <span>— one clear sentence</span></label>
+      <input type="text" class="fi" id="f-title" placeholder="e.g. Replace leaking bathroom faucet, Install new deck, Fix electrical outlet">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="goStep(2)">Next: Project Details →</button>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: PROJECT DETAILS ── -->
+  <div class="form-section" id="section-2">
+    <div class="section-head">
+      <h2>Tell us more about it</h2>
+      <p>The more detail you give, the better the match. Contractors hate vague requests as much as you hate vague quotes.</p>
+    </div>
+
+    <div class="fg">
+      <label>Describe the project <span>— what needs to be done, any relevant history</span></label>
+      <textarea class="fi" id="f-description" rows="5" placeholder="e.g. The kitchen faucet has been dripping for two weeks. It's a single-handle Delta faucet. I've tried tightening it but the drip continues. I'd like it either repaired or replaced with a similar style."></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="fg">
+        <label>Budget range</label>
+        <div class="pill-row" id="budget-pills">
+          <div class="pill" onclick="selectPill(this,'budget','under_500')">Under $500</div>
+          <div class="pill" onclick="selectPill(this,'budget','500_2k')">$500–$2k</div>
+          <div class="pill" onclick="selectPill(this,'budget','2k_10k')">$2k–$10k</div>
+          <div class="pill" onclick="selectPill(this,'budget','10k_plus')">$10k+</div>
+          <div class="pill" onclick="selectPill(this,'budget','unknown')">Not sure</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fg" style="margin-top:.5rem">
+      <label>Timeline</label>
+      <div class="pill-row" id="timeline-pills">
+        <div class="pill" onclick="selectPill(this,'timeline','asap')">ASAP</div>
+        <div class="pill" onclick="selectPill(this,'timeline','within_week')">This week</div>
+        <div class="pill" onclick="selectPill(this,'timeline','within_month')">This month</div>
+        <div class="pill" onclick="selectPill(this,'timeline','flexible')">Flexible</div>
+      </div>
+    </div>
+
+    <div class="form-row" style="margin-top:.5rem">
+      <div class="fg">
+        <label>ZIP code</label>
+        <input type="text" class="fi" id="f-zip" placeholder="05401" maxlength="10" inputmode="numeric">
+      </div>
+      <div class="fg">
+        <label>State</label>
+        <select class="fi" id="f-state">
+          <option value="">Select…</option>
+          <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
+          <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
+          <option>FL</option><option>GA</option><option>HI</option><option>ID</option>
+          <option>IL</option><option>IN</option><option>IA</option><option>KS</option>
+          <option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+          <option>MA</option><option>MI</option><option>MN</option><option>MS</option>
+          <option>MO</option><option>MT</option><option>NE</option><option>NV</option>
+          <option>NH</option><option>NJ</option><option>NM</option><option>NY</option>
+          <option>NC</option><option>ND</option><option>OH</option><option>OK</option>
+          <option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+          <option>SD</option><option>TN</option><option>TX</option><option>UT</option>
+          <option selected>VT</option><option>VA</option><option>WA</option><option>WV</option>
+          <option>WI</option><option>WY</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(3)">Next: Add Photos →</button>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: PHOTOS + AI ASSESSMENT ── -->
+  <div class="form-section" id="section-3">
+    <div class="section-head">
+      <h2>Add photos of the project</h2>
+      <p>Photos help contractors understand the scope before they show up. 2–4 clear photos makes a huge difference. Strongly recommended — not required.</p>
+    </div>
+
+    <div class="upload-zone" id="upload-zone"
+         ondragover="handleDrag(event,true)" ondragleave="handleDrag(event,false)" ondrop="handleDrop(event)">
+      <input type="file" id="photo-input" accept="image/*" multiple onchange="handleFiles(this.files)">
+      <div class="upload-icon">📷</div>
+      <div class="upload-text">Tap to add photos or drag &amp; drop</div>
+      <div class="upload-sub">JPG, PNG, HEIC up to 10MB each · Max 6 photos</div>
+    </div>
+
+    <div class="photo-previews" id="photo-previews"></div>
+
+    <!-- AI Assessment -->
+    <div class="ai-assessment" id="ai-assessment">
+      <div class="ai-header">
+        <span class="ai-badge">AI ASSESSMENT</span>
+        <span class="ai-title">Project scope analysis</span>
+      </div>
+      <div class="ai-body" id="ai-body">
+        <div class="ai-loading">
+          <div class="ai-spinner"></div>
+          Analyzing your photos and project description…
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(4)">Next: Your Info →</button>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4: CONTACT INFO ── -->
+  <div class="form-section" id="section-4">
+    <div class="section-head">
+      <h2>Last step — how do we reach you?</h2>
+      <p>We'll only share your contact info with the matched contractor, never anyone else.</p>
+    </div>
+
+    <div class="contact-note">
+      🔒 Your information is only shared with your matched contractor. We never sell it or send spam.
+    </div>
+
+    <div class="fg">
+      <label>Your name</label>
+      <input type="text" class="fi" id="f-name" placeholder="First and last name">
+    </div>
+
+    <div class="form-row">
+      <div class="fg">
+        <label>Email address</label>
+        <input type="email" class="fi" id="f-email" placeholder="you@email.com">
+      </div>
+      <div class="fg">
+        <label>Phone number <span>— so the contractor can call</span></label>
+        <input type="tel" class="fi" id="f-phone" placeholder="(802) 555-0100">
+      </div>
+    </div>
+
+    <div class="fg">
+      <label>Best time to be contacted <span>— optional</span></label>
+      <select class="fi" id="f-contact-time">
+        <option value="">No preference</option>
+        <option>Morning (8am–12pm)</option>
+        <option>Afternoon (12pm–5pm)</option>
+        <option>Evening (5pm–8pm)</option>
+        <option>Anytime</option>
+      </select>
+    </div>
+
+    <!-- HOMEOWNER AGREEMENT -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:1rem">
+      <div style="font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;margin-bottom:.6rem">Before you submit</div>
+      <div class="agree-row" id="hw-agree" onclick="toggleHwAgree()">
+        <div class="agree-check" id="hw-check"></div>
+        <div class="agree-text">I understand that InfinityMatch is a <strong>marketplace platform</strong> — not a contractor. Any work performed is by an independent contractor and any disputes are between me and that contractor directly. InfinityMatch is not responsible for the quality, safety, or completion of any project. I agree to the <a href="https://contactinfinitysolutionsllc-ops.github.io/terms/" target="_blank">Terms of Service</a>.</div>
+      </div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.5rem;padding:.4rem .6rem;background:var(--bg3);border-radius:6px">
+        🔒 By submitting, your name, email, IP address, and timestamp are recorded as your digital agreement. This protects both you and the contractor.
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goStep(3)">← Back</button>
+      <button class="btn btn-primary" id="btn-submit" onclick="submitProject()">
+        <span id="btn-text">Find My Contractor →</span>
+        <span class="spinner-btn" id="btn-spinner"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── SUCCESS ── -->
+  <div id="screen-success">
+    <div class="success-icon">✅</div>
+    <div class="success-title">You're matched!</div>
+    <div class="success-sub">Your project has been submitted and we're finding the best verified contractor in your area. You'll hear from them soon.</div>
+
+    <div class="success-card" id="success-summary"></div>
+    <div id="estimate-card" style="display:none;background:rgba(79,142,255,.06);border:1px solid rgba(79,142,255,.15);border-radius:12px;padding:1rem 1.2rem;margin-top:1rem;text-align:left">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent2);margin-bottom:.4rem">Market Rate Estimate</div>
+      <div style="font-size:1.3rem;font-weight:700;color:var(--text)" id="estimate-range">—</div>
+      <div style="font-size:.75rem;color:var(--muted2);margin-top:.25rem" id="estimate-notes"></div>
+    </div>
+
+    <div class="next-steps">
+      <div class="next-step">
+        <div class="ns-num">1</div>
+        <div class="ns-text"><strong>Check your email</strong> — we'll send you a confirmation with your project ID</div>
+      </div>
+      <div class="next-step">
+        <div class="ns-num">2</div>
+        <div class="ns-text"><strong>Contractor reaches out within 2 hours</strong> — if they don't respond we automatically find the next one</div>
+      </div>
+      <div class="next-step">
+        <div class="ns-num">3</div>
+        <div class="ns-text"><strong>Review before you commit</strong> — you're never obligated to hire</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 <a href="https://infinityhub.dev">Infinity Solutions LLC</a> · <a href="https://contact.infinityhub.dev">Contact &amp; Support</a> · Are you a contractor? <a href="/cdn-cgi/l/email-protection#b5d6dadbc1d4d6c19bdcdbd3dcdbdcc1ccc6dad9c0c1dcdadbc6d9d9d6f5d2d8d4dcd99bd6dad88ac6c0d7dfd0d6c188f6dadbc1c7d4d6c1dac795fcdbc4c0dcc7cc">Get in touch</a></p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const WORKER_URL = 'https://justdocs-worker.robertjosephreynolds.workers.dev';
+const PAGE_URL   = 'https://contactinfinitysolutionsllc-ops.github.io/infinitymatch-submit/';
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let hwAgreed = false;
+let selectedCategory = '';
+let selectedBudget   = '';
+let selectedTimeline = '';
+let photos           = []; // {file, dataUrl, base64}
+let aiAssessmentText = '';
+let currentStep      = 1;
+
+// ── STEP NAVIGATION ───────────────────────────────────────────────────────
+function goStep(n) {
+  // Validate before advancing
+  if (n > currentStep) {
+    if (!validateStep(currentStep)) return;
+  }
+
+  // Update step bar
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById('step-' + i);
+    el.className = 'step' + (i === n ? ' active' : i < n ? ' done' : '');
+    if (i < n) el.querySelector('.step-num').textContent = '✓';
+    else el.querySelector('.step-num').textContent = i;
+  }
+
+  // Show/hide sections
+  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + n).classList.add('active');
+  currentStep = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Trigger AI assessment when reaching photo step if we have a description
+  if (n === 3) {
+    maybeRunAIAssessment();
+  }
+}
+
+function validateStep(n) {
+  if (n === 1) {
+    if (!selectedCategory) { alert('Please select a project category.'); return false; }
+    if (!document.getElementById('f-title').value.trim()) { alert('Please give your project a title.'); return false; }
+  }
+  if (n === 2) {
+    if (!document.getElementById('f-description').value.trim()) { alert('Please describe your project.'); return false; }
+    if (!document.getElementById('f-zip').value.trim()) { alert('Please enter your ZIP code.'); return false; }
+    if (!document.getElementById('f-state').value) { alert('Please select your state.'); return false; }
+  }
+  if (n === 4) {
+    // Photos are optional, but if we haven't run AI yet, try now
+    if (photos.length > 0 && !aiAssessmentText) maybeRunAIAssessment();
+  }
+  return true;
+}
+
+// ── CATEGORY ──────────────────────────────────────────────────────────────
+function selectCat(el, cat) {
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCategory = cat;
+}
+
+// ── PILLS ─────────────────────────────────────────────────────────────────
+function selectPill(el, group, val) {
+  document.querySelectorAll(`#${group}-pills .pill`).forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  if (group === 'budget')   selectedBudget   = val;
+  if (group === 'timeline') selectedTimeline = val;
+}
+
+// ── PHOTO UPLOAD ──────────────────────────────────────────────────────────
+function handleDrag(e, over) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.toggle('drag', over);
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+}
+
+function handleFiles(files) {
+  const remaining = 6 - photos.length;
+  const toAdd = Array.from(files).slice(0, remaining);
+  toAdd.forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      const base64  = dataUrl.split(',')[1];
+      photos.push({ file, dataUrl, base64, type: file.type });
+      renderPreviews();
+      // Run AI assessment if we have description + photos
+      if (currentStep === 3) maybeRunAIAssessment();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderPreviews() {
+  const container = document.getElementById('photo-previews');
+  container.innerHTML = photos.map((p, i) => `
+    <div class="photo-thumb-wrap">
+      <img class="photo-thumb" src="${p.dataUrl}" alt="Photo ${i+1}">
+      <button class="photo-remove" onclick="removePhoto(${i})">✕</button>
+    </div>`).join('');
+}
+
+function removePhoto(i) {
+  photos.splice(i, 1);
+  renderPreviews();
+  aiAssessmentText = '';
+  document.getElementById('ai-assessment').classList.remove('show');
+  if (photos.length > 0 && currentStep === 3) maybeRunAIAssessment();
+}
+
+// ── AI ASSESSMENT ─────────────────────────────────────────────────────────
+let aiRunning = false;
+
+async function maybeRunAIAssessment() {
+  const desc = document.getElementById('f-description').value.trim();
+  if (!desc || aiRunning) return;
+
+  const box = document.getElementById('ai-assessment');
+  const body = document.getElementById('ai-body');
+
+  box.classList.add('show');
+  body.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>Analyzing your project…</div>';
+  aiRunning = true;
+
+  try {
+    const title    = document.getElementById('f-title').value.trim();
+    const category = selectedCategory;
+    const budget   = selectedBudget || 'not specified';
+    const timeline = selectedTimeline || 'not specified';
+
+    // Build prompt — include base64 images if available
+    let photoNote = photos.length > 0
+      ? `The homeowner has uploaded ${photos.length} photo(s) of the project area.`
+      : 'No photos were uploaded.';
+
+    const prompt = `You are reviewing a home improvement project submission for a contractor matching platform.
+
+Project Title: ${title}
+Category: ${category}
+Description: ${desc}
+Budget: ${budget}
+Timeline: ${timeline}
+${photoNote}
+
+Provide a brief, helpful project assessment (3-4 sentences max) covering:
+1. What the scope likely involves based on the description
+2. Any important questions the contractor will probably ask
+3. A rough complexity level (simple/moderate/complex)
+
+Write in plain language as if talking to the homeowner. Be encouraging and practical. Do not make up specific cost numbers.`;
+
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'claude', prompt })
+    });
+    const data = await res.json();
+    aiAssessmentText = data.result || '';
+
+    if (aiAssessmentText) {
+      body.innerHTML = `<div class="ai-body">${aiAssessmentText}</div>`;
+    } else {
+      box.classList.remove('show');
+    }
+  } catch(e) {
+    box.classList.remove('show');
+  }
+  aiRunning = false;
+}
+
+// ── HOMEOWNER AGREEMENT ──────────────────────────────────────────────────
+function toggleHwAgree() {
+  hwAgreed = !hwAgreed;
+  document.getElementById('hw-agree').classList.toggle('checked', hwAgreed);
+  document.getElementById('hw-check').textContent = hwAgreed ? '✓' : '';
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────────────
+async function submitProject() {
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+
+  if (!name)  { alert('Please enter your name.'); return; }
+  if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+  if (!phone) { alert('Please enter your phone number so the contractor can reach you.'); return; }
+
+  const btn     = document.getElementById('btn-submit');
+  const spinner = document.getElementById('btn-spinner');
+  const btnText = document.getElementById('btn-text');
+  btn.disabled = true;
+  spinner.style.display = 'inline-block';
+  btnText.textContent = 'Submitting…';
+
+  try {
+    const payload = {
+      action:          'submitProject',
+      homeowner_name:  name,
+      homeowner_email: email,
+      homeowner_phone: phone,
+      title:           document.getElementById('f-title').value.trim(),
+      description:     document.getElementById('f-description').value.trim(),
+      category:        selectedCategory,
+      zip_code:        document.getElementById('f-zip').value.trim(),
+      state:           document.getElementById('f-state').value,
+      budget_range:    selectedBudget   || 'unknown',
+      timeline:        selectedTimeline || 'flexible',
+      contact_time:    document.getElementById('f-contact-time').value,
+      ai_assessment:   aiAssessmentText || '',
+    };
+
+    const res  = await fetch(WORKER_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      // Show cost estimate if available
+      if (data.estimate) {
+        const e = data.estimate;
+        const fmt = n => '$' + parseInt(n).toLocaleString();
+        document.getElementById('estimate-range').textContent =
+          fmt(e.low) + ' – ' + fmt(e.high);
+        if (e.notes) document.getElementById('estimate-notes').textContent = e.notes;
+        document.getElementById('estimate-card').style.display = 'block';
+      }
+      // Save homeowner info for future submissions
+      localStorage.setItem('hm_name',  name);
+      localStorage.setItem('hm_email', email);
+      localStorage.setItem('hm_phone', phone);
+
+      // Record homeowner agreement as digital signature
+      fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action:            'recordAgreement',
+          agreement_type:    'homeowner',
+          agreement_version: '2025-01-01',
+          full_name:         name,
+          email,
+          user_agent:        navigator.userAgent,
+          project_id:        data.project_id || null,
+          agreement_text:    'Homeowner Submission Agreement + Terms of Service v2025-01-01'
+        })
+      }).catch(() => {}); // fire and forget
+
+      showSuccess({
+        title:    payload.title,
+        category: selectedCategory,
+        location: `${payload.zip_code}, ${payload.state}`,
+        email:    email,
+        id:       data.project_id
+      });
+    } else {
+      alert(data.error || 'Something went wrong. Please try again.');
+      btn.disabled = false;
+      spinner.style.display = 'none';
+      btnText.textContent = 'Find My Contractor →';
+    }
+
+  } catch(e) {
+    alert('Network error — please check your connection and try again.');
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    btnText.textContent = 'Find My Contractor →';
+  }
+}
+
+// ── SUCCESS SCREEN ────────────────────────────────────────────────────────
+function showSuccess(info) {
+  document.getElementById('steps-bar').style.display = 'none';
+  document.querySelectorAll('.form-section').forEach(s => s.style.display = 'none');
+  document.querySelector('.hero').style.display = 'none';
+  document.querySelector('.trust-strip').style.display = 'none';
+
+  const rows = [
+    ['Project', info.title],
+    ['Category', info.category],
+    ['Location', info.location],
+    ['Confirmation to', info.email],
+  ];
+  if (info.id) rows.push(['Project ID', info.id.slice(0,8).toUpperCase()]);
+  document.getElementById('success-summary').innerHTML = rows.map(([label, val]) =>
+    '<div class="success-row"><span class="success-row-label">' + label + '</span><span class="success-row-value">' + val + '</span></div>'
+  ).join('');
+}
+      ['Project', info.title],
+      ['Category', info.category],
+      ['Location', info.location],
+      ['Confirmation to', info.email],
+    ];
+    if (info.id) rows.push(['Project ID', info.id.slice(0,8).toUpperCase()]);
+    document.getElementById('success-summary').innerHTML = rows.map(([label, val]) =>
+      '<div class="success-row"><span class="success-row-label">' + label + '</span><span class="success-row-value">' + val + '</span></div>'
+    ).join('');
+  }}
+
+// ── RETURNING HOMEOWNER PRE-FILL ─────────────────────────────────────────
+(function() {
+  const savedName  = localStorage.getItem('hm_name');
+  const savedEmail = localStorage.getItem('hm_email');
+  const savedPhone = localStorage.getItem('hm_phone');
+
+  function tryPrefill() {
+    const nameEl  = document.getElementById('f-name');
+    const emailEl = document.getElementById('f-email');
+    const phoneEl = document.getElementById('f-phone');
+    if (!nameEl) { setTimeout(tryPrefill, 100); return; }
+    if (savedName)  nameEl.value  = savedName;
+    if (savedEmail) emailEl.value = savedEmail;
+    if (savedPhone) phoneEl.value = savedPhone;
+
+    if (savedName) {
+      const existing = document.getElementById('returning-banner');
+      if (existing) return;
+      const banner = document.createElement('div');
+      banner.id = 'returning-banner';
+      banner.style.cssText = 'background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.15);border-radius:10px;padding:.55rem .9rem;margin-bottom:.8rem;font-size:.76rem;color:#34d399;display:flex;align-items:center;gap:.5rem';
+      const firstName = savedName.split(' ')[0];
+      banner.innerHTML = '✓ Welcome back, ' + firstName + '! Your contact info is pre-filled.'
+        + '<button onclick="localStorage.removeItem('hm_name');localStorage.removeItem('hm_email');localStorage.removeItem('hm_phone');this.parentElement.remove();['f-name','f-email','f-phone'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''})" style="margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.75rem">Not you?</button>';
+      const target = document.querySelector('.step-wrap, .form-section, .card, main');
+      if (target) target.insertBefore(banner, target.firstChild);
+      else document.body.insertBefore(banner, document.body.firstChild);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryPrefill);
+  } else {
+    tryPrefill();
+  }
+})();
+</script>
+</body>
+</html>

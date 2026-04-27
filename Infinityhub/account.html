@@ -1,0 +1,499 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account — Infinity Solutions</title>
+<meta name="description" content="Manage your Infinity Solutions account and subscriptions.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;--bg2:#0e1320;--bg3:#141928;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);
+  --text:#f0f2f8;--muted:#7a8099;--muted2:#a0a8c0;
+  --accent:#4f8eff;--accent2:#7eb0ff;
+  --gold:#f0b429;--green:#34d399;--red:#ff6b6b;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(8,11,18,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--text);text-decoration:none}
+.logo em{color:var(--accent);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:1rem}
+.nav-hub{font-size:.8rem;color:var(--muted2);text-decoration:none;transition:color .18s}
+.nav-hub:hover{color:var(--text)}
+.nav-badge{font-size:.72rem;font-weight:700;background:rgba(79,142,255,.12);border:1px solid rgba(79,142,255,.25);color:var(--accent2);padding:.25rem .7rem;border-radius:100px}
+
+.wrap{max-width:780px;margin:0 auto;padding:6rem 1.2rem 4rem}
+.screen{display:none !important;animation:up .4s ease both}
+.screen.active{display:block !important}
+
+/* AUTH */
+.auth-hero{text-align:center;margin-bottom:2rem}
+.auth-hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.5rem}
+.auth-hero h1 em{color:var(--accent);font-style:normal}
+.auth-hero p{font-size:.9rem;color:var(--muted2);font-weight:300}
+.auth-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:420px;margin:0 auto}
+.auth-tabs{display:flex;background:var(--bg3);border-radius:10px;padding:3px;gap:3px;margin-bottom:1.5rem}
+.auth-tab{flex:1;padding:.55rem;text-align:center;border-radius:8px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;color:var(--muted2);transition:all .18s;border:none;background:transparent}
+.auth-tab.active{background:var(--bg2);color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.fg{margin-bottom:1rem}
+.fg label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted2);margin-bottom:.4rem}
+.fi{width:100%;padding:.72rem 1rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.92rem;color:var(--text);outline:none;transition:border-color .18s}
+.fi:focus{border-color:var(--accent)}
+.fi::placeholder{color:var(--muted)}
+.btn-primary{width:100%;font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;padding:.82rem;border-radius:100px;border:none;cursor:pointer;background:var(--accent);color:#fff;transition:all .2s;margin-top:.3rem}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(79,142,255,.22)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost-sm{background:none;border:none;color:var(--muted2);font-family:'Instrument Sans',sans-serif;font-size:.8rem;cursor:pointer;padding:.3rem 0;text-decoration:underline;transition:color .18s}
+.btn-ghost-sm:hover{color:var(--text)}
+.auth-msg{margin-top:.8rem;padding:.65rem .9rem;border-radius:9px;font-size:.8rem;display:none;line-height:1.5}
+.auth-msg.error{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.22);color:var(--red)}
+.auth-msg.info{background:rgba(79,142,255,.08);border:1px solid rgba(79,142,255,.22);color:var(--accent2)}
+.auth-msg.success{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.22);color:var(--green)}
+.forgot-link{text-align:right;margin-top:-.4rem;margin-bottom:.8rem}
+
+/* LOADING */
+.spinner{width:34px;height:34px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto 1rem}
+
+/* CONFIRM */
+.confirm-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2.5rem 2rem;max-width:420px;margin:0 auto;text-align:center}
+.confirm-icon{font-size:2.5rem;margin-bottom:1rem}
+.confirm-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
+.confirm-text{font-size:.86rem;color:var(--muted2);line-height:1.7;margin-bottom:1.5rem}
+.resend-timer{font-size:.75rem;color:var(--muted);margin-top:.5rem}
+
+/* DASHBOARD */
+.account-header{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.3rem 1.5rem;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem}
+.account-left{display:flex;align-items:center;gap:.75rem}
+.avatar{width:40px;height:40px;border-radius:50%;background:rgba(79,142,255,.15);border:1px solid rgba(79,142,255,.3);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--accent);flex-shrink:0}
+.account-email-text{font-size:.9rem;font-weight:500}
+.account-since{font-size:.7rem;color:var(--muted);margin-top:2px}
+.account-actions{display:flex;gap:7px;flex-wrap:wrap}
+.btn-sm{font-family:'Syne',sans-serif;font-weight:700;font-size:.76rem;padding:.42rem .9rem;border-radius:100px;border:1px solid var(--border2);color:var(--muted2);background:transparent;cursor:pointer;transition:all .18s}
+.btn-sm:hover{color:var(--text)}
+.btn-sm.danger:hover{color:var(--red);border-color:rgba(255,107,107,.35)}
+
+.summary-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.summary-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center}
+.summary-num{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.15rem}
+.summary-num.green{color:var(--green)}
+.summary-label{font-size:.68rem;color:var(--muted)}
+
+.section-title{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:10px;margin-bottom:1.5rem}
+.app-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem;position:relative;overflow:hidden}
+.app-card.active{border-color:rgba(52,211,153,.25);background:rgba(52,211,153,.025)}
+.app-card.active::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--green)}
+.app-card.inactive{opacity:.5}
+.app-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem}
+.app-icon{font-size:1.1rem}
+.status-badge{font-size:.6rem;font-weight:700;padding:.18rem .55rem;border-radius:100px;text-transform:uppercase;letter-spacing:.04em}
+.status-badge.active{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.25)}
+.status-badge.inactive{background:var(--bg3);color:var(--muted);border:1px solid var(--border)}
+.status-badge.checking{animation:pulse 1.2s infinite;background:var(--bg3);color:var(--muted);border:1px solid var(--border)}
+.app-name{font-family:'Syne',sans-serif;font-size:.87rem;font-weight:700;margin-bottom:.15rem}
+.app-price{font-size:.7rem;color:var(--muted2)}
+.app-link{display:block;margin-top:.65rem;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;color:var(--accent2);text-decoration:none;transition:color .18s}
+.app-link:hover{color:var(--text)}
+
+.ppu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:8px;margin-bottom:2rem}
+.ppu-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--text);transition:all .18s}
+.ppu-card:hover{border-color:var(--border2);transform:translateY(-1px)}
+.ppu-icon{font-size:1rem;flex-shrink:0}
+.ppu-name{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;margin-bottom:1px}
+.ppu-desc{font-size:.65rem;color:var(--muted)}
+
+footer{text-align:center;padding:2rem 1rem;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);margin-top:2rem}
+footer a{color:var(--accent2);text-decoration:none}
+
+@media(max-width:540px){nav{padding:.9rem 1rem}.summary-strip{grid-template-columns:1fr 1fr}.auth-card,.confirm-card{padding:1.5rem 1.2rem}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://infinityhub.dev" class="logo">Infinity<em>.</em>Solutions</a>
+  <div class="nav-right">
+    <a href="https://infinityhub.dev" class="nav-hub">← Hub</a>
+    <span class="nav-badge">My Account</span>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- LOADING -->
+  <div class="screen active" id="screen-loading" style="text-align:center;padding:5rem 1rem">
+    <div class="spinner"></div>
+    <p style="font-size:.86rem;color:var(--muted2);margin-top:.5rem">Loading…</p>
+  </div>
+
+  <!-- AUTH -->
+  <div class="screen" id="screen-auth">
+    <div class="auth-hero">
+      <h1>Your Infinity<em>.</em>Solutions<br>account</h1>
+      <p>One account for every tool. Sign in or create one below.</p>
+    </div>
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Create Account</button>
+      </div>
+
+      <div id="form-login">
+        <div class="fg"><label>Email</label><input type="email" class="fi" id="login-email" placeholder="you@email.com" autocomplete="email"></div>
+        <div class="fg"><label>Password</label><input type="password" class="fi" id="login-password" placeholder="Your password" autocomplete="current-password"></div>
+        <div class="forgot-link"><button class="btn-ghost-sm" onclick="switchTab('forgot')">Forgot password?</button></div>
+        <button class="btn-primary" id="btn-login" onclick="doLogin()">Sign In →</button>
+        <div class="auth-msg" id="login-msg"></div>
+      </div>
+
+      <div id="form-signup" style="display:none">
+        <div class="fg"><label>Email</label><input type="email" class="fi" id="signup-email" placeholder="you@email.com" autocomplete="email"></div>
+        <div class="fg"><label>Password</label><input type="password" class="fi" id="signup-password" placeholder="At least 8 characters" autocomplete="new-password"></div>
+        <div class="fg"><label>Confirm password</label><input type="password" class="fi" id="signup-confirm" placeholder="Repeat your password" autocomplete="new-password"></div>
+        <button class="btn-primary" id="btn-signup" onclick="doSignup()">Create Account →</button>
+        <div class="auth-msg" id="signup-msg"></div>
+      </div>
+
+      <div id="form-forgot" style="display:none">
+        <p style="font-size:.84rem;color:var(--muted2);margin-bottom:1rem;line-height:1.6">Enter your email and we'll send a password reset link.</p>
+        <div class="fg"><label>Email</label><input type="email" class="fi" id="forgot-email" placeholder="you@email.com"></div>
+        <button class="btn-primary" id="btn-forgot" onclick="doForgot()">Send Reset Link →</button>
+        <div style="margin-top:.8rem;text-align:center"><button class="btn-ghost-sm" onclick="switchTab('login')">← Back to sign in</button></div>
+        <div class="auth-msg" id="forgot-msg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL CONFIRMATION -->
+  <div class="screen" id="screen-confirm">
+    <div class="confirm-card">
+      <div class="confirm-icon">✉️</div>
+      <div class="confirm-title">Check your email</div>
+      <div class="confirm-text">We sent a confirmation link to <strong id="confirm-email-display"></strong>.<br>Click the link to activate your account, then come back and sign in.</div>
+      <button class="btn-primary" id="btn-resend" onclick="resendConfirmation()">Resend Email</button>
+      <div class="resend-timer" id="resend-timer"></div>
+      <div style="margin-top:1rem"><button class="btn-ghost-sm" onclick="switchTab('login');show('auth')">← Back to sign in</button></div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="screen" id="screen-dashboard">
+    <div class="account-header">
+      <div class="account-left">
+        <div class="avatar" id="dash-avatar">?</div>
+        <div>
+          <div class="account-email-text" id="dash-email">—</div>
+          <div class="account-since" id="dash-since"></div>
+        </div>
+      </div>
+      <div class="account-actions">
+        <button class="btn-sm" onclick="doChangePassword()">Change Password</button>
+        <button class="btn-sm danger" onclick="doSignOut()">Sign Out</button>
+      </div>
+    </div>
+
+    <div class="summary-strip">
+      <div class="summary-card"><div class="summary-num green" id="dash-active-count">—</div><div class="summary-label">Active subscriptions</div></div>
+      <div class="summary-card"><div class="summary-num">12</div><div class="summary-label">Apps available</div></div>
+      <div class="summary-card"><div class="summary-num">6</div><div class="summary-label">Pay-per-use tools</div></div>
+    </div>
+
+    <div class="section-title">Your subscriptions</div>
+    <div class="apps-grid" id="dash-apps-grid"></div>
+
+    <div class="section-title">Pay-per-use tools</div>
+    <div class="ppu-grid">
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/meddispute/" class="ppu-card"><span class="ppu-icon">🏥</span><div><div class="ppu-name">MedDispute AI</div><div class="ppu-desc">From $1.99/letter</div></div></a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/policyai/" class="ppu-card"><span class="ppu-icon">🔒</span><div><div class="ppu-name">PolicyAI</div><div class="ppu-desc">From $7.99/doc</div></div></a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/nameai/" class="ppu-card"><span class="ppu-icon">✨</span><div><div class="ppu-name">NameAI</div><div class="ppu-desc">5 free · $2.99 unlock</div></div></a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/smallclaims/" class="ppu-card"><span class="ppu-icon">⚖️</span><div><div class="ppu-name">SmallClaims AI</div><div class="ppu-desc">From $3.99/doc</div></div></a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/justdocs/" class="ppu-card"><span class="ppu-icon">📄</span><div><div class="ppu-name">JustDocs AI</div><div class="ppu-desc">From $3.99/doc</div></div></a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/store/" class="ppu-card"><span class="ppu-icon">🛒</span><div><div class="ppu-name">Digital Store</div><div class="ppu-desc">AI kits &amp; packs</div></div></a>
+    </div>
+  </div>
+</div>
+
+<footer><p>© 2026 <a href="https://infinityhub.dev">Infinity Solutions LLC</a> · <a href="/cdn-cgi/l/email-protection#60030f0e140103144e090e06090e091419130f0c1514090f0e130c0c0320070d01090c4e030f0d">Support</a></p></footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Supabase init — wrapped safely in case CDN is slow or blocked
+let sb = null;
+const WORKER_URL = 'https://justdocs-worker.robertjosephreynolds.workers.dev';
+const ACCOUNT_URL = 'https://contactinfinitysolutionsllc-ops.github.io/account/';
+
+function initSupabase() {
+  try {
+    const { createClient } = supabase;
+    sb = createClient(
+      'https://zcvkgevcrgsujnqovxgd.supabase.co',
+      'sb_publishable_WeAsyK0Xo7G-VbhIwFUlNQ_pGNmu75T'
+    );
+    return true;
+  } catch(e) {
+    console.error('Supabase init failed:', e);
+    return false;
+  }
+}
+
+const APPS = [
+  {id:'education',    name:'InfinityLearn',    icon:'📚', url:'https://contactinfinitysolutionsllc-ops.github.io/education/',     price:'$12/mo'},
+  {id:'wellness',     name:'InfinityWellness', icon:'🌿', url:'https://contactinfinitysolutionsllc-ops.github.io/wellness/',      price:'$12/mo'},
+  {id:'infinitybiz',  name:'InfinityBiz',      icon:'💼', url:'https://contactinfinitysolutionsllc-ops.github.io/infinitybiz/',  price:'$12/mo'},
+  {id:'reputationai', name:'ReputationAI',     icon:'⭐', url:'https://contactinfinitysolutionsllc-ops.github.io/reputationai/', price:'$12/mo'},
+  {id:'listingwriter',name:'ListingWriter',    icon:'🏠', url:'https://contactinfinitysolutionsllc-ops.github.io/listingwriter/',price:'$12/mo'},
+  {id:'legacyplanner',name:'Legacy Planner',   icon:'🕯️', url:'https://contactinfinitysolutionsllc-ops.github.io/legacyplanner/',price:'$12/mo'},
+  {id:'resumeai',     name:'ResumeAI',         icon:'📄', url:'https://contactinfinitysolutionsllc-ops.github.io/resumeai/',     price:'$12/mo'},
+  {id:'contractai',   name:'ContractAI',       icon:'📋', url:'https://contactinfinitysolutionsllc-ops.github.io/contractai/',   price:'$12/mo'},
+  {id:'grantai',      name:'GrantAI',          icon:'🔍', url:'https://contactinfinitysolutionsllc-ops.github.io/grantai/',      price:'$12/mo'},
+  {id:'creditai',     name:'CreditAI',         icon:'📈', url:'https://contactinfinitysolutionsllc-ops.github.io/creditai/',     price:'$12/mo'},
+  {id:'mailai',       name:'MailAI',           icon:'✉️', url:'https://contactinfinitysolutionsllc-ops.github.io/mailai/',       price:'$12/mo'},
+  {id:'socialai',     name:'SocialAI',         icon:'📱', url:'https://contactinfinitysolutionsllc-ops.github.io/socialai/',     price:'$12/mo'},
+];
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+    s.style.display = 'none';
+  });
+  const el = document.getElementById('screen-' + id);
+  if (el) {
+    el.style.display = 'block';
+    el.classList.add('active');
+  }
+}
+function msg(id, text, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'auth-msg ' + (type || '');
+  el.style.display = text ? 'block' : 'none';
+}
+function setBusy(btnId, busy) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.disabled = busy;
+  if (busy) btn.dataset.orig = btn.textContent;
+  else if (btn.dataset.orig) btn.textContent = btn.dataset.orig;
+  if (busy) btn.textContent = 'Please wait…';
+}
+
+// ── TAB SWITCH ────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  ['login','signup','forgot'].forEach(t => {
+    const form = document.getElementById('form-' + t);
+    if (form) form.style.display = t === tab ? 'block' : 'none';
+    const tabBtn = document.getElementById('tab-' + t);
+    if (tabBtn) tabBtn.classList.toggle('active', t === tab);
+  });
+  ['login-msg','signup-msg','forgot-msg'].forEach(id => msg(id, ''));
+}
+
+// ── AUTH ──────────────────────────────────────────────────────────────────
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) { msg('login-msg', 'Please fill in both fields.', 'error'); return; }
+  setBusy('btn-login', true);
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  setBusy('btn-login', false);
+  if (error) {
+    if (error.message.toLowerCase().includes('not confirmed')) {
+      _pendingEmail = email;
+      document.getElementById('confirm-email-display').textContent = email;
+      show('confirm');
+    } else {
+      msg('login-msg', error.message, 'error');
+    }
+    return;
+  }
+  loadDashboard();
+}
+
+async function doSignup() {
+  const email = document.getElementById('signup-email').value.trim();
+  const pw = document.getElementById('signup-password').value;
+  const pw2 = document.getElementById('signup-confirm').value;
+  if (!email || !pw) { msg('signup-msg', 'Please fill in all fields.', 'error'); return; }
+  if (pw.length < 8) { msg('signup-msg', 'Password must be at least 8 characters.', 'error'); return; }
+  if (pw !== pw2) { msg('signup-msg', 'Passwords do not match.', 'error'); return; }
+  setBusy('btn-signup', true);
+  const { error } = await sb.auth.signUp({ email, password: pw, options: { emailRedirectTo: ACCOUNT_URL } });
+  setBusy('btn-signup', false);
+  if (error) { msg('signup-msg', error.message, 'error'); return; }
+  _pendingEmail = email;
+  document.getElementById('confirm-email-display').textContent = email;
+  show('confirm');
+}
+
+async function doForgot() {
+  const email = document.getElementById('forgot-email').value.trim();
+  if (!email) { msg('forgot-msg', 'Please enter your email.', 'error'); return; }
+  setBusy('btn-forgot', true);
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: ACCOUNT_URL });
+  setBusy('btn-forgot', false);
+  if (error) { msg('forgot-msg', error.message, 'error'); return; }
+  msg('forgot-msg', 'Reset link sent — check your email inbox.', 'success');
+}
+
+async function doSignOut() {
+  ['ig_account_email','ig_account_token','ig_account_name'].forEach(k => localStorage.removeItem(k));
+  await sb.auth.signOut();
+  show('auth');
+  switchTab('login');
+}
+
+async function doChangePassword() {
+  const pw = prompt('New password (min 8 characters):');
+  if (!pw || pw.length < 8) return;
+  const { error } = await sb.auth.updateUser({ password: pw });
+  alert(error ? 'Error: ' + error.message : 'Password updated successfully.');
+}
+
+// ── RESEND ────────────────────────────────────────────────────────────────
+let _pendingEmail = '';
+let _cooldown = 0;
+
+async function resendConfirmation() {
+  if (_cooldown > 0 || !_pendingEmail) return;
+  const { error } = await sb.auth.resend({ type: 'signup', email: _pendingEmail });
+  if (error) { alert(error.message); return; }
+  _cooldown = 30;
+  document.getElementById('btn-resend').disabled = true;
+  const timerEl = document.getElementById('resend-timer');
+  const t = setInterval(() => {
+    _cooldown--;
+    timerEl.textContent = `Resend available in ${_cooldown}s`;
+    if (_cooldown <= 0) {
+      clearInterval(t);
+      timerEl.textContent = '';
+      document.getElementById('btn-resend').disabled = false;
+    }
+  }, 1000);
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────
+async function loadDashboard() {
+  show('loading');
+  const [{ data: { user } }, { data: { session } }] = await Promise.all([
+    sb.auth.getUser(),
+    sb.auth.getSession()
+  ]);
+  if (!user) { show('auth'); return; }
+
+  const email = user.email;
+  const name  = user.user_metadata?.name || user.user_metadata?.full_name || email;
+
+  // Store for all apps to use (shared localStorage — same domain)
+  localStorage.setItem('ig_account_email', email);
+  if (session?.access_token) localStorage.setItem('ig_account_token', session.access_token);
+  if (name) localStorage.setItem('ig_account_name', name);
+
+  // Handle ?return= redirect (e.g. coming back from a tool page sign-in)
+  const returnUrl = new URLSearchParams(window.location.search).get('return');
+  if (returnUrl) { window.location.href = returnUrl; return; }
+
+  document.getElementById('dash-email').textContent = email;
+  document.getElementById('dash-avatar').textContent = email[0].toUpperCase();
+  document.getElementById('dash-since').textContent =
+    'Member since ' + new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  // Show dashboard IMMEDIATELY with checking state — don't make user wait
+  show('dashboard');
+  // Clear any leftover form values
+  ['login-email','login-password','signup-email','signup-password','signup-confirm','forgot-email']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  renderCards('checking', {});
+
+  const results = await Promise.all(APPS.map(app =>
+    fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'checkSubscriber', email, app: app.id })
+    }).then(r => r.json()).then(d => ({ id: app.id, active: d.active === true })).catch(() => ({ id: app.id, active: false }))
+  ));
+
+  const statusMap = {};
+  results.forEach(r => { statusMap[r.id] = r.active; });
+  document.getElementById('dash-active-count').textContent = results.filter(r => r.active).length;
+  renderCards('done', statusMap);
+}
+
+function renderCards(state, statusMap) {
+  document.getElementById('dash-apps-grid').innerHTML = APPS.map(app => {
+    const active = state === 'done' && statusMap[app.id];
+    const checking = state === 'checking';
+    return `<div class="app-card${active ? ' active' : state === 'done' ? ' inactive' : ''}">
+      <div class="app-card-top">
+        <span class="app-icon">${app.icon}</span>
+        <span class="status-badge ${checking ? 'checking' : active ? 'active' : 'inactive'}">${checking ? 'Checking…' : active ? '✓ Active' : 'Not subscribed'}</span>
+      </div>
+      <div class="app-name">${app.name}</div>
+      <div class="app-price">${app.price}</div>
+      <a href="${app.url}" class="app-link" target="_blank">${active ? 'Open app →' : 'Subscribe →'}</a>
+    </div>`;
+  }).join('');
+}
+
+// ── ENTER KEY ─────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (document.getElementById('form-login').style.display !== 'none') doLogin();
+  else if (document.getElementById('form-signup').style.display !== 'none') doSignup();
+  else if (document.getElementById('form-forgot').style.display !== 'none') doForgot();
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+// Run after page + Supabase CDN both fully loaded
+window.addEventListener('load', async () => {
+
+  // Safety net — if anything hangs, show auth after 4s instead of loading forever
+  const safetyTimer = setTimeout(() => {
+    console.warn('Account page init timeout — showing auth');
+    show('auth');
+  }, 4000);
+
+  try {
+    // Init Supabase — CDN must be loaded first
+    if (!initSupabase()) {
+      clearTimeout(safetyTimer);
+      show('auth');
+      return;
+    }
+
+    // Handle password reset redirect (Supabase appends #access_token)
+    if (window.location.hash.includes('access_token')) {
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
+    const { data: { session }, error } = await sb.auth.getSession();
+    clearTimeout(safetyTimer);
+
+    if (error) { console.warn('Session error:', error.message); show('auth'); return; }
+    if (session) { loadDashboard(); } else { show('auth'); }
+
+    // Keep session state in sync across tabs
+    sb.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) loadDashboard();
+      else if (event === 'SIGNED_OUT') { show('auth'); switchTab('login'); }
+    });
+
+  } catch(e) {
+    clearTimeout(safetyTimer);
+    console.error('Account page init error:', e);
+    show('auth'); // always fall through to auth, never stay on loading
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,888 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join InfinityMatch — Contractor Onboarding</title>
+<meta name="description" content="Join InfinityMatch and get connected with verified homeowner projects in your area. Flat monthly subscription. No fake leads. One project at a time.">
+<link rel="canonical" href="https://contactinfinitysolutionsllc-ops.github.io/contractor/">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080e;--bg2:#0c0e18;--bg3:#111422;--bg4:#171b2e;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --text:#eef0f8;--muted:#6b7280;--muted2:#9ca3b8;
+  --accent:#f97316;--accent2:#fb923c;--accent3:#7c2d12;
+  --blue:#4f8eff;--green:#34d399;--red:#ff6b6b;--gold:#f0b429;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ── NAV ── */
+nav{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem;border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}
+.logo-mark{width:28px;height:28px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+.logo em{color:var(--accent);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:1rem}
+.nav-link{font-size:.8rem;color:var(--muted2);text-decoration:none;transition:color .18s}
+.nav-link:hover{color:var(--text)}
+.nav-cta{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.38rem .9rem;border-radius:100px;background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.3);color:var(--accent2);text-decoration:none;transition:all .18s}
+.nav-cta:hover{background:rgba(249,115,22,.2)}
+
+/* ── HERO ── */
+.hero{position:relative;z-index:1;padding:4rem 2rem 3rem;text-align:center;overflow:hidden}
+.hero-glow{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(249,115,22,.1) 0%,transparent 65%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);border-radius:100px;padding:.3rem .9rem;font-size:.72rem;font-weight:600;color:var(--accent2);letter-spacing:.04em;margin-bottom:1.2rem;animation:up .5s ease both}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:800;line-height:1.06;letter-spacing:-.03em;margin-bottom:.9rem;animation:up .6s .05s ease both}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero p{font-size:.98rem;color:var(--muted2);max-width:520px;margin:0 auto 2rem;line-height:1.75;font-weight:300;animation:up .6s .1s ease both}
+
+/* ── VALUE PROPS ── */
+.value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;max-width:740px;margin:0 auto 3rem;padding:0 1.2rem;animation:up .6s .15s ease both}
+.value-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem}
+.value-icon{font-size:1.3rem;margin-bottom:.4rem}
+.value-title{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:.2rem}
+.value-desc{font-size:.75rem;color:var(--muted2);line-height:1.5;font-weight:300}
+
+/* ── PRICING STRIP ── */
+.pricing-strip{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:14px;padding:1.2rem 1.5rem;max-width:680px;margin:0 auto 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;animation:up .6s .2s ease both;position:relative;z-index:1}
+.pricing-left p{font-size:.78rem;color:var(--muted2);margin-bottom:.2rem}
+.pricing-price{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent)}
+.pricing-price span{font-size:.85rem;font-weight:400;color:var(--muted2)}
+.pricing-right{font-size:.75rem;color:var(--muted2);line-height:1.6}
+.pricing-right strong{color:var(--text)}
+
+/* ── MAIN ── */
+.main{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 1.2rem 5rem}
+
+/* ── STEPS ── */
+.steps{display:flex;gap:0;margin-bottom:2.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:.35rem;animation:up .5s .2s ease both}
+.step{flex:1;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.55rem .5rem;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;color:var(--muted);transition:all .2s;cursor:default;text-align:center}
+.step.active{background:var(--accent);color:#fff}
+.step.done{color:var(--green)}
+.step-num{width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:.62rem;flex-shrink:0}
+.step.done .step-num{background:var(--green);border-color:var(--green);color:#fff}
+
+/* ── FORM SECTIONS ── */
+.form-section{display:none;animation:up .3s ease both}
+.form-section.active{display:block}
+.section-head{margin-bottom:1.5rem}
+.section-head h2{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem}
+.section-head p{font-size:.85rem;color:var(--muted2);font-weight:300;line-height:1.6}
+
+/* ── FORM ELEMENTS ── */
+.fg{margin-bottom:1rem}
+.fg label{display:block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:.4rem}
+.fg label span{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)}
+.fi{width:100%;padding:.72rem .9rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.92rem;color:var(--text);outline:none;transition:all .18s;resize:vertical}
+.fi:focus{border-color:var(--accent);background:var(--bg3)}
+.fi::placeholder{color:var(--muted)}
+select.fi{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .9rem center;padding-right:2.5rem}
+select.fi option{background:var(--bg2)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* ── CATEGORY CHECKBOXES ── */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:.5rem}
+.cat-check{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.8rem .7rem;cursor:pointer;transition:all .18s;text-align:center;position:relative;user-select:none}
+.cat-check:hover{border-color:var(--border2)}
+.cat-check.selected{border-color:var(--accent);background:rgba(249,115,22,.07)}
+.cat-check.selected::after{content:'✓';position:absolute;top:5px;right:7px;font-size:.6rem;color:var(--accent);font-weight:700}
+.cat-icon{font-size:1.3rem;margin-bottom:.3rem}
+.cat-name{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700}
+.cat-note{font-size:.65rem;color:var(--muted);margin-top:2px}
+
+/* ── UPLOAD ── */
+.upload-zone{border:2px dashed var(--border);border-radius:14px;padding:1.8rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg2);position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(249,115,22,.04)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:1.8rem;margin-bottom:.4rem;opacity:.6}
+.upload-text{font-size:.85rem;color:var(--muted2);margin-bottom:.15rem}
+.upload-sub{font-size:.72rem;color:var(--muted)}
+.upload-status{margin-top:.6rem;font-size:.78rem;font-weight:600}
+.upload-status.ok{color:var(--green)}
+.upload-status.err{color:var(--red)}
+
+/* ── REVIEW CARD ── */
+.review-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin-bottom:1rem}
+.review-section{margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid var(--border)}
+.review-section:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.review-label{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.review-value{font-size:.88rem;color:var(--text);line-height:1.5}
+.review-value.muted{color:var(--muted2)}
+
+/* ── AGREEMENT ── */
+.agreement-box{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.1rem;max-height:220px;overflow-y:auto;font-size:.75rem;color:var(--muted2);line-height:1.7;margin-bottom:1rem;scroll-behavior:smooth}
+.agreement-box h4{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--text);margin:1rem 0 .3rem}
+.agreement-box h4:first-child{margin-top:0}
+.agree-row{display:flex;align-items:flex-start;gap:.8rem;padding:.7rem .9rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:border-color .18s}
+.agree-row:hover{border-color:var(--border2)}
+.agree-row.checked{border-color:var(--green)}
+.agree-check{width:20px;height:20px;border-radius:6px;border:2px solid var(--border2);background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s;margin-top:1px}
+.agree-row.checked .agree-check{background:var(--green);border-color:var(--green);color:#fff;font-size:.7rem}
+.agree-text{font-size:.8rem;color:var(--muted2);line-height:1.5}
+.agree-text strong{color:var(--text)}
+
+/* ── PAYMENT ── */
+.payment-card{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:14px;padding:1.3rem;text-align:center;margin-bottom:1rem}
+.payment-price{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--accent);margin-bottom:.2rem}
+.payment-price span{font-size:.9rem;font-weight:400;color:var(--muted2)}
+.payment-desc{font-size:.82rem;color:var(--muted2);margin-bottom:.8rem;line-height:1.5}
+.payment-perks{display:flex;flex-direction:column;gap:5px;text-align:left;margin-bottom:.5rem}
+.perk{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted2)}
+.perk::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;gap:8px;margin-top:1.5rem}
+.btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;padding:.78rem 1.6rem;border-radius:100px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:.4rem}
+.btn-primary{background:var(--accent);color:#fff;flex:1;justify-content:center}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(249,115,22,.25)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:var(--bg2);border:1px solid var(--border2);color:var(--muted2)}
+.btn-ghost:hover{color:var(--text)}
+.spinner-btn{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+
+/* ── MSG ── */
+.msg{border-radius:10px;padding:.7rem .9rem;font-size:.8rem;margin-bottom:.8rem;line-height:1.5;display:none}
+.msg.error{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);color:var(--red)}
+.msg.info{background:rgba(79,142,255,.08);border:1px solid rgba(79,142,255,.2);color:var(--blue)}
+.msg.success{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);color:var(--green)}
+
+/* ── SUCCESS ── */
+#screen-success{display:none;text-align:center;padding:3rem 1rem;animation:up .4s ease both}
+.success-icon{font-size:3.5rem;margin-bottom:1rem}
+.success-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.5rem}
+.success-sub{font-size:.92rem;color:var(--muted2);line-height:1.7;margin-bottom:2rem;max-width:460px;margin-left:auto;margin-right:auto}
+.next-steps{display:flex;flex-direction:column;gap:8px;max-width:420px;margin:0 auto}
+.next-step{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;display:flex;align-items:flex-start;gap:.7rem;text-align:left}
+.ns-num{width:22px;height:22px;border-radius:50%;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:.7rem;color:var(--accent);flex-shrink:0;margin-top:1px}
+.ns-text{font-size:.82rem;color:var(--muted2);line-height:1.5}
+.ns-text strong{color:var(--text)}
+
+footer{text-align:center;padding:1.5rem 1rem;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);position:relative;z-index:1}
+footer a{color:var(--accent2);text-decoration:none}
+
+@media(max-width:540px){
+  nav{padding:.9rem 1rem}
+  .hero{padding:3rem 1.2rem 2rem}
+  .form-row,.form-row-3{grid-template-columns:1fr}
+  .cat-grid{grid-template-columns:repeat(3,1fr)}
+  .step span{display:none}
+  .pricing-strip{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch/" class="logo">
+    <div class="logo-mark">🔨</div>
+    Infinity<em>Match</em>
+  </a>
+  <div class="nav-right">
+    <a href="https://infinityhub.dev" class="nav-link">← Hub</a>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch-submit/" class="nav-cta">Post a project</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">🔨 For licensed, insured contractors only</div>
+  <h1>Real jobs.<br><em>No fake leads.</em></h1>
+  <p>One flat monthly subscription. One project at a time — exclusively yours. No competing with 5 other contractors on the same lead. No paying for jobs that never existed.</p>
+</div>
+
+<!-- ── VALUE PROPS ── -->
+<div class="value-grid">
+  <div class="value-card">
+    <div class="value-icon">🎯</div>
+    <div class="value-title">Exclusive matching</div>
+    <div class="value-desc">Each project goes to one contractor at a time. You either take it or pass — nobody else sees it while you decide.</div>
+  </div>
+  <div class="value-card">
+    <div class="value-icon">📋</div>
+    <div class="value-title">AI-generated contracts</div>
+    <div class="value-desc">Accept a job and get a pre-filled, state-appropriate contract ready to e-sign in minutes.</div>
+  </div>
+  <div class="value-card">
+    <div class="value-icon">✅</div>
+    <div class="value-title">Scored leads only</div>
+    <div class="value-desc">Every homeowner submission is AI-scored for quality. Low-quality or suspicious submissions never reach you.</div>
+  </div>
+  <div class="value-card">
+    <div class="value-icon">💰</div>
+    <div class="value-title">Flat rate, no surprises</div>
+    <div class="value-desc">One monthly fee covers everything. No per-lead charges, no hidden costs, no paying for contacts that ghost you.</div>
+  </div>
+</div>
+
+<!-- ── PRICING ── -->
+<div class="pricing-strip">
+  <div class="pricing-left">
+    <p>Monthly subscription</p>
+    <div class="pricing-price">$49<span>/month</span></div>
+  </div>
+  <div class="pricing-right">
+    <strong>What's included:</strong><br>
+    Unlimited job matches · AI contract generation<br>
+    Verified badge on your profile · Priority routing<br>
+    Cancel anytime
+  </div>
+</div>
+
+<!-- ── FORM ── -->
+<div class="main">
+
+  <div class="steps" id="steps-bar">
+    <div class="step active" id="step-1"><div class="step-num">1</div><span>Account</span></div>
+    <div class="step" id="step-2"><div class="step-num">2</div><span>Business</span></div>
+    <div class="step" id="step-3"><div class="step-num">3</div><span>Verify</span></div>
+    <div class="step" id="step-4"><div class="step-num">4</div><span>Review</span></div>
+    <div class="step" id="step-5"><div class="step-num">5</div><span>Subscribe</span></div>
+  </div>
+
+  <!-- ── STEP 1: ACCOUNT ── -->
+  <div class="form-section active" id="section-1">
+    <div class="section-head">
+      <h2>Create your account</h2>
+      <p>This is your InfinityMatch login. Use an email you check regularly — job notifications go here.</p>
+    </div>
+    <div class="msg" id="msg-1"></div>
+    <div class="fg">
+      <label>Full name</label>
+      <input type="text" class="fi" id="f-name" placeholder="First and last name" autocomplete="name">
+    </div>
+    <div class="fg">
+      <label>Email address</label>
+      <input type="email" class="fi" id="f-email" placeholder="you@email.com" autocomplete="email">
+    </div>
+    <div class="fg">
+      <label>Password <span>— min 8 characters</span></label>
+      <input type="password" class="fi" id="f-password" placeholder="Create a strong password" autocomplete="new-password">
+    </div>
+    <div class="fg">
+      <label>Confirm password</label>
+      <input type="password" class="fi" id="f-password2" placeholder="Repeat your password" autocomplete="new-password">
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-1" onclick="doStep1()">
+        <span id="btn-1-text">Continue →</span>
+        <span class="spinner-btn" id="spin-1"></span>
+      </button>
+    </div>
+    <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:1rem">Already have an account? <a href="https://contactinfinitysolutionsllc-ops.github.io/contractor-dashboard/" style="color:var(--accent2)">Sign in to your dashboard</a></p>
+  </div>
+
+  <!-- ── STEP 2: BUSINESS INFO ── -->
+  <div class="form-section" id="section-2">
+    <div class="section-head">
+      <h2>Your business</h2>
+      <p>This appears on your contractor profile. Be specific — homeowners read this before accepting a match.</p>
+    </div>
+    <div class="msg" id="msg-2"></div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Business name</label>
+        <input type="text" class="fi" id="f-biz-name" placeholder="ABC Plumbing LLC">
+      </div>
+      <div class="fg">
+        <label>Phone number</label>
+        <input type="tel" class="fi" id="f-phone" placeholder="(802) 555-0100">
+      </div>
+    </div>
+    <div class="fg">
+      <label>What trades do you work in? <span>— select all that apply</span></label>
+      <div class="cat-grid" id="trade-grid">
+        <div class="cat-check" onclick="toggleTrade(this,'plumbing')"><div class="cat-icon">🔧</div><div class="cat-name">Plumbing</div></div>
+        <div class="cat-check" onclick="toggleTrade(this,'electrical')"><div class="cat-icon">⚡</div><div class="cat-name">Electrical</div></div>
+        <div class="cat-check" onclick="toggleTrade(this,'roofing')"><div class="cat-icon">🏠</div><div class="cat-name">Roofing</div></div>
+        <div class="cat-check" onclick="toggleTrade(this,'hvac')"><div class="cat-icon">❄️</div><div class="cat-name">HVAC</div></div>
+        <div class="cat-check" onclick="toggleTrade(this,'carpentry')"><div class="cat-icon">🪚</div><div class="cat-name">Carpentry</div></div>
+        <div class="cat-check" onclick="toggleTrade(this,'painting')"><div class="cat-icon">🎨</div><div class="cat-name">Painting</div></div>
+        <div class="cat-check" onclick="toggleTrade(this,'flooring')"><div class="cat-icon">🏗️</div><div class="cat-name">Flooring</div></div>
+        <div class="cat-check" onclick="toggleTrade(this,'landscaping')"><div class="cat-icon">🌿</div><div class="cat-name">Landscaping</div></div>
+        <div class="cat-check" onclick="toggleTrade(this,'masonry')"><div class="cat-icon">🧱</div><div class="cat-name">Masonry</div></div>
+        <div class="cat-check" onclick="toggleTrade(this,'remodeling')"><div class="cat-icon">🔨</div><div class="cat-name">Remodeling</div></div>
+        <div class="cat-check" onclick="toggleTrade(this,'handyman')"><div class="cat-icon">🛠️</div><div class="cat-name">Handyman</div></div>
+        <div class="cat-check" onclick="toggleTrade(this,'other')"><div class="cat-icon">📋</div><div class="cat-name">Other</div></div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label>ZIP code</label>
+        <input type="text" class="fi" id="f-zip" placeholder="05401" maxlength="10" inputmode="numeric">
+      </div>
+      <div class="fg">
+        <label>State</label>
+        <select class="fi" id="f-state">
+          <option value="">Select…</option>
+          <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
+          <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
+          <option>FL</option><option>GA</option><option>HI</option><option>ID</option>
+          <option>IL</option><option>IN</option><option>IA</option><option>KS</option>
+          <option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+          <option>MA</option><option>MI</option><option>MN</option><option>MS</option>
+          <option>MO</option><option>MT</option><option>NE</option><option>NV</option>
+          <option>NH</option><option>NJ</option><option>NM</option><option>NY</option>
+          <option>NC</option><option>ND</option><option>OH</option><option>OK</option>
+          <option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+          <option>SD</option><option>TN</option><option>TX</option><option>UT</option>
+          <option selected>VT</option><option>VA</option><option>WA</option><option>WV</option>
+          <option>WI</option><option>WY</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Service radius <span>— how far will you travel?</span></label>
+      <select class="fi" id="f-radius">
+        <option value="10">Within 10 miles</option>
+        <option value="25" selected>Within 25 miles</option>
+        <option value="50">Within 50 miles</option>
+        <option value="100">Within 100 miles</option>
+        <option value="999">Statewide</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>About your business <span>— optional but helps homeowners trust you</span></label>
+      <textarea class="fi" id="f-bio" rows="3" placeholder="e.g. Licensed master plumber with 12 years experience in residential and light commercial. Family-owned business, free estimates, same-day service available."></textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(3)">Next: Verification →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 3: LICENSE + INSURANCE ── -->
+  <div class="form-section" id="section-3">
+    <div class="section-head">
+      <h2>License &amp; insurance</h2>
+      <p>Required before you can receive jobs. We verify these to protect homeowners — and you. All documents are stored securely and never shared publicly.</p>
+    </div>
+    <div class="msg" id="msg-3"></div>
+
+    <!-- License -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:1rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;margin-bottom:.8rem">📜 Contractor License</div>
+      <div class="form-row">
+        <div class="fg">
+          <label>License number</label>
+          <input type="text" class="fi" id="f-license-num" placeholder="e.g. CGC1234567">
+        </div>
+        <div class="fg">
+          <label>Issuing state</label>
+          <select class="fi" id="f-license-state">
+            <option value="">Select…</option>
+            <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
+            <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
+            <option>FL</option><option>GA</option><option>HI</option><option>ID</option>
+            <option>IL</option><option>IN</option><option>IA</option><option>KS</option>
+            <option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+            <option>MA</option><option>MI</option><option>MN</option><option>MS</option>
+            <option>MO</option><option>MT</option><option>NE</option><option>NV</option>
+            <option>NH</option><option>NJ</option><option>NM</option><option>NY</option>
+            <option>NC</option><option>ND</option><option>OH</option><option>OK</option>
+            <option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+            <option>SD</option><option>TN</option><option>TX</option><option>UT</option>
+            <option selected>VT</option><option>VA</option><option>WA</option><option>WV</option>
+            <option>WI</option><option>WY</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Upload license photo or PDF <span>— optional if number is provided</span></label>
+        <div class="upload-zone" id="license-zone" style="padding:1rem">
+          <input type="file" id="license-file" accept="image/*,.pdf" onchange="handleDocUpload('license',this)">
+          <div class="upload-icon" style="font-size:1.3rem">📄</div>
+          <div class="upload-text" style="font-size:.8rem">Tap to upload license</div>
+          <div class="upload-sub">JPG, PNG, or PDF</div>
+        </div>
+        <div class="upload-status" id="license-status"></div>
+      </div>
+    </div>
+
+    <!-- Insurance -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:1rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;margin-bottom:.8rem">🛡️ Certificate of Insurance (COI)</div>
+      <p style="font-size:.78rem;color:var(--muted2);margin-bottom:.9rem;line-height:1.6">Upload your ACORD 25 Certificate of Insurance. Get this from your insurance broker — it's a one-page document showing your policy number, carrier, coverage amounts, and expiration date.</p>
+      <div class="form-row">
+        <div class="fg">
+          <label>Insurance carrier <span>— optional</span></label>
+          <input type="text" class="fi" id="f-ins-carrier" placeholder="e.g. State Farm, Travelers">
+        </div>
+        <div class="fg">
+          <label>Policy number <span>— optional</span></label>
+          <input type="text" class="fi" id="f-ins-policy" placeholder="e.g. GL-1234567">
+        </div>
+      </div>
+      <div class="fg">
+        <label>Upload COI (required)</label>
+        <div class="upload-zone" id="coi-zone" style="padding:1rem">
+          <input type="file" id="coi-file" accept="image/*,.pdf" onchange="handleDocUpload('coi',this)">
+          <div class="upload-icon" style="font-size:1.3rem">📋</div>
+          <div class="upload-text" style="font-size:.8rem">Tap to upload Certificate of Insurance</div>
+          <div class="upload-sub">JPG, PNG, or PDF · Max 10MB</div>
+        </div>
+        <div class="upload-status" id="coi-status"></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(4)">Next: Review →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 4: REVIEW ── -->
+  <div class="form-section" id="section-4">
+    <div class="section-head">
+      <h2>Review your application</h2>
+      <p>Make sure everything looks right before subscribing.</p>
+    </div>
+
+    <div class="review-card" id="review-summary"></div>
+
+    <!-- Platform Agreement -->
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:.7rem">Platform Agreement</div>
+    <div class="agreement-box">
+      <h4>1. Marketplace Role</h4>
+      Infinity Solutions LLC ("InfinityMatch") operates solely as a marketplace connecting homeowners with independent contractors. InfinityMatch is not a party to any agreement between contractor and homeowner, does not supervise work, and is not responsible for the quality, safety, or completion of any project.
+
+      <h4>2. Contractor Responsibilities</h4>
+      You represent that you hold all required licenses and insurance for your trade and service area. You agree to maintain valid insurance coverage at all times while active on the platform. You are solely responsible for the work you perform, your employees, and your subcontractors.
+
+      <h4>3. Disputes</h4>
+      Any dispute regarding project scope, quality, payment, or workmanship is exclusively between the contractor and the homeowner. InfinityMatch provides no dispute resolution and assumes no liability. Both parties are encouraged to document agreements in writing using the platform's contract tools.
+
+      <h4>4. Lead Quality</h4>
+      InfinityMatch uses AI to screen project submissions but does not guarantee the quality, accuracy, or legitimacy of any homeowner submission. Contractors accept matches at their own discretion.
+
+      <h4>5. Subscription & Cancellation</h4>
+      The monthly subscription fee ($49/month) is non-refundable for the current billing period. You may cancel at any time and will retain access through the end of the paid period. InfinityMatch reserves the right to suspend or terminate accounts that violate these terms.
+
+      <h4>6. Prohibited Conduct</h4>
+      You may not contact homeowners outside the platform prior to accepting a match. You may not share homeowner contact information with third parties. Soliciting reviews in exchange for discounts or other benefits is prohibited.
+
+      <h4>7. Verification</h4>
+      InfinityMatch may verify your license and insurance using third-party services. Providing false credentials is grounds for immediate termination without refund.
+
+      <h4>8. Limitation of Liability</h4>
+      InfinityMatch's total liability to you for any claim arising from use of the platform shall not exceed the amount paid in the prior 30 days. InfinityMatch is not liable for any indirect, consequential, or incidental damages.
+    </div>
+
+    <div class="agree-row" id="agree-1" onclick="toggleAgree('agree-1')">
+      <div class="agree-check" id="check-1"></div>
+      <div class="agree-text">I have read and agree to the <strong>Platform Agreement</strong> above and the <a href="https://contactinfinitysolutionsllc-ops.github.io/terms/" target="_blank" style="color:var(--accent2)">Terms of Service</a>, including the dispute resolution terms and limitation of liability.</div>
+    </div>
+    <div style="height:8px"></div>
+    <div class="agree-row" id="agree-2" onclick="toggleAgree('agree-2')">
+      <div class="agree-check" id="check-2"></div>
+      <div class="agree-text">I confirm that I hold a <strong>valid contractor license and general liability insurance</strong> for my trade and service area, and will maintain them throughout my subscription.</div>
+    </div>
+    <div style="height:8px"></div>
+    <div class="agree-row" id="agree-3" onclick="toggleAgree('agree-3')">
+      <div class="agree-check" id="check-3"></div>
+      <div class="agree-text">I understand that <strong>disputes are between me and the homeowner</strong> and that InfinityMatch is not responsible for project outcomes.</div>
+    </div>
+
+    <!-- TYPED SIGNATURE -->
+    <div style="margin-top:1.2rem;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.1rem">
+      <div style="font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;margin-bottom:.5rem;color:var(--muted2)">Digital Signature</div>
+      <p style="font-size:.75rem;color:var(--muted);margin-bottom:.7rem;line-height:1.5">Type your full legal name below to sign this agreement. This constitutes a legally binding electronic signature under the E-SIGN Act.</p>
+      <input type="text" class="fi" id="f-signature" placeholder="Type your full legal name to sign"
+        style="font-style:italic;font-size:1rem;font-family:'Instrument Sans',sans-serif;letter-spacing:.02em">
+      <div style="font-size:.68rem;color:var(--muted);margin-top:.4rem" id="sig-timestamp"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goStep(3)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(5)">Next: Subscribe →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 5: PAYMENT ── -->
+  <div class="form-section" id="section-5">
+    <div class="section-head">
+      <h2>Start your subscription</h2>
+      <p>You'll be redirected to Square for secure payment. After subscribing you'll return here and your application will be submitted for verification.</p>
+    </div>
+    <div class="msg" id="msg-5"></div>
+
+    <div class="payment-card">
+      <div class="payment-price">$49<span>/month</span></div>
+      <div class="payment-desc">Billed monthly · Cancel anytime</div>
+      <div class="payment-perks">
+        <div class="perk">Unlimited job matches in your service area</div>
+        <div class="perk">AI-generated contracts for every job</div>
+        <div class="perk">Verified contractor badge on your profile</div>
+        <div class="perk">Priority routing based on rating</div>
+        <div class="perk">2-hour exclusive response window per lead</div>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label>Confirm your email <span>— subscription confirmation sent here</span></label>
+      <input type="email" class="fi" id="f-pay-email" placeholder="you@email.com">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goStep(4)">← Back</button>
+      <button class="btn btn-primary" id="btn-pay" onclick="startPayment()">
+        <span id="btn-pay-text">Subscribe & Submit Application →</span>
+        <span class="spinner-btn" id="spin-pay"></span>
+      </button>
+    </div>
+    <p style="font-size:.72rem;color:var(--muted);text-align:center;margin-top:.8rem">Secure payment via Square. Your card info never touches our servers.</p>
+  </div>
+
+  <!-- ── SUCCESS ── -->
+  <div id="screen-success">
+    <div class="success-icon">🎉</div>
+    <div class="success-title">Application submitted!</div>
+    <div class="success-sub">Your subscription is active and your application is under review. We'll email you within 24 hours once your license and insurance are verified.</div>
+    <div class="next-steps">
+      <div class="next-step">
+        <div class="ns-num">1</div>
+        <div class="ns-text"><strong>Check your email</strong> — confirmation and next steps sent to you now</div>
+      </div>
+      <div class="next-step">
+        <div class="ns-num">2</div>
+        <div class="ns-text"><strong>Verification review</strong> — we'll check your license and COI within 24 hours. Straightforward documents are often approved faster.</div>
+      </div>
+      <div class="next-step">
+        <div class="ns-num">3</div>
+        <div class="ns-text"><strong>Start receiving jobs</strong> — once verified, you'll get email notifications when a matching project comes in. Respond within 2 hours to claim it.</div>
+      </div>
+    </div>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/contractor-dashboard/" style="display:inline-flex;align-items:center;gap:.5rem;margin-top:2rem;font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;background:var(--accent);color:#fff;padding:.75rem 2rem;border-radius:100px;text-decoration:none;transition:all .2s" onmouseover="this.style.background='var(--accent2)'" onmouseout="this.style.background='var(--accent)'">Go to your dashboard →</a>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 <a href="https://infinityhub.dev">Infinity Solutions LLC</a> · <a href="https://contact.infinityhub.dev">Support</a> · <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch-submit/">Post a project</a></p>
+</footer>
+
+<script>
+const WORKER_URL        = 'https://justdocs-worker.robertjosephreynolds.workers.dev';
+const SB_URL            = 'https://zcvkgevcrgsujnqovxgd.supabase.co';
+const SB_KEY            = 'sb_publishable_WeAsyK0Xo7G-VbhIwFUlNQ_pGNmu75T';
+const PAGE_URL          = 'https://contactinfinitysolutionsllc-ops.github.io/contractor/';
+const SQUARE_CONTRACTOR_URL = 'https://square.link/u/WA0weelG';
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let selectedTrades  = [];
+let licenseFileB64  = '';
+let licenseFileType = '';
+let coiFileB64      = '';
+let coiFileType     = '';
+let supabaseUser    = null;
+let supabaseToken   = null;
+let agreements      = { 'agree-1': false, 'agree-2': false, 'agree-3': false };
+let currentStep     = 1;
+
+// ── STEP NAV ──────────────────────────────────────────────────────────────
+function goStep(n) {
+  if (n > currentStep && !validateStep(currentStep)) return;
+
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('step-' + i);
+    el.className = 'step' + (i === n ? ' active' : i < n ? ' done' : '');
+    el.querySelector('.step-num').textContent = i < n ? '✓' : i;
+  }
+  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + n).classList.add('active');
+  currentStep = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (n === 4) buildReviewSummary();
+  if (n === 5) {
+    const email = document.getElementById('f-email').value.trim();
+    document.getElementById('f-pay-email').value = email;
+  }
+}
+
+function validateStep(n) {
+  const showErr = (id, msg) => { showMsg(id, msg, 'error'); return false; };
+
+  if (n === 1) return true; // account validated on submit
+  if (n === 2) {
+    if (!document.getElementById('f-biz-name').value.trim()) return showErr('msg-2','Please enter your business name.');
+    if (!document.getElementById('f-phone').value.trim())    return showErr('msg-2','Please enter your phone number.');
+    if (selectedTrades.length === 0)                         return showErr('msg-2','Please select at least one trade.');
+    if (!document.getElementById('f-zip').value.trim())      return showErr('msg-2','Please enter your ZIP code.');
+    if (!document.getElementById('f-state').value)           return showErr('msg-2','Please select your state.');
+  }
+  if (n === 3) {
+    if (!document.getElementById('f-license-num').value.trim() && !licenseFileB64)
+      return showErr('msg-3','Please enter your license number or upload your license document.');
+    if (!coiFileB64) return showErr('msg-3','Please upload your Certificate of Insurance (COI).');
+  }
+  if (n === 4) {
+    if (!agreements['agree-1'] || !agreements['agree-2'] || !agreements['agree-3'])
+      return showErr('msg-4', 'Please read and agree to all three items before continuing.');
+    const sig = document.getElementById('f-signature').value.trim();
+    if (!sig || sig.length < 3)
+      return showErr('msg-4', 'Please type your full legal name to sign the agreement.');
+  }
+  return true;
+}
+
+// ── MSG ───────────────────────────────────────────────────────────────────
+function showMsg(id, text, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'msg ' + type;
+  el.style.display = text ? 'block' : 'none';
+}
+
+// ── TRADES ────────────────────────────────────────────────────────────────
+function toggleTrade(el, trade) {
+  el.classList.toggle('selected');
+  if (el.classList.contains('selected')) {
+    selectedTrades.push(trade);
+  } else {
+    selectedTrades = selectedTrades.filter(t => t !== trade);
+  }
+}
+
+// ── DOCUMENT UPLOADS (base64 in memory) ──────────────────────────────────
+function handleDocUpload(type, input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 10 * 1024 * 1024) {
+    document.getElementById(type === 'license' ? 'license-status' : 'coi-status').textContent = 'File too large (max 10MB)';
+    document.getElementById(type === 'license' ? 'license-status' : 'coi-status').className = 'upload-status err';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const b64 = e.target.result.split(',')[1];
+    if (type === 'license') { licenseFileB64 = b64; licenseFileType = file.type; }
+    else                    { coiFileB64     = b64; coiFileType     = file.type; }
+    const statusEl = document.getElementById(type === 'license' ? 'license-status' : 'coi-status');
+    statusEl.textContent = '✓ ' + file.name + ' ready';
+    statusEl.className = 'upload-status ok';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── AGREEMENTS ────────────────────────────────────────────────────────────
+function toggleAgree(id) {
+  agreements[id] = !agreements[id];
+  const row   = document.getElementById(id);
+  const check = row.querySelector('.agree-check');
+  row.classList.toggle('checked', agreements[id]);
+  check.textContent = agreements[id] ? '✓' : '';
+}
+
+// ── REVIEW SUMMARY ────────────────────────────────────────────────────────
+function buildReviewSummary() {
+  const name     = document.getElementById('f-name').value.trim();
+  const email    = document.getElementById('f-email').value.trim();
+  const biz      = document.getElementById('f-biz-name').value.trim();
+  const phone    = document.getElementById('f-phone').value.trim();
+  const zip      = document.getElementById('f-zip').value.trim();
+  const state    = document.getElementById('f-state').value;
+  const radius   = document.getElementById('f-radius').value;
+  const licNum   = document.getElementById('f-license-num').value.trim();
+  const trades   = selectedTrades.join(', ') || '—';
+  const hasCoi   = coiFileB64 ? '✓ Uploaded' : '✗ Missing';
+  const hasLic   = (licNum || licenseFileB64) ? '✓ ' + (licNum || 'Uploaded') : '✗ Missing';
+
+  document.getElementById('review-summary').innerHTML = `
+    <div class="review-section"><div class="review-label">Contact</div><div class="review-value">${name} · ${email} · ${phone}</div></div>
+    <div class="review-section"><div class="review-label">Business</div><div class="review-value">${biz}</div></div>
+    <div class="review-section"><div class="review-label">Trades</div><div class="review-value">${trades}</div></div>
+    <div class="review-section"><div class="review-label">Service area</div><div class="review-value">${zip}, ${state} · within ${radius === '999' ? 'statewide' : radius + ' miles'}</div></div>
+    <div class="review-section"><div class="review-label">License</div><div class="review-value">${hasLic}</div></div>
+    <div class="review-section"><div class="review-label">Insurance (COI)</div><div class="review-value ${coiFileB64 ? '' : 'muted'}">${hasCoi}</div></div>
+  `;
+}
+
+// ── STEP 1: CREATE ACCOUNT ────────────────────────────────────────────────
+async function doStep1() {
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const pw    = document.getElementById('f-password').value;
+  const pw2   = document.getElementById('f-password2').value;
+
+  if (!name)  { showMsg('msg-1','Please enter your full name.','error'); return; }
+  if (!email || !email.includes('@')) { showMsg('msg-1','Please enter a valid email.','error'); return; }
+  if (pw.length < 8) { showMsg('msg-1','Password must be at least 8 characters.','error'); return; }
+  if (pw !== pw2)    { showMsg('msg-1','Passwords do not match.','error'); return; }
+
+  const btn = document.getElementById('btn-1');
+  const spin = document.getElementById('spin-1');
+  const txt  = document.getElementById('btn-1-text');
+  btn.disabled = true; spin.style.display = 'inline-block'; txt.textContent = 'Creating account…';
+  showMsg('msg-1','','');
+
+  try {
+    const res = await fetch(SB_URL + '/auth/v1/signup', {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email, password: pw,
+        data: { name },
+        options: { emailRedirectTo: PAGE_URL }
+      })
+    });
+    const data = await res.json();
+
+    if (data.error) {
+      showMsg('msg-1', data.error.message || 'Signup failed. Please try again.', 'error');
+      btn.disabled = false; spin.style.display = 'none'; txt.textContent = 'Continue →';
+      return;
+    }
+
+    if (data.access_token) {
+      supabaseUser  = data.user;
+      supabaseToken = data.access_token;
+      localStorage.setItem('ig_account_email', email);
+      goStep(2);
+    } else if (data.user) {
+      // Email confirmation required
+      showMsg('msg-1', 'Check your email to confirm your account, then come back and sign in.', 'info');
+      btn.disabled = false; spin.style.display = 'none'; txt.textContent = 'Continue →';
+    }
+  } catch(e) {
+    showMsg('msg-1', 'Network error. Please try again.', 'error');
+    btn.disabled = false; spin.style.display = 'none'; txt.textContent = 'Continue →';
+  }
+}
+
+// ── PAYMENT ───────────────────────────────────────────────────────────────
+async function startPayment() {
+  const email = document.getElementById('f-pay-email').value.trim();
+  if (!email || !email.includes('@')) { showMsg('msg-5','Please confirm your email.','error'); return; }
+
+  // Save signature before redirecting
+  const sigValue = document.getElementById('f-signature')?.value?.trim() || '';
+  if (sigValue) localStorage.setItem('contractor_signature', sigValue);
+
+  // Save all form data to localStorage so we can restore it after Square redirect
+  const appData = {
+    name:         document.getElementById('f-name').value.trim(),
+    email,
+    user_id:      supabaseUser?.id || null,
+    biz_name:     document.getElementById('f-biz-name').value.trim(),
+    phone:        document.getElementById('f-phone').value.trim(),
+    categories:   selectedTrades.join(','),
+    zip_code:     document.getElementById('f-zip').value.trim(),
+    state:        document.getElementById('f-state').value,
+    radius:       document.getElementById('f-radius').value,
+    bio:          document.getElementById('f-bio').value.trim(),
+    license_num:  document.getElementById('f-license-num').value.trim(),
+    license_state:document.getElementById('f-license-state').value,
+    ins_carrier:  document.getElementById('f-ins-carrier').value.trim(),
+    ins_policy:   document.getElementById('f-ins-policy').value.trim(),
+  };
+  localStorage.setItem('contractor_pending', JSON.stringify(appData));
+  // Store docs separately (large)
+  if (licenseFileB64) localStorage.setItem('contractor_lic_doc', JSON.stringify({ b64: licenseFileB64, type: licenseFileType }));
+  if (coiFileB64)     localStorage.setItem('contractor_coi_doc', JSON.stringify({ b64: coiFileB64,     type: coiFileType }));
+
+  const btn  = document.getElementById('btn-pay');
+  const spin = document.getElementById('spin-pay');
+  const txt  = document.getElementById('btn-pay-text');
+  btn.disabled = true; spin.style.display = 'inline-block'; txt.textContent = 'Redirecting to payment…';
+
+  // Redirect to Square subscription plan
+  window.location.href = SQUARE_CONTRACTOR_URL;
+}
+
+// ── HANDLE RETURN FROM SQUARE ─────────────────────────────────────────────
+async function handlePaidReturn() {
+  const raw = localStorage.getItem('contractor_pending');
+  if (!raw) return;
+  const app = JSON.parse(raw);
+
+  // Submit contractor record to worker → Supabase
+  try {
+    const payload = {
+      action:           'onboardContractor',
+      ...app,
+      license_file_b64:  localStorage.getItem('contractor_lic_doc') ? JSON.parse(localStorage.getItem('contractor_lic_doc')).b64  : '',
+      license_file_type: localStorage.getItem('contractor_lic_doc') ? JSON.parse(localStorage.getItem('contractor_lic_doc')).type : '',
+      coi_file_b64:      localStorage.getItem('contractor_coi_doc') ? JSON.parse(localStorage.getItem('contractor_coi_doc')).b64  : '',
+      coi_file_type:     localStorage.getItem('contractor_coi_doc') ? JSON.parse(localStorage.getItem('contractor_coi_doc')).type : '',
+    };
+
+    await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch(e) {}
+
+  // Record the digital signature / agreement
+  const savedSig  = localStorage.getItem('contractor_signature') || '';
+  const savedEmail = app.email || '';
+  if (savedSig && savedEmail) {
+    await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action:             'recordAgreement',
+        agreement_type:     'contractor',
+        agreement_version:  '2026-04-18',
+        full_name:          savedSig,
+        email:              savedEmail,
+        user_agent:         navigator.userAgent,
+        agreement_text:     'Contractor Platform Agreement + Terms of Service v2025-01-01'
+      })
+    }).catch(() => {});
+  }
+
+  // Clean up
+  localStorage.removeItem('contractor_pending');
+  localStorage.removeItem('contractor_lic_doc');
+  localStorage.removeItem('contractor_coi_doc');
+  localStorage.removeItem('contractor_signature');
+
+  // Show success
+  showSuccess();
+}
+
+function showSuccess() {
+  document.getElementById('steps-bar').style.display   = 'none';
+  document.querySelectorAll('.form-section').forEach(s => s.style.display = 'none');
+  document.querySelectorAll('.hero,.value-grid,.pricing-strip').forEach(el => el.style.display = 'none');
+  document.getElementById('screen-success').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  // Show timestamp when contractor types their name - makes it feel official
+  const sigField = document.getElementById('f-signature');
+  if (sigField) {
+    sigField.addEventListener('input', () => {
+      const ts = document.getElementById('sig-timestamp');
+      if (sigField.value.trim().length > 0) {
+        ts.textContent = 'Signing as: ' + sigField.value.trim() + ' · ' + new Date().toLocaleString();
+      } else {
+        ts.textContent = '';
+      }
+    });
+  }
+
+
+  if (window.location.search.includes('paid=true')) {
+    window.history.replaceState({}, '', window.location.pathname);
+    handlePaidReturn();
+  }
+});
+</script>
+</body>
+</html>

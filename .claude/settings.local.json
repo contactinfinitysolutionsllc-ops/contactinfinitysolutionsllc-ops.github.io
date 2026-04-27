@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:contactinfinitysolutionsllc-ops.github.io)",
+      "WebFetch(domain:account.infinityhub.dev)",
+      "Bash(grep -l \"ig_account\\\\|sub-bar\\\\|getStoredSession\\\\|ig-auth-nav\\\\|ig-shared-auth\" C:/Users/chaos/Desktop/Infinityhub.dev/Infinityhub/*.html)",
+      "Bash(grep -L \"ig_account\\\\|sub-bar\\\\|getStoredSession\\\\|ig-auth-nav\\\\|ig-shared-auth\" C:/Users/chaos/Desktop/Infinityhub.dev/Infinityhub/*.html)",
+      "Bash(findstr /c:\"</html>\" \"C:\\\\Users\\\\chaos\\\\Desktop\\\\Infinityhub.dev\\\\Infinityhub\\\\education.html\")",
+      "Bash(dir \"C:\\\\Users\\\\chaos\\\\Desktop\\\\Infinityhub.dev\\\\Infinityhub\\\\education.html\" \"C:\\\\Users\\\\chaos\\\\Desktop\\\\Infinityhub.dev\\\\Infinityhub\\\\manifest.json\" \"C:\\\\Users\\\\chaos\\\\Desktop\\\\Infinityhub.dev\\\\Infinityhub\\\\sw.js\")",
+      "Bash(dir \"C:\\\\Users\\\\chaos\\\\Desktop\\\\Infinityhub.dev\" /ad)",
+      "Bash(creditai)",
+      "Bash(grantai)",
+      "Bash(legacyplanner)",
+      "Bash(listingwriter)",
+      "Bash(mailai)",
+      "Bash(nameai)",
+      "Bash(socialai)",
+      "Bash(resumeai)",
+      "Bash(reputationai)",
+      "Bash(infinitybiz\")",
+      "Bash(grep '.html$')",
+      "Bash(grep -l \"paywallPay\\\\|handlePaidReturn\" '/c/Users/chaos/Desktop/Infinityhub.dev/Infinityhub'/*.html)",
+      "Bash(awk '/<div class=\"hero\"/{p=1} p && /\\\\/body/{exit} p && /[🔒📄💼🏠💻🛒💰📱✍️🔍📧📚🤝📈🌿📋💡👤💼📝🚀👨📊🎯📞⭐]/'{print} p)",
+      "Bash(/)",
+      "Bash(found)",
+      "Bash(exit)",
+      "Bash(Get-Content \"C:\\\\Users\\\\chaos\\\\Desktop\\\\Infinityhub.dev\\\\Cloudflare Worker\\\\justdocs-worker.js\")",
+      "Bash(Measure-Object -Line)",
+      "Bash(Select-Object Lines)"
+    ]
+  }
+}

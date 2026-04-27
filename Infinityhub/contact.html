@@ -1,0 +1,396 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Infinity Solutions LLC</title>
+<meta name="description" content="Get help, report a bug, or reach out to Infinity Solutions LLC.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;--bg2:#0e1320;--bg3:#141928;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);
+  --text:#f0f2f8;--muted:#7a8099;--muted2:#a0a8c0;
+  --accent:#4f8eff;--accent2:#7eb0ff;
+  --green:#34d399;--red:#ff6b6b;--gold:#f0b429;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem;border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--text);text-decoration:none}
+.logo em{color:var(--accent);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:1rem}
+.nav-link{font-size:.82rem;color:var(--muted2);text-decoration:none;transition:color .18s}
+.nav-link:hover{color:var(--text)}
+.nav-badge{font-size:.72rem;font-weight:700;background:rgba(79,142,255,.12);border:1px solid rgba(79,142,255,.25);color:var(--accent2);padding:.25rem .7rem;border-radius:100px}
+
+.wrap{max-width:660px;margin:0 auto;padding:4rem 1.2rem 4rem;animation:up .5s ease both}
+
+.hero{text-align:center;margin-bottom:3rem}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.6rem}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero p{font-size:.95rem;color:var(--muted2);font-weight:300;line-height:1.7;max-width:480px;margin:0 auto}
+
+/* TYPE SELECTOR */
+.type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:2rem}
+.type-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1rem;cursor:pointer;transition:all .18s;text-align:center}
+.type-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.type-card.selected{border-color:var(--accent);background:rgba(79,142,255,.06)}
+.type-card.selected .type-icon{filter:none}
+.type-icon{font-size:1.5rem;margin-bottom:.4rem;filter:grayscale(.5)}
+.type-name{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;margin-bottom:.2rem}
+.type-desc{font-size:.7rem;color:var(--muted2);line-height:1.4}
+
+/* FORM */
+.form-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.8rem}
+.fg{margin-bottom:1rem}
+.fg label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted2);margin-bottom:.4rem}
+.fi{width:100%;padding:.7rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.92rem;color:var(--text);outline:none;transition:border-color .18s;resize:vertical}
+.fi:focus{border-color:var(--accent)}
+.fi::placeholder{color:var(--muted)}
+select.fi{cursor:pointer}
+select.fi option{background:var(--bg2)}
+
+.btn-submit{width:100%;font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;padding:.82rem;border-radius:100px;border:none;cursor:pointer;background:var(--accent);color:#fff;transition:all .2s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-submit:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-submit:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+
+/* STATUS */
+.status-msg{border-radius:10px;padding:.8rem 1rem;font-size:.85rem;margin-top:.8rem;display:none;line-height:1.5}
+.status-msg.success{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);color:var(--green)}
+.status-msg.error{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);color:var(--red)}
+
+/* INFO CARDS */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2.5rem}
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem}
+.info-icon{font-size:1.2rem;margin-bottom:.4rem}
+.info-title{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;margin-bottom:.25rem}
+.info-text{font-size:.75rem;color:var(--muted2);line-height:1.5}
+.info-text a{color:var(--accent2);text-decoration:none}
+.info-text a:hover{text-decoration:underline}
+
+footer{text-align:center;padding:2rem 1rem;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);margin-top:3rem}
+footer a{color:var(--accent2);text-decoration:none}
+
+@media(max-width:520px){
+  nav{padding:.9rem 1rem}
+  .info-grid{grid-template-columns:1fr}
+  .type-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://infinityhub.dev" class="logo">Infinity<em>.</em>Solutions</a>
+  <div class="nav-right">
+    <a href="https://infinityhub.dev" class="nav-link">← Hub</a>
+    <span class="nav-badge">Contact</span>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>How can we <em>help?</em></h1>
+    <p>Bug reports, general questions, contractor inquiries, or anything else — we read every message and respond within 24 hours.</p>
+  </div>
+
+  <!-- TYPE SELECTOR -->
+  <div class="type-grid">
+    <div class="type-card selected" onclick="selectType(this,'bug')" id="type-bug">
+      <div class="type-icon">🐛</div>
+      <div class="type-name">Bug Report</div>
+      <div class="type-desc">Something broken or not working right</div>
+    </div>
+    <div class="type-card" onclick="selectType(this,'support')" id="type-support">
+      <div class="type-icon">💬</div>
+      <div class="type-name">Support</div>
+      <div class="type-desc">Account, billing, or app question</div>
+    </div>
+    <div class="type-card" onclick="selectType(this,'contractor')" id="type-contractor">
+      <div class="type-icon">🔨</div>
+      <div class="type-name">Contractor</div>
+      <div class="type-desc">Join the contractor platform</div>
+    </div>
+    <div class="type-card" onclick="selectType(this,'other')" id="type-other">
+      <div class="type-icon">✉️</div>
+      <div class="type-name">Other</div>
+      <div class="type-desc">Partnerships, feedback, general</div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-card">
+
+    <div class="fg">
+      <label>Your name</label>
+      <input type="text" class="fi" id="f-name" placeholder="First and last name">
+    </div>
+
+    <div class="fg">
+      <label>Email address</label>
+      <input type="email" class="fi" id="f-email" placeholder="you@email.com">
+    </div>
+
+    <!-- Bug-specific fields -->
+    <div id="bug-fields">
+      <div class="fg">
+        <label>Which app or page?</label>
+        <select class="fi" id="f-app">
+          <option value="">Select an app…</option>
+          <option>InfinityLearn</option>
+          <option>InfinityWellness</option>
+          <option>InfinityBiz</option>
+          <option>ReputationAI</option>
+          <option>ListingWriter</option>
+          <option>Legacy Planner</option>
+          <option>ResumeAI</option>
+          <option>ContractAI</option>
+          <option>GrantAI</option>
+          <option>CreditAI</option>
+          <option>MailAI</option>
+          <option>SocialAI</option>
+          <option>MedDispute AI</option>
+          <option>PolicyAI</option>
+          <option>NameAI</option>
+          <option>SmallClaims AI</option>
+          <option>JustDocs AI</option>
+          <option>Account / Login page</option>
+          <option>InfinityHub homepage</option>
+          <option>Other / Not sure</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>What happened? What did you expect?</label>
+        <textarea class="fi" id="f-bug-desc" rows="4" placeholder="Describe what went wrong and what you were trying to do. Screenshots are helpful if you can attach them to the follow-up email."></textarea>
+      </div>
+    </div>
+
+    <!-- Support fields -->
+    <div id="support-fields" style="display:none">
+      <div class="fg">
+        <label>What do you need help with?</label>
+        <select class="fi" id="f-support-type">
+          <option value="">Select a topic…</option>
+          <option>Account access / login</option>
+          <option>Subscription or billing</option>
+          <option>App not working</option>
+          <option>Cancel subscription</option>
+          <option>Refund request</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Details</label>
+        <textarea class="fi" id="f-support-desc" rows="4" placeholder="Tell us what's going on and we'll sort it out."></textarea>
+      </div>
+    </div>
+
+    <!-- Contractor fields -->
+    <div id="contractor-fields" style="display:none">
+      <div class="fg">
+        <label>Trade / specialty</label>
+        <select class="fi" id="f-trade">
+          <option value="">Select your trade…</option>
+          <option>General Contractor</option>
+          <option>Electrician</option>
+          <option>Plumber</option>
+          <option>HVAC</option>
+          <option>Roofer</option>
+          <option>Carpenter / Framing</option>
+          <option>Painter</option>
+          <option>Landscaper</option>
+          <option>Flooring</option>
+          <option>Mason / Concrete</option>
+          <option>Handyman</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Service area (city, state)</label>
+        <input type="text" class="fi" id="f-area" placeholder="e.g. Burlington, VT">
+      </div>
+      <div class="fg">
+        <label>Tell us about your business</label>
+        <textarea class="fi" id="f-contractor-desc" rows="3" placeholder="How long have you been in business? Are you licensed and insured? What sets you apart?"></textarea>
+      </div>
+    </div>
+
+    <!-- Other fields -->
+    <div id="other-fields" style="display:none">
+      <div class="fg">
+        <label>Subject</label>
+        <input type="text" class="fi" id="f-subject" placeholder="What's this about?">
+      </div>
+      <div class="fg">
+        <label>Message</label>
+        <textarea class="fi" id="f-other-desc" rows="5" placeholder="What's on your mind?"></textarea>
+      </div>
+    </div>
+
+    <button class="btn-submit" id="btn-submit" onclick="submitForm()">
+      <span id="btn-text">Send Message →</span>
+      <span class="spinner" id="btn-spinner"></span>
+    </button>
+
+    <div class="status-msg" id="status-msg"></div>
+  </div>
+
+  <!-- INFO CARDS -->
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-icon">⏱️</div>
+      <div class="info-title">Response time</div>
+      <div class="info-text">We respond to all messages within 24 hours, usually much faster.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">📧</div>
+      <div class="info-title">Direct email</div>
+      <div class="info-text">Prefer email directly? <a href="mailto:contact.infinitysolutionsllc@gmail.com">contact.infinitysolutionsllc@gmail.com</a></div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">🔨</div>
+      <div class="info-title">Contractors</div>
+      <div class="info-text">Interested in joining our platform? Select Contractor above and tell us about your business.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">🔒</div>
+      <div class="info-title">Privacy</div>
+      <div class="info-text">Your contact info is only used to respond to your message. We never sell or share it.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 <a href="https://infinityhub.dev">Infinity Solutions LLC</a> · <a href="mailto:contact.infinitysolutionsllc@gmail.com">Email us</a></p>
+</footer>
+
+<script>
+let currentType = 'bug';
+
+function selectType(el, type) {
+  document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  currentType = type;
+
+  // Show/hide relevant fields
+  document.getElementById('bug-fields').style.display        = type === 'bug'        ? 'block' : 'none';
+  document.getElementById('support-fields').style.display    = type === 'support'    ? 'block' : 'none';
+  document.getElementById('contractor-fields').style.display = type === 'contractor' ? 'block' : 'none';
+  document.getElementById('other-fields').style.display      = type === 'other'      ? 'block' : 'none';
+
+  // Update button label
+  const labels = {
+    bug:        'Report Bug →',
+    support:    'Get Help →',
+    contractor: 'Send Inquiry →',
+    other:      'Send Message →'
+  };
+  document.getElementById('btn-text').textContent = labels[type];
+  showStatus('', '');
+}
+
+function showStatus(msg, type) {
+  const el = document.getElementById('status-msg');
+  el.textContent = msg;
+  el.className = 'status-msg' + (type ? ' ' + type : '');
+  el.style.display = msg ? 'block' : 'none';
+}
+
+function setLoading(loading) {
+  const btn = document.getElementById('btn-submit');
+  const spinner = document.getElementById('btn-spinner');
+  const text = document.getElementById('btn-text');
+  btn.disabled = loading;
+  spinner.style.display = loading ? 'inline-block' : 'none';
+  if (!loading) {
+    const labels = { bug:'Report Bug →', support:'Get Help →', contractor:'Send Inquiry →', other:'Send Message →' };
+    text.textContent = labels[currentType];
+  } else {
+    text.textContent = 'Sending…';
+  }
+}
+
+async function submitForm() {
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+
+  if (!name)  { showStatus('Please enter your name.', 'error'); return; }
+  if (!email || !email.includes('@')) { showStatus('Please enter a valid email.', 'error'); return; }
+
+  // Build subject and body based on type
+  let subject = '';
+  let body    = '';
+
+  if (currentType === 'bug') {
+    const app  = document.getElementById('f-app').value;
+    const desc = document.getElementById('f-bug-desc').value.trim();
+    if (!desc) { showStatus('Please describe the bug.', 'error'); return; }
+    subject = `[Bug Report] ${app || 'Unknown app'} — from ${name}`;
+    body    = `Name: ${name}\nEmail: ${email}\nApp: ${app || 'Not specified'}\n\n${desc}`;
+  } else if (currentType === 'support') {
+    const topic = document.getElementById('f-support-type').value;
+    const desc  = document.getElementById('f-support-desc').value.trim();
+    if (!desc) { showStatus('Please describe your issue.', 'error'); return; }
+    subject = `[Support] ${topic || 'General'} — from ${name}`;
+    body    = `Name: ${name}\nEmail: ${email}\nTopic: ${topic || 'Not specified'}\n\n${desc}`;
+  } else if (currentType === 'contractor') {
+    const trade = document.getElementById('f-trade').value;
+    const area  = document.getElementById('f-area').value.trim();
+    const desc  = document.getElementById('f-contractor-desc').value.trim();
+    if (!trade) { showStatus('Please select your trade.', 'error'); return; }
+    subject = `[Contractor Inquiry] ${trade} — ${area || 'location not specified'}`;
+    body    = `Name: ${name}\nEmail: ${email}\nTrade: ${trade}\nArea: ${area || 'Not specified'}\n\n${desc}`;
+  } else {
+    const subj = document.getElementById('f-subject').value.trim();
+    const desc = document.getElementById('f-other-desc').value.trim();
+    if (!desc) { showStatus('Please write a message.', 'error'); return; }
+    subject = `[Contact] ${subj || 'General inquiry'} — from ${name}`;
+    body    = `Name: ${name}\nEmail: ${email}\nSubject: ${subj || 'Not specified'}\n\n${desc}`;
+  }
+
+  setLoading(true);
+  showStatus('', '');
+
+  // Use mailto as fallback — opens email client with pre-filled message
+  // This works without any backend. When Resend is set up this can switch to API.
+  try {
+    const mailtoLink = `mailto:contact.infinitysolutionsllc@gmail.com`
+      + `?subject=${encodeURIComponent(subject)}`
+      + `&body=${encodeURIComponent(body + '\n\n---\nSent from contact.infinityhub.dev')}`;
+
+    // Try to open email client
+    window.location.href = mailtoLink;
+
+    // Show success after brief delay
+    setTimeout(() => {
+      setLoading(false);
+      showStatus(
+        currentType === 'bug'
+          ? '✓ Your email client should open with the bug report pre-filled. If not, email us directly at contact.infinitysolutionsllc@gmail.com'
+          : '✓ Your email client should open with the message pre-filled. If not, email us directly.',
+        'success'
+      );
+    }, 800);
+
+  } catch(e) {
+    setLoading(false);
+    showStatus('Something went wrong. Please email us directly at contact.infinitysolutionsllc@gmail.com', 'error');
+  }
+}
+
+// Enter key on inputs
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') submitForm();
+});
+</script>
+</body>
+</html>

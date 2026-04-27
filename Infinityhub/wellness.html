@@ -1,0 +1,1699 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinity Wellness — Mental Health & Wellbeing Support</title>
+<meta name="description" content="AI-powered mental wellness support. Therapy chat, journaling, mood tracking, meditation, and habit tracking. Affordable care for everyone.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;--bg2:#0e1320;--bg3:#141928;--bg4:#1a2235;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);
+  --text:#f0f2f8;--muted:#7a8099;--muted2:#a0a8c0;
+  --accent:#2dd4bf;--accent2:#5eead4;--accent3:#0f766e;
+  --gold:#f0b429;--green:#34d399;--red:#ff6b6b;--purple:#a78bfa;
+  --mood1:#ff6b6b;--mood2:#f0b429;--mood3:#5eead4;--mood4:#34d399;--mood5:#a78bfa;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.02;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ── UTILS ── */
+.hidden{display:none!important}
+.screen{display:none !important;min-height:100vh}
+.screen.active{display:block !important}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes breatheIn{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+
+/* ── LANDING ── */
+#screen-landing{background:var(--bg)}
+.land-nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem;border-bottom:1px solid var(--border)}
+.land-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;text-decoration:none;color:var(--text)}
+.land-logo em{color:var(--accent);font-style:normal}
+.land-nav-right{display:flex;gap:10px}
+.btn-nav{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.45rem 1.1rem;border-radius:100px;cursor:pointer;transition:all .18s;border:none}
+.btn-nav-ghost{background:transparent;color:var(--muted2);border:1px solid var(--border2)}
+.btn-nav-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.25)}
+.btn-nav-solid{background:var(--accent);color:#042f2a}
+.btn-nav-solid:hover{background:var(--accent2);transform:translateY(-1px)}
+
+.land-hero{padding:5rem 2rem 3rem;text-align:center;position:relative;overflow:hidden}
+.land-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(45,212,191,.09) 0%,transparent 68%);pointer-events:none}
+.land-eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem;animation:up .5s ease both}
+.land-h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.08;letter-spacing:-.025em;margin-bottom:1rem;animation:up .6s .06s ease both}
+.land-h1 em{color:var(--accent);font-style:normal}
+.land-sub{font-size:1rem;color:var(--muted2);max-width:500px;margin:0 auto 2rem;line-height:1.75;font-weight:300;animation:up .6s .12s ease both}
+.land-sub strong{color:var(--text);font-weight:500}
+.land-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;animation:up .6s .18s ease both}
+.btn-cta{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;padding:.85rem 2rem;border-radius:100px;border:none;cursor:pointer;transition:all .2s;text-decoration:none}
+.btn-cta-primary{background:var(--accent);color:#042f2a}
+.btn-cta-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 10px 28px rgba(45,212,191,.2)}
+.btn-cta-ghost{background:transparent;color:var(--muted2);border:1px solid var(--border2)}
+.btn-cta-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.25)}
+
+.land-pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:2.5rem 0;animation:up .6s .24s ease both}
+.land-pill{background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.32rem .9rem;font-size:.78rem;color:var(--muted2)}
+.land-pill em{color:var(--accent);font-style:normal;font-weight:600}
+
+.land-features{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;max-width:900px;margin:0 auto;padding:0 1.5rem 4rem;animation:up .6s .3s ease both}
+.feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.3rem;transition:border-color .18s}
+.feat-card:hover{border-color:var(--border2)}
+.feat-icon{font-size:1.3rem;margin-bottom:.6rem}
+.feat-name{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.3rem}
+.feat-desc{font-size:.78rem;color:var(--muted2);line-height:1.5;font-weight:300}
+
+.land-crisis{background:rgba(240,180,41,.07);border:1px solid rgba(240,180,41,.18);border-radius:10px;padding:.8rem 1.2rem;font-size:.76rem;color:rgba(240,180,41,.85);line-height:1.6;max-width:700px;margin:0 auto 2rem;text-align:center}
+.land-crisis strong{color:var(--gold)}
+
+/* ── AUTH ── */
+#screen-auth{display:flex;align-items:center;justify-content:center;background:var(--bg);padding:2rem 1rem}
+.auth-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:420px;animation:up .4s ease both}
+.auth-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;text-align:center;margin-bottom:.3rem}
+.auth-logo em{color:var(--accent);font-style:normal}
+.auth-tagline{text-align:center;font-size:.82rem;color:var(--muted2);margin-bottom:2rem;font-weight:300}
+.auth-tabs{display:flex;background:var(--bg3);border-radius:100px;padding:3px;margin-bottom:1.5rem}
+.auth-tab{flex:1;padding:.5rem;text-align:center;font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;border-radius:100px;cursor:pointer;transition:all .18s;color:var(--muted2)}
+.auth-tab.active{background:var(--accent);color:#042f2a}
+.auth-form{display:flex;flex-direction:column;gap:.8rem}
+.form-group{display:flex;flex-direction:column;gap:.35rem}
+.form-label{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2)}
+.form-input{padding:.72rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.92rem;color:var(--text);outline:none;transition:border-color .18s}
+.form-input:focus{border-color:var(--accent);background:var(--bg2)}
+.form-input::placeholder{color:var(--muted)}
+.btn-auth{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;padding:.82rem;border-radius:100px;border:none;cursor:pointer;background:var(--accent);color:#042f2a;transition:all .2s;margin-top:.3rem}
+.btn-auth:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-auth:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.auth-msg{border-radius:8px;padding:.65rem .9rem;font-size:.82rem;display:none;margin-bottom:.5rem;line-height:1.5}
+.auth-msg.error{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);color:var(--red)}
+.auth-msg.info{background:rgba(79,158,255,.08);border:1px solid rgba(79,158,255,.25);color:#7ab8ff}
+.auth-divider{display:flex;align-items:center;gap:.8rem;margin:.3rem 0}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.auth-divider span{font-size:.72rem;color:var(--muted)}
+
+/* ── APP SHELL ── */
+#screen-app{display:none;flex-direction:column;min-height:100vh}
+#screen-app.active{display:flex}
+.app-header{position:sticky;top:0;z-index:100;background:rgba(8,11,18,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.app-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--text)}
+.app-logo em{color:var(--accent);font-style:normal}
+.app-user{display:flex;align-items:center;gap:.7rem}
+.app-avatar{width:32px;height:32px;border-radius:50%;background:rgba(45,212,191,.15);border:1px solid rgba(45,212,191,.3);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;color:var(--accent)}
+.btn-signout{font-size:.75rem;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .18s}
+.btn-signout:hover{color:var(--text)}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(8,11,18,.95);backdrop-filter:blur(14px);border-top:1px solid var(--border);padding:.6rem 0 calc(.6rem + env(safe-area-inset-bottom));display:flex;justify-content:space-around}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:.3rem .8rem;border-radius:10px;transition:all .18s;color:var(--muted);font-size:.62rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;min-width:56px}
+.nav-item:hover{color:var(--muted2)}
+.nav-item.active{color:var(--accent)}
+.nav-icon{font-size:1.2rem;line-height:1}
+
+/* ── APP CONTENT ── */
+.app-content{flex:1;padding:1.5rem 1rem 6rem;max-width:720px;margin:0 auto;width:100%}
+.tool-screen{display:none;animation:up .25s ease both}
+.tool-screen.active{display:block}
+
+/* ── DASHBOARD ── */
+.dash-greeting{margin-bottom:1.5rem}
+.dash-greeting h2{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:.2rem}
+.dash-greeting p{font-size:.88rem;color:var(--muted2);font-weight:300}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.2rem}
+.dash-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.dash-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--c,var(--accent));opacity:0;transition:opacity .2s}
+.dash-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.dash-card:hover::after{opacity:1}
+.dash-card-icon{font-size:1.4rem;margin-bottom:.5rem}
+.dash-card-name{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:.2rem}
+.dash-card-desc{font-size:.74rem;color:var(--muted2);line-height:1.4;font-weight:300}
+.dash-streak{background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.18);border-radius:14px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.streak-left p{font-size:.8rem;color:var(--muted2);margin-bottom:2px}
+.streak-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--accent)}
+.streak-flame{font-size:2rem}
+.mood-quick{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem;margin-bottom:1.2rem}
+.mood-quick p{font-size:.82rem;color:var(--muted2);margin-bottom:.7rem}
+.mood-emoji-row{display:flex;gap:8px;justify-content:space-between}
+.mood-emoji-btn{flex:1;padding:.5rem;text-align:center;font-size:1.4rem;cursor:pointer;border-radius:10px;border:1px solid var(--border);background:var(--bg3);transition:all .18s}
+.mood-emoji-btn:hover{border-color:var(--border2);transform:scale(1.05)}
+.mood-emoji-btn.selected{border-color:var(--accent);background:rgba(45,212,191,.1);transform:scale(1.1)}
+
+/* ── CHAT ── */
+.chat-messages{min-height:300px;max-height:420px;overflow-y:auto;padding:.5rem 0;margin-bottom:1rem;display:flex;flex-direction:column;gap:.7rem}
+.msg{max-width:85%;animation:up .2s ease both}
+.msg-ai{align-self:flex-start}
+.msg-user{align-self:flex-end}
+.msg-bubble{padding:.75rem 1rem;border-radius:14px;font-size:.9rem;line-height:1.65}
+.msg-ai .msg-bubble{background:var(--bg2);border:1px solid var(--border);color:var(--text);border-bottom-left-radius:4px}
+.msg-user .msg-bubble{background:var(--accent3);color:#e0fdf4;border-bottom-right-radius:4px}
+.msg-time{font-size:.65rem;color:var(--muted);margin-top:3px;padding:0 4px}
+.msg-user .msg-time{text-align:right}
+.typing-indicator{display:none;align-self:flex-start}
+.typing-dots{display:flex;gap:4px;padding:.6rem .9rem;background:var(--bg2);border:1px solid var(--border);border-radius:14px;border-bottom-left-radius:4px}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:pulse 1.2s ease infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+.chat-input-row{display:flex;gap:8px;align-items:flex-end}
+.chat-input{flex:1;padding:.72rem .9rem;background:var(--bg2);border:1px solid var(--border);border-radius:12px;font-family:'Instrument Sans',sans-serif;font-size:.92rem;color:var(--text);outline:none;transition:border-color .18s;resize:none;min-height:44px;max-height:100px}
+.chat-input:focus{border-color:var(--accent)}
+.chat-input::placeholder{color:var(--muted)}
+.btn-send{width:44px;height:44px;border-radius:12px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .18s;flex-shrink:0}
+.btn-send:hover{background:var(--accent2)}
+.btn-send:disabled{opacity:.4;cursor:not-allowed}
+.chat-moods{display:flex;gap:6px;margin-bottom:.8rem;flex-wrap:wrap}
+.chat-mood-btn{background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.25rem .75rem;font-size:.75rem;cursor:pointer;transition:all .18s;color:var(--muted2)}
+.chat-mood-btn:hover{border-color:var(--border2);color:var(--text)}
+.chat-session-info{font-size:.72rem;color:var(--muted);text-align:center;margin-bottom:.8rem}
+.chat-session-info span{color:var(--accent);font-weight:600}
+
+/* ── JOURNAL ── */
+.journal-prompts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.2rem}
+.prompt-btn{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.7rem .8rem;font-size:.78rem;color:var(--muted2);cursor:pointer;transition:all .18s;text-align:left;line-height:1.4}
+.prompt-btn:hover{border-color:var(--accent);color:var(--text)}
+.journal-title{width:100%;padding:.7rem .9rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--text);outline:none;transition:border-color .18s;margin-bottom:.7rem}
+.journal-title:focus{border-color:var(--accent)}
+.journal-title::placeholder{color:var(--muted);font-weight:400}
+.journal-body{width:100%;min-height:180px;padding:.9rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.92rem;color:var(--text);outline:none;transition:border-color .18s;resize:vertical;line-height:1.7}
+.journal-body:focus{border-color:var(--accent)}
+.journal-body::placeholder{color:var(--muted)}
+.journal-actions{display:flex;gap:8px;margin-top:.8rem}
+.btn-journal-save{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;padding:.7rem 1.5rem;border-radius:100px;background:var(--accent);color:#042f2a;border:none;cursor:pointer;transition:all .18s}
+.btn-journal-save:hover{background:var(--accent2)}
+.btn-ai-prompt{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.7rem 1.2rem;border-radius:100px;background:transparent;color:var(--muted2);border:1px solid var(--border2);cursor:pointer;transition:all .18s}
+.btn-ai-prompt:hover{color:var(--text);border-color:rgba(255,255,255,.25)}
+.journal-entries{margin-top:1.5rem}
+.journal-entry{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:8px;cursor:pointer;transition:border-color .18s}
+.journal-entry:hover{border-color:var(--border2)}
+.entry-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:3px}
+.entry-preview{font-size:.78rem;color:var(--muted2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.entry-meta{font-size:.68rem;color:var(--muted);margin-top:5px}
+.section-label{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:.8rem 0 .5rem}
+
+/* ── MOOD ── */
+.mood-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:1.2rem}
+.mood-day{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--muted);background:var(--bg2);border:1px solid var(--border);flex-direction:column;gap:1px}
+.mood-day.has-mood{border-color:transparent}
+.mood-day span{font-size:.55rem}
+.mood-chart-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:1.2rem}
+.mood-log-form{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:1.2rem}
+.mood-log-form h3{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.8rem}
+.mood-scale{display:flex;gap:6px;margin-bottom:.8rem}
+.mood-scale-btn{flex:1;padding:.55rem .3rem;border-radius:10px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;transition:all .18s;text-align:center;font-size:1.1rem}
+.mood-scale-btn:hover{border-color:var(--border2);transform:scale(1.05)}
+.mood-scale-btn.active{border-width:2px;transform:scale(1.08)}
+.mood-note{width:100%;padding:.65rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.88rem;color:var(--text);outline:none;resize:none;margin-bottom:.7rem}
+.mood-note:focus{border-color:var(--accent)}
+.mood-history{display:flex;flex-direction:column;gap:6px}
+.mood-entry{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.7rem 1rem;display:flex;align-items:center;gap:.8rem}
+.mood-entry-emoji{font-size:1.3rem}
+.mood-entry-text{flex:1;font-size:.82rem;color:var(--muted2)}
+.mood-entry-date{font-size:.68rem;color:var(--muted)}
+
+/* ── MEDITATION ── */
+.med-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.2rem}
+.med-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;cursor:pointer;transition:all .2s;text-align:center}
+.med-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.med-card.active-med{border-color:var(--accent);background:rgba(45,212,191,.06)}
+.med-card-icon{font-size:1.6rem;margin-bottom:.5rem}
+.med-card-name{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:.2rem}
+.med-card-dur{font-size:.72rem;color:var(--muted2)}
+.med-player{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;text-align:center;display:none}
+.med-player.active{display:block;animation:up .3s ease both}
+.med-player-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
+.med-player-sub{font-size:.82rem;color:var(--muted2);margin-bottom:1.5rem;font-weight:300}
+.breath-circle{width:120px;height:120px;border-radius:50%;background:rgba(45,212,191,.1);border:2px solid rgba(45,212,191,.3);margin:0 auto 1.2rem;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--accent);font-family:'Syne',sans-serif;font-weight:700;transition:all 4s ease}
+.breath-circle.inhale{transform:scale(1.25);background:rgba(45,212,191,.2);border-color:rgba(45,212,191,.6)}
+.breath-circle.exhale{transform:scale(0.9);background:rgba(45,212,191,.05)}
+.med-timer{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--text);margin-bottom:1.2rem}
+.med-controls{display:flex;gap:10px;justify-content:center}
+.btn-med{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;padding:.7rem 1.5rem;border-radius:100px;border:none;cursor:pointer;transition:all .18s}
+.btn-med-primary{background:var(--accent);color:#042f2a}
+.btn-med-primary:hover{background:var(--accent2)}
+.btn-med-ghost{background:transparent;border:1px solid var(--border2);color:var(--muted2)}
+.btn-med-ghost:hover{color:var(--text)}
+.med-instruction{font-size:.85rem;color:var(--muted2);margin-bottom:1rem;min-height:1.5rem;font-style:italic}
+
+/* ── HABITS ── */
+.habit-add{display:flex;gap:8px;margin-bottom:1.2rem}
+.habit-input{flex:1;padding:.68rem .9rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none;transition:border-color .18s}
+.habit-input:focus{border-color:var(--accent)}
+.habit-input::placeholder{color:var(--muted)}
+.btn-add-habit{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;padding:.68rem 1.2rem;border-radius:100px;background:var(--accent);color:#042f2a;border:none;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-add-habit:hover{background:var(--accent2)}
+.habit-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;display:flex;align-items:center;gap:.9rem;margin-bottom:8px;transition:border-color .18s}
+.habit-item:hover{border-color:var(--border2)}
+.habit-check{width:26px;height:26px;border-radius:50%;border:2px solid var(--border2);cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.8rem}
+.habit-check.done{background:var(--accent);border-color:var(--accent);color:#042f2a}
+.habit-name{flex:1;font-size:.9rem}
+.habit-streak{font-size:.72rem;color:var(--accent);font-weight:600}
+.habit-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;transition:color .18s;padding:2px 4px}
+.habit-del:hover{color:var(--red)}
+.habit-week{display:flex;gap:3px}
+.habit-day-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:background .18s}
+.habit-day-dot.done{background:var(--accent)}
+.progress-bar-wrap{background:var(--bg3);border-radius:100px;height:6px;margin-bottom:1.2rem;overflow:hidden}
+.progress-bar-fill{height:6px;background:var(--accent);border-radius:100px;transition:width .4s ease}
+
+/* ── PAYWALL ── */
+.paywall-overlay{position:fixed;inset:0;background:rgba(8,11,18,.92);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;display:none}
+.paywall-overlay.show{display:flex;animation:fadeIn .2s ease both}
+.paywall-card{background:var(--bg2);border:1px solid rgba(45,212,191,.2);border-radius:20px;padding:2rem;max-width:420px;width:100%;text-align:center}
+.paywall-icon{font-size:2.5rem;margin-bottom:1rem}
+.paywall-card h2{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
+.paywall-card p{font-size:.85rem;color:var(--muted2);margin-bottom:1.5rem;font-weight:300;line-height:1.6}
+.paywall-plans{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.2rem}
+.plan-opt{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.85rem .7rem;cursor:pointer;transition:all .18s;text-align:center}
+.plan-opt:hover{border-color:var(--accent)}
+.plan-opt.pw-annual{border-color:rgba(240,180,41,.45);background:rgba(240,180,41,.06)}
+.plan-opt.pw-monthly{border-color:rgba(45,212,191,.35)}
+.plan-opt.pw-session{opacity:.85}
+.pw-badge{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f0b429;margin-bottom:.25rem}
+.plan-price{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--accent)}
+.plan-label{font-size:.68rem;color:var(--muted2);margin-top:2px}
+.paywall-email{width:100%;padding:.68rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none;margin-bottom:.8rem}
+.paywall-email:focus{border-color:var(--accent)}
+.paywall-unlock{display:flex;gap:8px;margin-bottom:1rem}
+.paywall-unlock input{flex:1;padding:.6rem .85rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.88rem;color:var(--text);outline:none}
+.paywall-unlock input:focus{border-color:var(--accent)}
+.btn-unlock{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.6rem 1rem;border-radius:100px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;white-space:nowrap;transition:all .18s}
+.btn-unlock:hover{color:var(--text)}
+.btn-close-paywall{background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer;margin-top:.3rem;transition:color .18s}
+.btn-close-paywall:hover{color:var(--text)}
+
+/* ── MISC ── */
+.tool-header{margin-bottom:1.2rem}
+.tool-header h2{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:.2rem}
+.tool-header p{font-size:.82rem;color:var(--muted2);font-weight:300}
+.spinner-sm{width:16px;height:16px;border:2px solid rgba(4,47,42,.3);border-top-color:#042f2a;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px}
+.empty-state{text-align:center;padding:2rem;color:var(--muted);font-size:.88rem}
+.empty-state .es-icon{font-size:2rem;margin-bottom:.5rem}
+
+@media(max-width:480px){
+  .dash-grid,.journal-prompts,.med-grid,.paywall-plans{grid-template-columns:1fr}
+  .mood-scale{gap:4px}
+  .land-features{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── LANDING ── -->
+<div id="screen-landing" class="screen active">
+  <nav class="land-nav">
+    <a href="https://infinityhub.dev" class="land-logo">Infinity<em>.</em>Wellness</a>
+    <div style="display:flex;align-items:center;gap:1rem">
+      <a href="https://infinityhub.dev" style="font-size:.78rem;color:var(--muted2);text-decoration:none;transition:color .18s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted2)'">← Hub</a>
+      <a href="https://contact.infinityhub.dev" style="font-size:.78rem;color:var(--muted2);text-decoration:none;transition:color .18s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted2)'">Support</a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/terms/" style="font-size:.78rem;color:var(--muted2);text-decoration:none;transition:color .18s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted2)'">Terms</a>
+      <div class="land-nav-right" id="land-nav-right">
+        <button class="btn-nav btn-nav-ghost" onclick="showAuth('login')">Sign in</button>
+        <button class="btn-nav btn-nav-solid" onclick="showAuth('signup')">Get started</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="land-hero">
+    <div class="land-glow"></div>
+    <div class="land-eyebrow">Mental wellness · AI-powered · Affordable</div>
+    <h1 class="land-h1">Your mental health<br>deserves <em>real support.</em></h1>
+    <p class="land-sub">AI therapy chat, guided journaling, mood tracking, meditation, and habit coaching — everything you need in one gentle, private space. <strong>$4.99/month or pay per session.</strong></p>
+    <div class="land-actions">
+      <button class="btn-cta btn-cta-primary" onclick="showAuth('signup')">Start free — 5 sessions free</button>
+      <button class="btn-cta btn-cta-ghost" onclick="showAuth('login')">Already have an account</button>
+    </div>
+  </div>
+
+  <div class="land-pills">
+    <div class="land-pill"><em>5</em> free sessions/month</div>
+    <div class="land-pill"><em>$4.99</em>/mo unlimited</div>
+    <div class="land-pill"><em>$0.99</em> per session</div>
+    <div class="land-pill"><em>Private</em> &amp; secure</div>
+  </div>
+
+  <div class="land-features">
+    <div class="feat-card">
+      <div class="feat-icon">💬</div>
+      <div class="feat-name">AI Therapy Chat</div>
+      <div class="feat-desc">Talk through anything with a compassionate AI — available 24/7, judgment-free</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📓</div>
+      <div class="feat-name">Guided Journaling</div>
+      <div class="feat-desc">AI-generated prompts, reflection exercises, and a private journal saved to your account</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📊</div>
+      <div class="feat-name">Mood Tracking</div>
+      <div class="feat-desc">Log your mood daily and see patterns over time — understand yourself better</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌿</div>
+      <div class="feat-name">Meditation & Breathing</div>
+      <div class="feat-desc">Guided breathing exercises and mindfulness sessions from 2 to 20 minutes</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">✅</div>
+      <div class="feat-name">Habit Tracker</div>
+      <div class="feat-desc">Build the self-care habits that support your mental health — track streaks and progress</div>
+    </div>
+  </div>
+
+  <div class="land-crisis" style="padding:1rem 2rem">
+    <strong>Need immediate support?</strong> If you are in crisis, call or text <strong>988</strong> (Suicide &amp; Crisis Lifeline) or text HOME to <strong>741741</strong> (Crisis Text Line). Infinity Wellness is a supportive tool — not a substitute for professional mental health care.
+  </div>
+</div>
+
+<!-- ── EMAIL CONFIRM ── -->
+<div id="screen-confirm" class="screen">
+  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem">
+    <div class="auth-card" style="text-align:center">
+      <div style="font-size:2.8rem;margin-bottom:.8rem">📬</div>
+      <div class="auth-logo">Infinity<em>.</em>Wellness</div>
+      <div class="auth-tagline">Check your email to continue</div>
+      <p style="font-size:.84rem;color:var(--muted2);line-height:1.6;margin-bottom:.5rem">We sent a confirmation link to<br><strong id="confirm-email-display" style="color:var(--accent)"></strong></p>
+      <p style="font-size:.76rem;color:var(--muted);margin-bottom:1.2rem">Click the link in the email to activate your account. Check spam if you don't see it.</p>
+      <button id="btn-resend" onclick="resendConfirmation()" style="font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;padding:.72rem;border-radius:100px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;width:100%;margin-bottom:.8rem">Resend confirmation email</button>
+      <button onclick="switchAuthTab('login');showScreen('auth')" class="btn-auth">Already confirmed? Sign in</button>
+      <button onclick="showScreen('landing')" style="background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer;margin-top:.8rem;width:100%">← Back to home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── AUTH ── -->
+<div id="screen-auth" class="screen">
+  <div class="auth-card">
+    <div class="auth-logo">Infinity<em>.</em>Wellness</div>
+    <div class="auth-tagline">Your mental health deserves support.</div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tab-signup" onclick="switchAuthTab('signup')">Create account</div>
+      <div class="auth-tab" id="tab-login" onclick="switchAuthTab('login')">Sign in</div>
+    </div>
+    <div class="auth-msg" id="auth-msg"></div>
+    <div class="auth-form" id="signup-form">
+      <div class="form-group">
+        <label class="form-label">Your name</label>
+        <input type="text" class="form-input" id="signup-name" placeholder="First name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input type="email" class="form-input" id="signup-email" placeholder="you@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" id="signup-pass" placeholder="At least 6 characters" onkeydown="if(event.key==='Enter')doSignup()">
+      </div>
+      <button class="btn-auth" onclick="doSignup()">Create account →</button>
+    </div>
+    <div class="auth-form hidden" id="login-form">
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input type="email" class="form-input" id="login-email" placeholder="you@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" id="login-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="btn-auth" onclick="doLogin()">Sign in →</button>
+      <button onclick="showForgotPassword()" style="background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer;text-align:center;width:100%;margin-top:-.2rem">Forgot password?</button>
+      <!-- Inline forgot password form (hidden by default) -->
+      <div id="forgot-pw-form" style="display:none;margin-top:.8rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.9rem">
+        <p style="font-size:.75rem;color:var(--muted2);margin-bottom:.6rem">Enter your email and we'll send a reset link.</p>
+        <input type="email" id="forgot-pw-email" class="form-input" placeholder="you@email.com" style="margin-bottom:.5rem">
+        <button onclick="doForgotPw()" class="btn-auth" style="font-size:.82rem;padding:.55rem">Send Reset Link →</button>
+        <div id="forgot-pw-msg" style="font-size:.75rem;margin-top:.4rem;display:none"></div>
+        <button onclick="document.getElementById('forgot-pw-form').style.display='none'" style="background:none;border:none;color:var(--muted);font-size:.72rem;cursor:pointer;margin-top:.3rem;display:block;width:100%">← Back to sign in</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:1rem">
+      <button onclick="showScreen('landing')" style="background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer">← Back to home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="screen-app" class="screen">
+  <header class="app-header">
+    <div class="app-logo">Infinity<em>.</em>Wellness</div>
+    <div class="app-user">
+      <div class="app-avatar" id="user-avatar">?</div>
+      <button class="btn-signout" onclick="doSignout()">Sign out</button>
+    </div>
+  </header>
+
+  <div class="app-content">
+
+    <!-- DASHBOARD -->
+    <div class="tool-screen active" id="tool-dashboard">
+      <div class="dash-greeting">
+        <h2 id="dash-greeting-text">Good morning 🌿</h2>
+        <p id="dash-greeting-sub">How are you feeling today?</p>
+      </div>
+
+      <div class="mood-quick">
+        <p>Quick mood check-in</p>
+        <div class="mood-emoji-row">
+          <div class="mood-emoji-btn" onclick="quickMood(1)" title="Struggling">😔</div>
+          <div class="mood-emoji-btn" onclick="quickMood(2)" title="Low">😐</div>
+          <div class="mood-emoji-btn" onclick="quickMood(3)" title="Okay">🙂</div>
+          <div class="mood-emoji-btn" onclick="quickMood(4)" title="Good">😊</div>
+          <div class="mood-emoji-btn" onclick="quickMood(5)" title="Great">😄</div>
+        </div>
+      </div>
+
+      <div class="dash-streak">
+        <div class="streak-left">
+          <p>Day streak</p>
+          <div class="streak-num" id="streak-count">0</div>
+        </div>
+        <div class="streak-flame">🔥</div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="dash-card" style="--c:#2dd4bf" onclick="switchTool('chat')">
+          <div class="dash-card-icon">💬</div>
+          <div class="dash-card-name">Therapy Chat</div>
+          <div class="dash-card-desc">Talk it through with AI</div>
+        </div>
+        <div class="dash-card" style="--c:#a78bfa" onclick="switchTool('journal')">
+          <div class="dash-card-icon">📓</div>
+          <div class="dash-card-name">Journal</div>
+          <div class="dash-card-desc">Write &amp; reflect</div>
+        </div>
+        <div class="dash-card" style="--c:#f0b429" onclick="switchTool('mood')">
+          <div class="dash-card-icon">📊</div>
+          <div class="dash-card-name">Mood Tracker</div>
+          <div class="dash-card-desc">See your patterns</div>
+        </div>
+        <div class="dash-card" style="--c:#34d399" onclick="switchTool('meditation')">
+          <div class="dash-card-icon">🌿</div>
+          <div class="dash-card-name">Meditation</div>
+          <div class="dash-card-desc">Breathe &amp; center</div>
+        </div>
+      </div>
+
+      <div class="dash-card" style="--c:#4f8eff;margin-bottom:1rem" onclick="switchTool('habits')">
+        <div class="dash-card-icon">✅</div>
+        <div class="dash-card-name">Habit Tracker</div>
+        <div class="dash-card-desc">Build your self-care routine</div>
+      </div>
+
+      <div style="background:rgba(45,212,191,.06);border:1px solid rgba(45,212,191,.15);border-radius:12px;padding:.9rem 1.1rem;font-size:.78rem;color:var(--muted2);line-height:1.6">
+        <strong style="color:var(--accent)">Need immediate support?</strong> Call or text <strong style="color:var(--text)">988</strong> or text HOME to <strong style="color:var(--text)">741741</strong>. This app is a supportive tool, not a substitute for professional mental health care.
+      </div>
+    </div>
+
+    <!-- THERAPY CHAT -->
+    <div class="tool-screen" id="tool-chat">
+      <div class="tool-header">
+        <h2>💬 Therapy Chat</h2>
+        <p>A safe, judgment-free space to talk through anything on your mind.</p>
+      </div>
+      <div class="chat-session-info">Free sessions remaining: <span id="chat-free-count">5</span> of 5 this month</div>
+      <div class="chat-moods">
+        <span style="font-size:.72rem;color:var(--muted);padding:.25rem 0">I'm feeling:</span>
+        <button class="chat-mood-btn" onclick="setChatMood('anxious')">😰 Anxious</button>
+        <button class="chat-mood-btn" onclick="setChatMood('sad')">😢 Sad</button>
+        <button class="chat-mood-btn" onclick="setChatMood('overwhelmed')">😵 Overwhelmed</button>
+        <button class="chat-mood-btn" onclick="setChatMood('angry')">😤 Angry</button>
+        <button class="chat-mood-btn" onclick="setChatMood('lost')">😶 Lost</button>
+        <button class="chat-mood-btn" onclick="setChatMood('okay')">🙂 Okay</button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="msg msg-ai">
+          <div class="msg-bubble">Hi, I'm here with you. This is a safe space — you can share whatever's on your mind, and I'll listen without judgment. How are you feeling today?</div>
+          <div class="msg-time">Now</div>
+        </div>
+      </div>
+      <div class="typing-indicator" id="typing-indicator">
+        <div class="typing-dots">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <textarea class="chat-input" id="chat-input" placeholder="Share what's on your mind…" rows="1" onkeydown="chatKeydown(event)"></textarea>
+        <button class="btn-send" id="btn-send" onclick="sendMessage()">→</button>
+      </div>
+      <div style="text-align:right;margin-top:.4rem">
+        <button class="btn-ai-prompt" onclick="downloadChat()" style="font-size:.75rem;padding:.4rem .8rem">⬇ Save conversation</button>
+      </div>
+    </div>
+
+    <!-- JOURNAL -->
+    <div class="tool-screen" id="tool-journal">
+      <div class="tool-header">
+        <h2>📓 Journal</h2>
+        <p>Write freely or use a guided prompt to explore your thoughts.</p>
+      </div>
+      <div class="section-label">Need a prompt?</div>
+      <div class="journal-prompts" id="journal-prompts">
+        <button class="prompt-btn" onclick="usePrompt(this)">What's weighing on me most right now, and what would help?</button>
+        <button class="prompt-btn" onclick="usePrompt(this)">Three things I'm grateful for today, even if small.</button>
+        <button class="prompt-btn" onclick="usePrompt(this)">How have I grown or changed in the past year?</button>
+        <button class="prompt-btn" onclick="usePrompt(this)">What does my body need right now that I've been ignoring?</button>
+      </div>
+      <button class="btn-ai-prompt" style="margin-bottom:.8rem;width:100%" onclick="getAIPrompt()">✨ Get a personalized AI prompt</button>
+      <input type="text" class="journal-title" id="journal-title" placeholder="Give your entry a title…">
+      <textarea class="journal-body" id="journal-body" placeholder="Start writing here…"></textarea>
+      <div id="journal-save-msg" style="display:none;margin-bottom:.4rem;padding:.55rem .85rem;border-radius:8px;font-size:.82rem;line-height:1.5"></div>
+      <div class="journal-actions">
+        <button class="btn-journal-save" id="btn-journal-save" onclick="saveJournalEntry()">Save entry</button>
+        <button class="btn-ai-prompt" onclick="clearJournal()">Clear</button>
+        <button class="btn-ai-prompt" onclick="downloadJournalEntries()">⬇ Export</button>
+      </div>
+      <div class="journal-entries" id="journal-entries">
+        <div class="section-label">Past entries</div>
+        <div class="empty-state" id="journal-empty">
+          <div class="es-icon">📓</div>
+          <div>Your journal entries will appear here.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOOD -->
+    <div class="tool-screen" id="tool-mood">
+      <div class="tool-header">
+        <h2>📊 Mood Tracker</h2>
+        <p>Track your emotional patterns and understand yourself better over time.</p>
+      </div>
+      <div class="mood-log-form">
+        <h3>How are you feeling right now?</h3>
+        <div class="mood-scale">
+          <button class="mood-scale-btn" data-mood="1" onclick="selectMood(1)" style="border-color:var(--mood1)">😔</button>
+          <button class="mood-scale-btn" data-mood="2" onclick="selectMood(2)" style="border-color:var(--mood2)">😐</button>
+          <button class="mood-scale-btn" data-mood="3" onclick="selectMood(3)" style="border-color:var(--mood3)">🙂</button>
+          <button class="mood-scale-btn" data-mood="4" onclick="selectMood(4)" style="border-color:var(--mood4)">😊</button>
+          <button class="mood-scale-btn" data-mood="5" onclick="selectMood(5)" style="border-color:var(--mood5)">😄</button>
+        </div>
+        <textarea class="mood-note" id="mood-note" rows="2" placeholder="What's influencing your mood? (optional)"></textarea>
+        <div id="mood-log-msg" style="display:none;margin-bottom:.5rem;padding:.55rem .85rem;border-radius:8px;font-size:.82rem;line-height:1.5"></div>
+        <button class="btn-journal-save" onclick="logMood()" style="width:100%">Log mood</button>
+      </div>
+
+      <div class="section-label">This month</div>
+      <div class="mood-calendar" id="mood-calendar"></div>
+
+      <div class="section-label">Recent entries</div>
+      <div class="mood-history" id="mood-history">
+        <div class="empty-state" id="mood-empty">
+          <div class="es-icon">📊</div>
+          <div>Start logging your mood to see patterns.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEDITATION -->
+    <div class="tool-screen" id="tool-meditation">
+      <div class="tool-header">
+        <h2>🌿 Meditation &amp; Breathing</h2>
+        <p>Take a moment to breathe and center yourself.</p>
+      </div>
+
+      <div class="med-grid" id="med-grid">
+        <div class="med-card" onclick="startMed('box','Box Breathing','Calm anxiety fast','4-4-4-4',4)">
+          <div class="med-card-icon">📦</div>
+          <div class="med-card-name">Box Breathing</div>
+          <div class="med-card-dur">Calm anxiety · 4 min</div>
+        </div>
+        <div class="med-card" onclick="startMed('478','4-7-8 Breathing','Sleep &amp; relax','4-7-8',8)">
+          <div class="med-card-icon">😴</div>
+          <div class="med-card-name">4-7-8 Breathing</div>
+          <div class="med-card-dur">Sleep &amp; relax · 5 min</div>
+        </div>
+        <div class="med-card" onclick="startMed('deep','Deep Breathing','Ground yourself','5-5',5)">
+          <div class="med-card-icon">🌊</div>
+          <div class="med-card-name">Deep Breathing</div>
+          <div class="med-card-dur">Ground yourself · 3 min</div>
+        </div>
+        <div class="med-card" onclick="startMed('body','Body Scan','Release tension','slow',10)">
+          <div class="med-card-icon">🧘</div>
+          <div class="med-card-name">Body Scan</div>
+          <div class="med-card-dur">Release tension · 10 min</div>
+        </div>
+        <div class="med-card" onclick="startMed('gratitude','Gratitude Breath','Open your heart','slow',5)">
+          <div class="med-card-icon">💛</div>
+          <div class="med-card-name">Gratitude Breath</div>
+          <div class="med-card-dur">Open your heart · 5 min</div>
+        </div>
+        <div class="med-card" onclick="startMed('stress','Stress Relief','Quick reset','4-6',6)">
+          <div class="med-card-icon">🔄</div>
+          <div class="med-card-name">Stress Relief</div>
+          <div class="med-card-dur">Quick reset · 3 min</div>
+        </div>
+      </div>
+
+      <div class="med-player" id="med-player">
+        <div class="med-player-title" id="med-title">Box Breathing</div>
+        <div class="med-player-sub" id="med-sub">Calm anxiety fast</div>
+        <div class="breath-circle" id="breath-circle">Ready</div>
+        <div class="med-instruction" id="med-instruction">Press start when you're ready</div>
+        <div class="med-timer" id="med-timer">--:--</div>
+        <div class="med-controls">
+          <button class="btn-med btn-med-primary" id="med-start-btn" onclick="toggleMed()">Start</button>
+          <button class="btn-med btn-med-ghost" onclick="endMed()">← Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HABITS -->
+    <div class="tool-screen" id="tool-habits">
+      <div class="tool-header">
+        <h2>✅ Habit Tracker</h2>
+        <p>Build the daily habits that support your mental health and wellbeing.</p>
+      </div>
+      <div class="section-label">Today's progress</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="habit-progress" style="width:0%"></div>
+      </div>
+      <div class="habit-add">
+        <input type="text" class="habit-input" id="habit-new" placeholder="Add a new habit (e.g. 'Drink water', 'Walk 10 min')…" onkeydown="if(event.key==='Enter')addHabit()">
+        <button class="btn-add-habit" onclick="addHabit()">Add</button>
+      </div>
+      <div id="habit-list">
+        <div class="empty-state" id="habit-empty">
+          <div class="es-icon">✅</div>
+          <div>Add your first habit above to get started.</div>
+        </div>
+      </div>
+      <div class="section-label" style="margin-top:1.2rem">Suggested habits</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button onclick="addSuggestedHabit(this)" style="background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.3rem .8rem;font-size:.76rem;color:var(--muted2);cursor:pointer;transition:all .18s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">💧 Drink water</button>
+        <button onclick="addSuggestedHabit(this)" style="background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.3rem .8rem;font-size:.76rem;color:var(--muted2);cursor:pointer;transition:all .18s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">🚶 Take a walk</button>
+        <button onclick="addSuggestedHabit(this)" style="background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.3rem .8rem;font-size:.76rem;color:var(--muted2);cursor:pointer;transition:all .18s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">📓 Journal</button>
+        <button onclick="addSuggestedHabit(this)" style="background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.3rem .8rem;font-size:.76rem;color:var(--muted2);cursor:pointer;transition:all .18s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">🌿 Meditate</button>
+        <button onclick="addSuggestedHabit(this)" style="background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.3rem .8rem;font-size:.76rem;color:var(--muted2);cursor:pointer;transition:all .18s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">😴 Sleep 7+ hrs</button>
+        <button onclick="addSuggestedHabit(this)" style="background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.3rem .8rem;font-size:.76rem;color:var(--muted2);cursor:pointer;transition:all .18s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">📵 Screen-free hour</button>
+        <button onclick="addSuggestedHabit(this)" style="background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.3rem .8rem;font-size:.76rem;color:var(--muted2);cursor:pointer;transition:all .18s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">🙏 Gratitude moment</button>
+      </div>
+    </div>
+
+  </div><!-- end app-content -->
+
+  <nav class="bottom-nav">
+    <div class="nav-item active" onclick="switchTool('dashboard')" id="nav-dashboard">
+      <div class="nav-icon">🏠</div>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" onclick="switchTool('chat')" id="nav-chat">
+      <div class="nav-icon">💬</div>
+      <span>Chat</span>
+    </div>
+    <div class="nav-item" onclick="switchTool('journal')" id="nav-journal">
+      <div class="nav-icon">📓</div>
+      <span>Journal</span>
+    </div>
+    <div class="nav-item" onclick="switchTool('mood')" id="nav-mood">
+      <div class="nav-icon">📊</div>
+      <span>Mood</span>
+    </div>
+    <div class="nav-item" onclick="switchTool('meditation')" id="nav-meditation">
+      <div class="nav-icon">🌿</div>
+      <span>Breathe</span>
+    </div>
+    <div class="nav-item" onclick="switchTool('habits')" id="nav-habits">
+      <div class="nav-icon">✅</div>
+      <span>Habits</span>
+    </div>
+  </nav>
+</div>
+
+<!-- ── PAYWALL ── -->
+<div class="paywall-overlay" id="paywall">
+  <div class="paywall-card">
+    <div class="paywall-icon">🌿</div>
+    <h2>Continue your wellness journey</h2>
+    <p>You've used your free sessions. One subscription covers <em>all</em> Infinity Hub tools — monthly or annual. Already subscribed? Enter your email to unlock.</p>
+    <div class="paywall-unlock">
+      <input type="email" id="paywall-unlock-email" placeholder="Your email address">
+      <button class="btn-unlock" onclick="paywallUnlock()">Unlock</button>
+    </div>
+    <div id="paywall-unlock-msg" style="display:none;margin-bottom:.6rem;padding:.6rem .85rem;border-radius:8px;font-size:.82rem;line-height:1.5"></div>
+    <input type="email" class="paywall-email" id="paywall-pay-email" placeholder="Your email (for subscription access)">
+    <div id="paywall-pay-msg" style="display:none;margin-bottom:.6rem;padding:.6rem .85rem;border-radius:8px;font-size:.82rem;line-height:1.5"></div>
+    <div class="paywall-plans">
+      <div class="plan-opt pw-annual" onclick="paywallPay('annual')"><div class="pw-badge">Best Value</div><div class="plan-price">$99/yr</div><div class="plan-label">Annual · save 31%</div></div>
+      <div class="plan-opt pw-monthly" onclick="paywallPay('monthly')"><div class="plan-price">$12/mo</div><div class="plan-label">Monthly</div></div>
+      <div class="plan-opt pw-session" onclick="paywallPay('session')"><div class="plan-price">$0.99</div><div class="plan-label">24-hr pass</div></div>
+    </div>
+    <button class="btn-close-paywall" onclick="closePaywall()">Maybe later</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════════
+const WORKER_URL   = 'https://justdocs-worker.robertjosephreynolds.workers.dev';
+const SUPABASE_URL = 'https://zcvkgevcrgsujnqovxgd.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_WeAsyK0Xo7G-VbhIwFUlNQ_pGNmu75T';
+const APP_NAME          = 'infinitywellness';
+const APP_URL           = 'https://contactinfinitysolutionsllc-ops.github.io/wellness/';
+const SQUARE_MONTHLY_URL = 'https://square.link/u/pCpKBYg8'; // replace with Square monthly plan link once created
+const SQUARE_ANNUAL_URL  = 'https://square.link/u/zRrTqrz3'; // replace with Square annual plan link once created
+// Free sessions scoped per user - see getFreeKey()
+const FREE_LIMIT   = 5;
+
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+let currentUser    = null;
+let _subCache      = null;
+let _pendingEmail  = '';
+let chatHistory    = [];
+let chatMood       = '';
+let selectedMood   = 0;
+let medInterval    = null;
+let medRunning     = false;
+let medSecondsLeft = 0;
+let medType        = '';
+let breathPhase    = 0;
+let breathInterval = null;
+let habits         = [];
+let journalEntries = [];
+let moodLogs       = [];
+
+// ══════════════════════════════════════════════════════════
+// SCREENS
+// ══════════════════════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.classList.remove('active');
+    s.style.setProperty('display','none','important');
+  });
+  const el=document.getElementById('screen-'+id);
+  if(el){
+    el.classList.add('active');
+    el.style.setProperty('display','block','important');
+  }
+}
+
+function showAuth(tab){
+  showScreen('auth');
+  switchAuthTab(tab);
+}
+
+function switchAuthTab(tab){
+  document.getElementById('signup-form').classList.toggle('hidden', tab==='login');
+  document.getElementById('login-form').classList.toggle('hidden',  tab==='signup');
+  document.getElementById('tab-signup').classList.toggle('active',  tab==='signup');
+  document.getElementById('tab-login').classList.toggle('active',   tab==='login');
+  document.getElementById('auth-msg').style.display='none';
+}
+
+function showAuthMsg(msg,type='error'){
+  const el=document.getElementById('auth-msg');
+  el.textContent=msg; el.className='auth-msg '+type; el.style.display='block';
+}
+function clearAuthMsg(){ document.getElementById('auth-msg').style.display='none'; }
+function showAuthError(msg){ showAuthMsg(msg,'error'); }
+
+// ══════════════════════════════════════════════════════════
+// SUPABASE AUTH
+// ══════════════════════════════════════════════════════════
+async function sbFetch(path, opts={}){
+  const res = await fetch(SUPABASE_URL+path, {
+    ...opts,
+    headers:{
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer '+SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      ...(opts.headers||{})
+    }
+  });
+  return res.json();
+}
+
+async function sbAuthFetch(path, body, token){
+  const res = await fetch(SUPABASE_URL+'/auth/v1'+path, {
+    method:'POST',
+    headers:{
+      'apikey': SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      ...(token?{'Authorization':'Bearer '+token}:{})
+    },
+    body: JSON.stringify(body)
+  });
+  return res.json();
+}
+
+async function doSignup(){
+  const name  = document.getElementById('signup-name').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const pass  = document.getElementById('signup-pass').value;
+  if(!email||!pass){showAuthError('Please fill in all fields.');return;}
+  if(pass.length<8){showAuthError('Password must be at least 8 characters.');return;}
+  const btn=document.querySelector('#signup-form .btn-auth');
+  btn.disabled=true; btn.innerHTML='<span class="spinner-sm"></span>Creating account…';
+  const data = await sbAuthFetch('/signup',{email,password:pass,data:{name:name||email.split('@')[0]},options:{emailRedirectTo:APP_URL}});
+  btn.disabled=false; btn.textContent='Create account →';
+  if(data.error){showAuthError(data.error.message||'Signup failed. Please try again.');return;}
+  if(data.access_token){
+    loginSuccess(data.user, data.access_token, name||email.split('@')[0]);
+  } else if(data.user){
+    _pendingEmail = email;
+    showAuthError('Check your email to confirm your account, then sign in.');
+    switchAuthTab('login');
+  } else {
+    showAuthError('Something went wrong. Please try again.');
+  }
+}
+
+async function doLogin(){
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  if(!email||!pass){showAuthError('Please fill in all fields.');return;}
+  const btn=document.querySelector('#login-form .btn-auth');
+  btn.disabled=true; btn.innerHTML='<span class="spinner-sm"></span>Signing in…';
+  const data = await sbAuthFetch('/token?grant_type=password',{email,password:pass});
+  btn.disabled=false; btn.textContent='Sign in →';
+  if(data.error){
+    if(data.error.message?.includes('Email not confirmed')){
+      _pendingEmail = email;
+      showAuthError('Please confirm your email first — check your inbox.');
+      return;
+    }
+    showAuthError(data.error.message?.includes('Invalid')?'Incorrect email or password.':(data.error.message||'Sign in failed.'));
+    return;
+  }
+  const name = data.user?.user_metadata?.name || email.split('@')[0];
+  loginSuccess(data.user, data.access_token, name);
+}
+
+function loginSuccess(user, token, name){
+  currentUser = {id: user.id, email: user.email, name, token};
+  localStorage.setItem('wellness_user', JSON.stringify(currentUser));
+  localStorage.setItem('ig_account_email', user.email);
+  if(token) localStorage.setItem('ig_account_token', token);
+  if(name)  localStorage.setItem('ig_account_name', name);
+  initApp();
+}
+
+function doSignout(){
+  currentUser=null;
+  _subCache=null;
+  chatHistory=[];
+  localStorage.removeItem('wellness_user');
+  showScreen('landing');
+}
+
+async function resendConfirmation(){
+  if(!_pendingEmail) return;
+  const btn=document.getElementById('btn-resend');
+  if(!btn) return;
+  btn.disabled=true; btn.textContent='Sending…';
+  const r=await fetch(SUPABASE_URL+'/auth/v1/resend',{method:'POST',
+    headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({email:_pendingEmail,type:'signup'})});
+  btn.textContent='Sent! Check your inbox';
+  setTimeout(()=>{btn.disabled=false;btn.textContent='Resend confirmation email';},30000);
+}
+
+async function showForgotPassword(){
+  const form = document.getElementById('forgot-pw-form');
+  if (form) form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+async function doForgotPw() {
+  const email = document.getElementById('forgot-pw-email').value.trim();
+  const msg   = document.getElementById('forgot-pw-msg');
+  if (!email) { msg.textContent = 'Please enter your email.'; msg.style.display='block'; msg.style.color='var(--red)'; return; }
+  try {
+    await fetch(SUPABASE_URL+'/auth/v1/recover', {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, options: { redirectTo: APP_URL } })
+    });
+    msg.textContent = '✓ Reset link sent — check your inbox.';
+    msg.style.display = 'block';
+    msg.style.color = 'var(--green)';
+    document.getElementById('forgot-pw-email').value = '';
+  } catch(e) {
+    msg.textContent = 'Something went wrong. Please try again.';
+    msg.style.display = 'block';
+    msg.style.color = 'var(--red)';
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// APP INIT
+// ══════════════════════════════════════════════════════════
+function updateLandingNav(){
+  const email=currentUser?.email;
+  if(!email) return;
+  const nav=document.getElementById('land-nav-right');
+  if(!nav) return;
+  nav.innerHTML=`
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/account/"
+       style="display:inline-flex;align-items:center;gap:.4rem;font-family:'Syne',sans-serif;
+              font-weight:700;font-size:.82rem;color:var(--text);text-decoration:none;
+              background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.22);
+              padding:.42rem 1rem;border-radius:100px">
+      <span style="width:20px;height:20px;border-radius:50%;background:rgba(45,212,191,.2);
+                   display:inline-flex;align-items:center;justify-content:center;
+                   font-size:.65rem;color:var(--accent);">${email[0].toUpperCase()}</span>
+      My Account
+    </a>
+    <button class="btn-nav btn-nav-solid" onclick="showScreen('app')">Open App →</button>`;
+}
+
+function initApp(){
+  updateLandingNav();
+  showScreen('app');
+  const initials = (currentUser.name||'?')[0].toUpperCase();
+  document.getElementById('user-avatar').textContent=initials;
+  setGreeting();
+  loadHabits();
+  loadJournalEntries();
+  loadMoodLogs();
+  updateStreakUI();
+  updateFreeUI();
+  if(window.location.search.includes('paid=true')){
+    handlePaidReturn();
+    window.history.replaceState({},'',window.location.pathname);
+  }
+}
+
+function setGreeting(){
+  const h=new Date().getHours();
+  const name=currentUser.name||'friend';
+  const greet = h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  document.getElementById('dash-greeting-text').textContent=greet+', '+name+' 🌿';
+  document.getElementById('dash-greeting-sub').textContent='How are you feeling today?';
+}
+
+// ══════════════════════════════════════════════════════════
+// FREE / SUBSCRIPTION
+// ══════════════════════════════════════════════════════════
+function getFreeKey(){ return 'wellness_free_'+(currentUser?.id||'anon'); }
+function getFree(){
+  const d=JSON.parse(localStorage.getItem(getFreeKey())||'{}');
+  const m=new Date().toISOString().slice(0,7);
+  return d.month===m?(d.count||0):0;
+}
+function incFree(){
+  const m=new Date().toISOString().slice(0,7);
+  localStorage.setItem(getFreeKey(),JSON.stringify({month:m,count:getFree()+1}));
+  updateFreeUI();
+}
+function updateFreeUI(){
+  const el=document.getElementById('chat-free-count');
+  if(el) el.textContent=Math.max(0,FREE_LIMIT-getFree());
+}
+
+async function isSubscribed(){
+  if(!currentUser) return false;
+  if(_subCache !== null) return _subCache;
+  try{
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'checkSubscriber',email:currentUser.email,app:APP_NAME})});
+    const data=await res.json();
+    _subCache = data.active===true;
+    setTimeout(()=>{ _subCache=null; }, 5*60*1000);
+    return _subCache;
+  }catch{return false;}
+}
+
+async function checkAccess(){
+  const sub=await isSubscribed();
+  if(sub) return true;
+  if(getFree()<FREE_LIMIT) return true;
+  showPaywall();
+  return false;
+}
+
+function showPaywall(){document.getElementById('paywall').classList.add('show');}
+function closePaywall(){document.getElementById('paywall').classList.remove('show');}
+
+function showUnlockMsg(msg,isErr){
+  const el=document.getElementById('paywall-unlock-msg');
+  if(!el) return;
+  el.textContent=msg;
+  el.style.display='block';
+  if(isErr){el.style.background='rgba(255,107,107,.08)';el.style.border='1px solid rgba(255,107,107,.25)';el.style.color='#ff6b6b';}
+  else{el.style.background='rgba(52,211,153,.08)';el.style.border='1px solid rgba(52,211,153,.25)';el.style.color='#34d399';}
+}
+function clearUnlockMsg(){const el=document.getElementById('paywall-unlock-msg');if(el)el.style.display='none';}
+
+function showPayMsg(msg,isErr){
+  const el=document.getElementById('paywall-pay-msg');
+  if(!el) return;
+  el.textContent=msg;
+  el.style.display='block';
+  if(isErr){el.style.background='rgba(255,107,107,.08)';el.style.border='1px solid rgba(255,107,107,.25)';el.style.color='#ff6b6b';}
+  else{el.style.background='rgba(52,211,153,.08)';el.style.border='1px solid rgba(52,211,153,.25)';el.style.color='#34d399';}
+}
+function clearPayMsg(){const el=document.getElementById('paywall-pay-msg');if(el)el.style.display='none';}
+
+async function paywallUnlock(){
+  clearUnlockMsg();
+  const emailEl=document.getElementById('paywall-unlock-email');
+  const email=emailEl.value.trim();
+  if(!email||!email.includes('@')){showUnlockMsg('Please enter a valid email.',true);emailEl.style.borderColor='var(--red)';setTimeout(()=>emailEl.style.borderColor='',2000);return;}
+  try{
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'checkSubscriber',email,app:APP_NAME})});
+    const data=await res.json();
+    if(data.active){
+      showUnlockMsg('✓ Unlocked! Enjoy unlimited access.',false);
+      _subCache=true;
+      setTimeout(closePaywall,1200);
+    }else{
+      showUnlockMsg('No active subscription found for that email.',true);
+    }
+  }catch{
+    showUnlockMsg('Connection error. Please try again.',true);
+  }
+}
+
+async function paywallPay(plan){
+  clearPayMsg();
+  const emailEl=document.getElementById('paywall-pay-email');
+  const email=emailEl.value.trim();
+  if(!email||!email.includes('@')){showPayMsg('Please enter your email first.',true);emailEl.style.borderColor='var(--red)';setTimeout(()=>emailEl.style.borderColor='',2000);return;}
+  localStorage.setItem('wellness_pending_email',email);
+  localStorage.setItem('wellness_pending_plan',plan);
+  if(plan==='annual'&&SQUARE_ANNUAL_URL){window.location.href=SQUARE_ANNUAL_URL;return;}
+  if(plan==='monthly'&&SQUARE_MONTHLY_URL){window.location.href=SQUARE_MONTHLY_URL;return;}
+  const amounts={annual:99,monthly:12,session:0.99};
+  const labels={annual:'Infinity Hub – Annual',monthly:'Infinity Hub – Monthly',session:'Infinity Hub – Session Pass'};
+  try{
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'createPaymentLink',docType:labels[plan],amount:amounts[plan],
+        redirectUrl:APP_URL+'?paid=true&plan='+plan})});
+    const data=await res.json();
+    if(data.url) window.location.href=data.url;
+    else showPayMsg('Could not create payment link. Please try again.',true);
+  }catch{showPayMsg('Connection error. Please try again.',true);}
+}
+
+async function handlePaidReturn(){
+  const email=localStorage.getItem('wellness_pending_email');
+  const plan=new URLSearchParams(window.location.search).get('plan')
+            ||localStorage.getItem('wellness_pending_plan')||'monthly';
+  if(email){
+    await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'addSubscriber',email,app:APP_NAME,plan})});
+    localStorage.removeItem('wellness_pending_email');
+    localStorage.removeItem('wellness_pending_plan');
+    updateFreeUI();
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════
+function switchTool(tool){
+  document.querySelectorAll('.tool-screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const ts=document.getElementById('tool-'+tool);
+  const ni=document.getElementById('nav-'+tool);
+  if(ts) ts.classList.add('active');
+  if(ni) ni.classList.add('active');
+  if(tool==='journal') renderJournalEntries();
+  if(tool==='mood'){renderMoodCalendar();renderMoodHistory();}
+  if(tool==='habits') renderHabits();
+}
+
+// ══════════════════════════════════════════════════════════
+// CHAT
+// ══════════════════════════════════════════════════════════
+function setChatMood(mood){
+  chatMood=mood;
+  document.querySelectorAll('.chat-mood-btn').forEach(b=>{
+    b.style.borderColor=b.textContent.toLowerCase().includes(mood)?'var(--accent)':'';
+    b.style.color=b.textContent.toLowerCase().includes(mood)?'var(--accent)':'';
+  });
+}
+
+function chatKeydown(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
+}
+
+async function sendMessage(){
+  const input=document.getElementById('chat-input');
+  const text=input.value.trim();
+  if(!text) return;
+
+  const ok=await checkAccess();
+  if(!ok) return;
+
+  input.value='';
+  appendMessage('user',text);
+  chatHistory.push({role:'user',content:text});
+
+  document.getElementById('typing-indicator').style.display='flex';
+  document.getElementById('btn-send').disabled=true;
+
+  const moodCtx = chatMood ? `The user mentioned they are feeling ${chatMood}. ` : '';
+  const systemPrompt = `You are a compassionate, warm AI wellness companion for Infinity Wellness. ${moodCtx}You provide emotional support, active listening, gentle guidance, and coping strategies. 
+
+Your approach:
+- Listen deeply before offering solutions
+- Validate feelings without minimizing them  
+- Ask thoughtful follow-up questions
+- Offer practical coping strategies when appropriate
+- Gently suggest professional help when the situation warrants it
+- NEVER diagnose, prescribe, or replace professional mental health care
+- If the user expresses suicidal thoughts or crisis, immediately and warmly provide crisis resources (988, Crisis Text Line: text HOME to 741741) and encourage them to reach out
+
+Keep responses warm, human, and appropriately concise — this is a conversation, not a lecture. Respond in 2-4 paragraphs maximum.`;
+
+  try{
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'claude',prompt:text,system:systemPrompt,history:chatHistory.slice(-8),email:localStorage.getItem('ig_account_email')||''})});
+    const data=await res.json();
+    const reply=data.result||'I\'m here with you. Can you tell me more about what you\'re experiencing?';
+    chatHistory.push({role:'assistant',content:reply});
+    appendMessage('ai',reply);
+    if(!_subCache) incFree();
+    saveConversation();
+  }catch{
+    appendMessage('ai','I\'m having trouble connecting right now. Please try again in a moment. If you need immediate support, please reach out to the 988 Lifeline.');
+  }
+
+  document.getElementById('typing-indicator').style.display='none';
+  document.getElementById('btn-send').disabled=false;
+}
+
+function appendMessage(role,text){
+  const msgs=document.getElementById('chat-messages');
+  const div=document.createElement('div');
+  div.className=`msg msg-${role}`;
+  const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  div.innerHTML=`<div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div><div class="msg-time">${time}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function saveConversation(){
+  if(!currentUser) return;
+  const key=`wellness_chat_${currentUser.id}`;
+  localStorage.setItem(key,JSON.stringify(chatHistory.slice(-20)));
+}
+
+// ══════════════════════════════════════════════════════════
+// JOURNAL
+// ══════════════════════════════════════════════════════════
+async function getAIPrompt(){
+  const btn=document.querySelector('.btn-ai-prompt');
+  btn.textContent='✨ Getting prompt…'; btn.disabled=true;
+  const prompts=[
+    "What emotion have you been carrying this week that you haven't fully acknowledged yet?",
+    "Describe a moment in the last few days where you felt most like yourself. What was happening?",
+    "What would you tell a close friend who was going through exactly what you're experiencing right now?",
+    "What are three small things that brought you comfort or joy today, even briefly?",
+    "What boundary do you need to set — with someone else, or with yourself — that you've been avoiding?",
+    "Write about something you're proud of that you haven't given yourself credit for.",
+    "What does your body need right now? How long have you been ignoring that need?",
+    "If this difficult period were a chapter in your life story, what would its title be? What comes next?",
+  ];
+  const randomPrompt=prompts[Math.floor(Math.random()*prompts.length)];
+  document.getElementById('journal-body').value=randomPrompt+'\n\n';
+  document.getElementById('journal-body').focus();
+  btn.textContent='✨ Get a personalized AI prompt'; btn.disabled=false;
+}
+
+function usePrompt(btn){
+  document.getElementById('journal-body').value=btn.textContent+'\n\n';
+  document.getElementById('journal-body').focus();
+}
+
+function clearJournal(){
+  document.getElementById('journal-title').value='';
+  document.getElementById('journal-body').value='';
+}
+
+function showJournalMsg(msg,isErr){
+  const el=document.getElementById('journal-save-msg');
+  if(!el) return;
+  el.textContent=msg;
+  el.style.display='block';
+  if(isErr){el.style.background='rgba(255,107,107,.08)';el.style.border='1px solid rgba(255,107,107,.25)';el.style.color='#ff6b6b';}
+  else{el.style.background='rgba(52,211,153,.08)';el.style.border='1px solid rgba(52,211,153,.25)';el.style.color='#34d399';}
+}
+function clearJournalMsg(){const el=document.getElementById('journal-save-msg');if(el)el.style.display='none';}
+
+function saveJournalEntry(){
+  clearJournalMsg();
+  const title=document.getElementById('journal-title').value.trim()||'Untitled entry';
+  const body=document.getElementById('journal-body').value.trim();
+  if(!body){showJournalMsg('Please write something first.',true);return;}
+  const entry={id:Date.now(),title,body,date:new Date().toISOString()};
+  journalEntries.unshift(entry);
+  saveJournalToStorage();
+  clearJournal();
+  renderJournalEntries();
+  updateStreak();
+  const btn=document.getElementById('btn-journal-save');
+  if(btn){const orig=btn.textContent;btn.textContent='✓ Saved!';setTimeout(()=>btn.textContent=orig,2000);}
+}
+
+function saveJournalToStorage(){
+  if(!currentUser) return;
+  localStorage.setItem(`wellness_journal_${currentUser.id}`,JSON.stringify(journalEntries.slice(0,100)));
+}
+
+function loadJournalEntries(){
+  if(!currentUser) return;
+  const saved=localStorage.getItem(`wellness_journal_${currentUser.id}`);
+  journalEntries=saved?JSON.parse(saved):[];
+}
+
+function renderJournalEntries(){
+  const container=document.getElementById('journal-entries');
+  const empty=document.getElementById('journal-empty');
+  const existing=container.querySelectorAll('.journal-entry');
+  existing.forEach(e=>e.remove());
+  if(journalEntries.length===0){empty.style.display='block';return;}
+  empty.style.display='none';
+  journalEntries.slice(0,20).forEach(entry=>{
+    const div=document.createElement('div');
+    div.className='journal-entry';
+    const d=new Date(entry.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    div.innerHTML=`<div class="entry-title">${entry.title}</div><div class="entry-preview">${entry.body}</div><div class="entry-meta">${d}</div>`;
+    div.onclick=()=>viewJournalEntry(entry);
+    container.appendChild(div);
+  });
+}
+
+function viewJournalEntry(entry){
+  document.getElementById('journal-title').value=entry.title;
+  document.getElementById('journal-body').value=entry.body;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════════════════════
+// MOOD
+// ══════════════════════════════════════════════════════════
+const MOOD_EMOJIS=['','😔','😐','🙂','😊','😄'];
+const MOOD_COLORS=['','#ff6b6b','#f0b429','#5eead4','#34d399','#a78bfa'];
+
+function selectMood(val){
+  selectedMood=val;
+  document.querySelectorAll('.mood-scale-btn').forEach(b=>{
+    b.classList.toggle('active',parseInt(b.dataset.mood)===val);
+  });
+}
+
+function quickMood(val){
+  document.querySelectorAll('.mood-emoji-btn').forEach((b,i)=>b.classList.toggle('selected',i+1===val));
+  logMoodValue(val,'');
+}
+
+function showMoodMsg(msg,isErr){
+  const el=document.getElementById('mood-log-msg');
+  if(!el) return;
+  el.textContent=msg;
+  el.style.display='block';
+  if(isErr){el.style.background='rgba(255,107,107,.08)';el.style.border='1px solid rgba(255,107,107,.25)';el.style.color='#ff6b6b';}
+  else{el.style.background='rgba(52,211,153,.08)';el.style.border='1px solid rgba(52,211,153,.25)';el.style.color='#34d399';}
+}
+function clearMoodMsg(){const el=document.getElementById('mood-log-msg');if(el)el.style.display='none';}
+
+function logMood(){
+  clearMoodMsg();
+  if(!selectedMood){showMoodMsg('Please select a mood first.',true);return;}
+  const note=document.getElementById('mood-note').value.trim();
+  logMoodValue(selectedMood,note);
+  document.getElementById('mood-note').value='';
+  selectedMood=0;
+  document.querySelectorAll('.mood-scale-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.querySelector('.mood-log-form .btn-journal-save');
+  if(btn){const orig=btn.textContent;btn.textContent='✓ Logged!';setTimeout(()=>btn.textContent=orig,2000);}
+}
+
+function logMoodValue(val,note){
+  const entry={id:Date.now(),mood:val,note,date:new Date().toISOString()};
+  moodLogs.unshift(entry);
+  saveMoodToStorage();
+  renderMoodCalendar();
+  renderMoodHistory();
+  updateStreak();
+}
+
+function saveMoodToStorage(){
+  if(!currentUser) return;
+  localStorage.setItem(`wellness_mood_${currentUser.id}`,JSON.stringify(moodLogs.slice(0,200)));
+}
+
+function loadMoodLogs(){
+  if(!currentUser) return;
+  const saved=localStorage.getItem(`wellness_mood_${currentUser.id}`);
+  moodLogs=saved?JSON.parse(saved):[];
+}
+
+function renderMoodCalendar(){
+  const cal=document.getElementById('mood-calendar');
+  cal.innerHTML='';
+  const now=new Date();
+  const year=now.getFullYear();
+  const month=now.getMonth();
+  const days=new Date(year,month+1,0).getDate();
+  const dayNames=['S','M','T','W','T','F','S'];
+  dayNames.forEach(d=>{
+    const el=document.createElement('div');
+    el.className='mood-day';
+    el.style.background='transparent';
+    el.style.border='none';
+    el.style.color='var(--muted)';
+    el.style.fontSize='.6rem';
+    el.style.fontWeight='600';
+    el.textContent=d;
+    cal.appendChild(el);
+  });
+  const firstDay=new Date(year,month,1).getDay();
+  for(let i=0;i<firstDay;i++){
+    const el=document.createElement('div');
+    el.className='mood-day';
+    el.style.visibility='hidden';
+    cal.appendChild(el);
+  }
+  for(let d=1;d<=days;d++){
+    const dateStr=new Date(year,month,d).toISOString().slice(0,10);
+    const log=moodLogs.find(m=>m.date.slice(0,10)===dateStr);
+    const el=document.createElement('div');
+    el.className='mood-day'+(log?' has-mood':'');
+    if(log){
+      el.style.background=MOOD_COLORS[log.mood];
+      el.innerHTML=`<span style="font-size:.7rem">${MOOD_EMOJIS[log.mood]}</span>`;
+    } else {
+      el.textContent=d;
+    }
+    cal.appendChild(el);
+  }
+}
+
+function renderMoodHistory(){
+  const hist=document.getElementById('mood-history');
+  const empty=document.getElementById('mood-empty');
+  const existing=hist.querySelectorAll('.mood-entry');
+  existing.forEach(e=>e.remove());
+  if(moodLogs.length===0){empty.style.display='block';return;}
+  empty.style.display='none';
+  moodLogs.slice(0,10).forEach(entry=>{
+    const div=document.createElement('div');
+    div.className='mood-entry';
+    const d=new Date(entry.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    div.innerHTML=`<div class="mood-entry-emoji">${MOOD_EMOJIS[entry.mood]}</div><div class="mood-entry-text">${entry.note||['Struggling','Low','Okay','Good','Great'][entry.mood-1]}</div><div class="mood-entry-date">${d}</div>`;
+    hist.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// MEDITATION
+// ══════════════════════════════════════════════════════════
+const MED_SEQUENCES = {
+  box:       [{phase:'Inhale',dur:4},{phase:'Hold',dur:4},{phase:'Exhale',dur:4},{phase:'Hold',dur:4}],
+  '478':     [{phase:'Inhale',dur:4},{phase:'Hold',dur:7},{phase:'Exhale',dur:8}],
+  deep:      [{phase:'Inhale',dur:5},{phase:'Exhale',dur:5}],
+  body:      [{phase:'Breathe slowly',dur:6},{phase:'Release',dur:6}],
+  gratitude: [{phase:'Inhale love',dur:5},{phase:'Exhale gratitude',dur:5}],
+  stress:    [{phase:'Inhale',dur:4},{phase:'Exhale',dur:6}],
+};
+
+function startMed(type,title,sub,pattern,totalMin){
+  medType=type;
+  medSecondsLeft=totalMin*60;
+  document.getElementById('med-title').textContent=title;
+  document.getElementById('med-sub').textContent=sub;
+  document.getElementById('med-timer').textContent=fmtTime(medSecondsLeft);
+  document.getElementById('med-instruction').textContent='Press start when you\'re ready';
+  document.getElementById('breath-circle').textContent='Ready';
+  document.getElementById('breath-circle').className='breath-circle';
+  document.getElementById('med-start-btn').textContent='Start';
+  document.getElementById('med-grid').style.display='none';
+  document.getElementById('med-player').classList.add('active');
+  medRunning=false;
+  clearInterval(medInterval);
+  clearInterval(breathInterval);
+}
+
+function toggleMed(){
+  if(medRunning){pauseMed();}else{resumeMed();}
+}
+
+function resumeMed(){
+  medRunning=true;
+  document.getElementById('med-start-btn').textContent='Pause';
+  medInterval=setInterval(()=>{
+    medSecondsLeft--;
+    document.getElementById('med-timer').textContent=fmtTime(medSecondsLeft);
+    if(medSecondsLeft<=0){completeMed();}
+  },1000);
+  startBreathCycle();
+}
+
+function pauseMed(){
+  medRunning=false;
+  document.getElementById('med-start-btn').textContent='Resume';
+  clearInterval(medInterval);
+  clearInterval(breathInterval);
+}
+
+let breathStep=0, breathStepTimer=0;
+function startBreathCycle(){
+  clearInterval(breathInterval);
+  const seq=MED_SEQUENCES[medType]||MED_SEQUENCES.deep;
+  breathStep=0; breathStepTimer=0;
+  const circle=document.getElementById('breath-circle');
+  const instr=document.getElementById('med-instruction');
+
+  function tick(){
+    const s=seq[breathStep];
+    instr.textContent=s.phase;
+    circle.textContent=s.dur-breathStepTimer+'s';
+    if(s.phase.toLowerCase().includes('inhale')||s.phase.toLowerCase().includes('love')){
+      circle.className='breath-circle inhale';
+    } else if(s.phase.toLowerCase().includes('exhale')||s.phase.toLowerCase().includes('gratitude')){
+      circle.className='breath-circle exhale';
+    } else {
+      circle.className='breath-circle';
+    }
+    breathStepTimer++;
+    if(breathStepTimer>=s.dur){breathStep=(breathStep+1)%seq.length;breathStepTimer=0;}
+  }
+  tick();
+  breathInterval=setInterval(tick,1000);
+}
+
+function completeMed(){
+  clearInterval(medInterval);
+  clearInterval(breathInterval);
+  medRunning=false;
+  document.getElementById('med-instruction').textContent='Well done. Take a moment to notice how you feel.';
+  document.getElementById('breath-circle').textContent='✓';
+  document.getElementById('breath-circle').className='breath-circle';
+  document.getElementById('med-start-btn').textContent='Done';
+  document.getElementById('med-start-btn').onclick=endMed;
+  updateStreak();
+}
+
+function endMed(){
+  clearInterval(medInterval);
+  clearInterval(breathInterval);
+  medRunning=false;
+  document.getElementById('med-player').classList.remove('active');
+  document.getElementById('med-grid').style.display='';
+  document.getElementById('med-start-btn').onclick=toggleMed;
+}
+
+function fmtTime(s){return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;}
+
+// ══════════════════════════════════════════════════════════
+// HABITS
+// ══════════════════════════════════════════════════════════
+function loadHabits(){
+  if(!currentUser) return;
+  const saved=localStorage.getItem(`wellness_habits_${currentUser.id}`);
+  habits=saved?JSON.parse(saved):[];
+}
+
+function saveHabits(){
+  if(!currentUser) return;
+  localStorage.setItem(`wellness_habits_${currentUser.id}`,JSON.stringify(habits));
+}
+
+function addHabit(){
+  const input=document.getElementById('habit-new');
+  const name=input.value.trim();
+  if(!name) return;
+  habits.push({id:Date.now(),name,streak:0,history:[],createdAt:new Date().toISOString()});
+  input.value='';
+  saveHabits();
+  renderHabits();
+}
+
+function addSuggestedHabit(btn){
+  const name=btn.textContent.trim();
+  if(habits.find(h=>h.name===name)) return;
+  habits.push({id:Date.now(),name,streak:0,history:[],createdAt:new Date().toISOString()});
+  saveHabits();
+  renderHabits();
+  switchTool('habits');
+}
+
+function toggleHabit(id){
+  const today=new Date().toISOString().slice(0,10);
+  const h=habits.find(h=>h.id===id);
+  if(!h) return;
+  if(h.history[0]===today){
+    h.history.shift(); h.streak=Math.max(0,h.streak-1);
+  } else {
+    h.history.unshift(today);
+    const yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
+    h.streak = (h.history[1]===yesterday||h.history.length===1) ? h.streak+1 : 1;
+  }
+  saveHabits();
+  renderHabits();
+  updateStreak();
+}
+
+function deleteHabit(id){
+  habits=habits.filter(h=>h.id!==id);
+  saveHabits();
+  renderHabits();
+}
+
+function renderHabits(){
+  const list=document.getElementById('habit-list');
+  const empty=document.getElementById('habit-empty');
+  const existing=list.querySelectorAll('.habit-item');
+  existing.forEach(e=>e.remove());
+  if(habits.length===0){empty.style.display='block';updateHabitProgress(0,0);return;}
+  empty.style.display='none';
+  const today=new Date().toISOString().slice(0,10);
+  let done=0;
+  habits.forEach(h=>{
+    const isDone=h.history[0]===today;
+    if(isDone) done++;
+    const div=document.createElement('div');
+    div.className='habit-item';
+    const last7=[];
+    for(let i=6;i>=0;i--){
+      const d=new Date(Date.now()-i*86400000).toISOString().slice(0,10);
+      last7.push(h.history.includes(d));
+    }
+    const dots=last7.map(d=>`<div class="habit-day-dot${d?' done':''}"></div>`).join('');
+    div.innerHTML=`
+      <div class="habit-check${isDone?' done':''}" onclick="toggleHabit(${h.id})">${isDone?'✓':''}</div>
+      <div style="flex:1">
+        <div class="habit-name">${h.name}</div>
+        <div class="habit-week">${dots}</div>
+      </div>
+      ${h.streak>1?`<div class="habit-streak">🔥 ${h.streak}</div>`:''}
+      <button class="habit-del" onclick="deleteHabit(${h.id})">✕</button>`;
+    list.appendChild(div);
+  });
+  updateHabitProgress(done,habits.length);
+}
+
+function updateHabitProgress(done,total){
+  const pct=total>0?Math.round(done/total*100):0;
+  document.getElementById('habit-progress').style.width=pct+'%';
+}
+
+// ══════════════════════════════════════════════════════════
+// STREAK
+// ══════════════════════════════════════════════════════════
+function updateStreak(){
+  if(!currentUser) return;
+  const key=`wellness_streak_${currentUser.id}`;
+  const today=new Date().toISOString().slice(0,10);
+  const saved=JSON.parse(localStorage.getItem(key)||'{"count":0,"lastDate":""}');
+  const yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
+  if(saved.lastDate===today){return;}
+  const count=saved.lastDate===yesterday?saved.count+1:1;
+  localStorage.setItem(key,JSON.stringify({count,lastDate:today}));
+  updateStreakUI();
+}
+
+function updateStreakUI(){
+  if(!currentUser) return;
+  const key=`wellness_streak_${currentUser.id}`;
+  const saved=JSON.parse(localStorage.getItem(key)||'{"count":0}');
+  document.getElementById('streak-count').textContent=saved.count||0;
+}
+
+// ══════════════════════════════════════════════════════════
+// DOWNLOADS
+// ══════════════════════════════════════════════════════════
+function downloadChat(){
+  if(!chatHistory.length){return;}
+  const date=new Date().toISOString().slice(0,10);
+  const text=chatHistory.map(m=>(m.role==='user'?'You':'Companion')+': '+m.content).join('\n\n');
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent('Infinity Wellness — Conversation\n'+date+'\n\n'+text);
+  a.download='wellness-chat-'+date+'.txt';
+  a.click();
+}
+
+function downloadJournalEntries(){
+  if(!journalEntries.length){return;}
+  const date=new Date().toISOString().slice(0,10);
+  const text=journalEntries.map(e=>{
+    const d=new Date(e.date).toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    return '── '+e.title+' ('+d+')\n\n'+e.body;
+  }).join('\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n');
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent('Infinity Wellness — Journal\nExported '+date+'\n\n'+text);
+  a.download='wellness-journal-'+date+'.txt';
+  a.click();
+}
+
+// ══════════════════════════════════════════════════════════
+// AUTO LOGIN
+// ══════════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  // 1. Own saved session
+  const saved=localStorage.getItem('wellness_user');
+  if(saved){
+    try{
+      const u=JSON.parse(saved);
+      if(u?.id&&u?.email){currentUser=u;initApp();return;}
+      else localStorage.removeItem('wellness_user');
+    }catch{localStorage.removeItem('wellness_user');}
+  }
+  // 2. Shared session set by account page (reliable)
+  try{
+    const token=localStorage.getItem('ig_account_token');
+    const email=localStorage.getItem('ig_account_email');
+    const name =localStorage.getItem('ig_account_name');
+    if(token&&email){
+      const p=JSON.parse(atob(token.split('.')[1]));
+      if(!p.exp||Date.now()/1000<p.exp){
+        loginSuccess({id:p.sub,email},token,name||email.split('@')[0]);
+        return;
+      }
+    }
+  }catch(e){}
+  // 2b. Fallback: raw Supabase session key (older sessions)
+  try{
+    const raw=localStorage.getItem('sb-zcvkgevcrgsujnqovxgd-auth-token');
+    if(raw){
+      const parsed=JSON.parse(raw);
+      const sess=parsed?.currentSession||parsed?.session||parsed;
+      const user=sess?.user;
+      const token=sess?.access_token;
+      const exp=sess?.expires_at;
+      if(user?.email&&token&&(!exp||Date.now()/1000<exp)){
+        loginSuccess(user,token,user.user_metadata?.name||user.email.split('@')[0]);
+        return;
+      }
+    }
+  }catch(e){}
+  // 3. Pre-fill email if known
+  const storedEmail=localStorage.getItem('ig_account_email');
+  if(storedEmail){
+    const li=document.getElementById('login-email');
+    if(li) li.value=storedEmail;
+  }
+});
+</script>
+</body>
+</html>

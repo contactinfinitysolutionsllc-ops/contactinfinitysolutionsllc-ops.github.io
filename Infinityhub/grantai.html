@@ -1,0 +1,1040 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrantAI — Grant Finder & Writer | Infinity Solutions</title>
+<meta name="description" content="Find grants you qualify for and generate professional grant proposals. Grant writers charge $5,000. We charge $9.99.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;--bg2:#0e1320;--bg3:#141928;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);
+  --text:#f0f2f8;--muted:#7a8099;--muted2:#a0a8c0;
+  --accent:#22c55e;--accent2:#4ade80;--accent3:#052e16;
+  --gold:#f0b429;--blue:#4f8eff;--red:#ff6b6b;--purple:#a78bfa;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(8,11,18,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--text);text-decoration:none}
+.logo em{color:var(--accent);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:1.2rem}
+.nav-back{font-size:.8rem;color:var(--muted2);text-decoration:none;transition:color .18s}
+.nav-back:hover{color:var(--text)}
+.nav-badge{font-size:.72rem;font-weight:700;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.22);color:var(--accent2);padding:.25rem .7rem;border-radius:100px}
+
+.hero{padding:7rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:350px;background:radial-gradient(ellipse,rgba(34,197,94,.08) 0%,transparent 70%);pointer-events:none}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,5vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-.025em;margin-bottom:1rem;animation:up .6s ease both}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero-sub{font-size:1rem;color:var(--muted2);max-width:520px;margin:0 auto 1.5rem;line-height:1.7;font-weight:300;animation:up .6s .1s ease both}
+.hero-sub strong{color:var(--text);font-weight:500}
+.price-strip{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;animation:up .6s .15s ease both}
+.price-pill{background:var(--bg2);border:1px solid var(--border2);border-radius:100px;padding:.35rem 1rem;font-size:.8rem;color:var(--muted2)}
+.price-pill strong{color:var(--text);font-weight:600}
+
+/* TOOL TABS */
+.tool-tabs{display:flex;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:4px;gap:4px;max-width:500px;margin:0 auto 2rem}
+.tool-tab{flex:1;padding:.75rem;text-align:center;border-radius:10px;cursor:pointer;transition:all .18s;font-family:inherit}
+.tool-tab:hover{background:var(--bg3)}
+.tool-tab.active{background:var(--accent3);border:1px solid rgba(34,197,94,.25)}
+.tt-icon{font-size:1.2rem;display:block;margin-bottom:.2rem}
+.tt-name{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;color:var(--text);display:block}
+.tt-desc{font-size:.68rem;color:var(--muted2);display:block}
+
+.app-wrap{max-width:800px;margin:0 auto;padding:0 1rem 5rem}
+
+.panel{display:none;animation:up .25s ease both}
+.panel.active{display:block}
+
+/* SUB BAR */
+.btn-sub{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.55rem 1.1rem;border-radius:100px;background:var(--accent);color:var(--accent3);border:none;cursor:pointer;white-space:nowrap;transition:all .18s}
+.btn-sub:hover{background:var(--accent2)}
+
+/* FORM */
+.form-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem}
+.form-card-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.25rem}
+.form-card-sub{font-size:.8rem;color:var(--muted2);margin-bottom:1.1rem;font-weight:300}
+.fg{margin-bottom:.9rem}
+.fg label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);margin-bottom:.35rem}
+.fi{width:100%;padding:.68rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none;transition:border-color .18s;resize:vertical}
+.fi:focus{border-color:var(--accent);background:var(--bg2)}
+.fi::placeholder{color:var(--muted)}
+select.fi option{background:var(--bg2)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+.btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;padding:.78rem 1.8rem;border-radius:100px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;width:100%}
+.btn-p{background:var(--accent);color:var(--accent3)}
+.btn-p:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(34,197,94,.2)}
+.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--muted2)}
+.btn-ghost:hover{color:var(--text)}
+
+.loading{display:none;text-align:center;padding:2.5rem}
+.spinner{width:34px;height:34px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto .8rem}
+.loading p{font-size:.85rem;color:var(--muted2);font-weight:300}
+
+/* GRANT RESULTS */
+.grants-wrap{display:none;margin-top:1rem;animation:up .25s ease both}
+.grants-summary{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;font-size:.85rem;color:var(--muted2);line-height:1.6}
+.grants-summary strong{color:var(--accent);font-family:'Syne',sans-serif}
+.grant-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:10px;transition:border-color .18s}
+.grant-card:hover{border-color:var(--border2)}
+.grant-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;margin-bottom:.5rem}
+.grant-name{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;flex:1}
+.grant-amount{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--accent);white-space:nowrap}
+.grant-org{font-size:.76rem;color:var(--accent2);margin-bottom:.4rem}
+.grant-desc{font-size:.84rem;color:var(--muted2);line-height:1.6;margin-bottom:.6rem}
+.grant-tags{display:flex;gap:6px;flex-wrap:wrap}
+.grant-tag{font-size:.68rem;font-weight:600;padding:.2rem .65rem;border-radius:100px;background:var(--bg3);border:1px solid var(--border);color:var(--muted2)}
+.grant-tag.deadline{color:var(--gold);border-color:rgba(240,180,41,.25)}
+.grant-tag.match{color:var(--accent);border-color:rgba(34,197,94,.25)}
+.btn-use-grant{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.4rem .9rem;border-radius:100px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:var(--accent);cursor:pointer;transition:all .18s;margin-top:.7rem}
+.btn-use-grant:hover{background:rgba(34,197,94,.18)}
+
+/* PROPOSAL OUTPUT */
+.output-wrap{display:none;margin-top:1rem;animation:up .25s ease both}
+.output-tabs{display:flex;gap:6px;margin-bottom:.8rem;flex-wrap:wrap}
+.out-tab{background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.3rem .9rem;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .18s;color:var(--muted2);font-family:inherit}
+.out-tab:hover{color:var(--text)}
+.out-tab.active{background:var(--accent);color:var(--accent3);border-color:var(--accent)}
+.out-pane{display:none}
+.out-pane.active{display:block}
+.output-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.4rem;font-size:.88rem;line-height:1.9;white-space:pre-wrap;color:var(--muted2);max-height:520px;overflow-y:auto;margin-bottom:.8rem}
+.out-actions{display:flex;gap:8px}
+.btn-copy{background:var(--bg2);border:1px solid var(--border2);color:var(--muted2);font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.6rem 1.2rem;border-radius:100px;cursor:pointer;transition:all .18s;flex:1}
+.btn-copy:hover{color:var(--text)}
+.btn-copy.ok{color:var(--accent);border-color:var(--accent)}
+
+/* PAY BOX */
+.pay-box{background:var(--bg2);border:1px solid rgba(34,197,94,.2);border-radius:16px;padding:1.8rem;margin-top:1rem;text-align:center;display:none}
+.pay-box h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.4rem}
+.pay-box p{font-size:.84rem;color:var(--muted2);margin-bottom:1.2rem;font-weight:300;line-height:1.6}
+.pay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:520px;margin:0 auto 1rem}
+.pay-opt{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.85rem .7rem;cursor:pointer;transition:all .18s;text-align:center}
+.pay-opt:hover{border-color:var(--accent)}
+.pay-opt.pw-annual{border-color:rgba(240,180,41,.45);background:rgba(240,180,41,.06)}
+.pay-opt.pw-monthly{border-color:rgba(34,197,94,.35)}
+.pay-opt.pw-session{opacity:.85}
+.pw-badge{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f0b429;margin-bottom:.25rem}
+.pay-price{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--accent)}
+.pay-label{font-size:.68rem;color:var(--muted2);margin-top:3px;line-height:1.3}
+.pay-email{width:100%;max-width:380px;margin:0 auto .8rem;display:block;padding:.65rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none}
+.pay-email:focus{border-color:var(--accent)}
+
+.trust{background:var(--bg2);border-top:1px solid var(--border);padding:1.2rem 2rem;display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:2rem}
+.trust-item{font-size:.74rem;color:var(--muted2);display:flex;align-items:center;gap:.4rem}
+.trust-item em{color:var(--accent);font-style:normal}
+footer{text-align:center;padding:1.5rem;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border)}
+footer a{color:var(--accent2);text-decoration:none}
+@media(max-width:580px){.form-row,.form-row-3,.pay-grid{grid-template-columns:1fr}nav{padding:1rem 1.2rem}.tool-tab .tt-desc{display:none}}
+
+.btn-sub{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.45rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .18s}
+.btn-sub:hover{background:var(--accent2)}
+.btn-sub.signed-in{background:transparent;border:1px solid rgba(52,211,153,.3);color:var(--green);cursor:default}
+.sub-bar{background:rgba(79,142,255,.06);border:1px solid rgba(79,142,255,.15);border-radius:12px;padding:.75rem 1rem;display:flex;gap:.75rem;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;transition:all .3s}
+.sub-bar.signed-in{background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.2)}
+.sub-bar-lbl{font-size:.8rem;color:var(--muted2);flex:1;line-height:1.5}
+.sub-bar-lbl.ok{color:var(--green)}
+.btn-sub{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.45rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .18s}
+.btn-sub:hover{background:var(--accent2)}
+.btn-sub.signed-in{background:transparent;border:1px solid rgba(52,211,153,.3);color:var(--green)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://infinityhub.dev" class="logo">Infinity<em>.</em>Solutions</a>
+  <div class="nav-right">
+    <a href="https://infinityhub.dev" class="nav-back">← Hub</a>
+    <span class="nav-badge">GrantAI</span>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="eyebrow">Grant Finder · Proposal Writer · Nonprofits & Small Business</div>
+  <h1>Find grants. Win them.<br><em>Without the agency fees.</em></h1>
+  <p class="hero-sub">Find grants you actually qualify for, then generate a full professional proposal — executive summary, statement of need, goals, budget narrative, and more. <strong>Grant writers charge $2,000–5,000 per application. We charge $9.99.</strong></p>
+  <div class="price-strip">
+    <div class="price-pill"><strong>$2.99</strong> grant search</div>
+    <div class="price-pill"><strong>$9.99</strong> full proposal</div>
+    <div class="price-pill"><strong>$24.99/mo</strong> unlimited</div>
+  </div>
+</div>
+
+<div class="app-wrap">
+
+  <div class="sub-bar" id="sub-bar">
+    <span class="sub-bar-lbl" id="sub-bar-lbl">Sign in to use this tool.</span>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/account/" id="sub-bar-btn" class="btn-sub">Sign In →</a>
+  </div>
+
+  <div class="tool-tabs">
+    <div class="tool-tab active" onclick="switchTool('finder',this)">
+      <span class="tt-icon">🔍</span>
+      <span class="tt-name">Grant Finder</span>
+      <span class="tt-desc">Find grants you qualify for</span>
+    </div>
+    <div class="tool-tab" onclick="switchTool('writer',this)">
+      <span class="tt-icon">✍️</span>
+      <span class="tt-name">Proposal Writer</span>
+      <span class="tt-desc">Write a full grant proposal</span>
+    </div>
+  </div>
+
+  <!-- GRANT FINDER -->
+  <div class="panel active" id="panel-finder">
+    <div class="form-card">
+      <div class="form-card-title">Tell us about your organization</div>
+      <div class="form-card-sub">We'll match you with grants from federal programs, foundations, and other sources you're most likely to qualify for.</div>
+
+      <div class="form-row">
+        <div class="fg">
+          <label>Organization type *</label>
+          <select class="fi" id="f-orgtype">
+            <option value="nonprofit 501(c)(3)">Nonprofit 501(c)(3)</option>
+            <option value="small business">Small business</option>
+            <option value="individual / sole proprietor">Individual / sole proprietor</option>
+            <option value="faith-based organization">Faith-based organization</option>
+            <option value="school or educational institution">School / educational institution</option>
+            <option value="government / tribal entity">Government / tribal entity</option>
+            <option value="startup / early-stage company">Startup / early-stage</option>
+            <option value="community organization">Community organization</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>State / location *</label>
+          <input type="text" class="fi" id="f-state" placeholder="e.g. Vermont, nationwide, rural Midwest">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="fg">
+          <label>Focus area / industry *</label>
+          <select class="fi" id="f-focus">
+            <option value="arts and culture">Arts & culture</option>
+            <option value="education and youth development">Education & youth</option>
+            <option value="environment and conservation">Environment & conservation</option>
+            <option value="health and mental health">Health & mental health</option>
+            <option value="food security and hunger relief">Food security & hunger</option>
+            <option value="housing and homelessness">Housing & homelessness</option>
+            <option value="economic development and job creation">Economic development & jobs</option>
+            <option value="technology and innovation">Technology & innovation</option>
+            <option value="social justice and equity">Social justice & equity</option>
+            <option value="veterans and military families">Veterans & military</option>
+            <option value="women and girls">Women & girls</option>
+            <option value="agriculture and rural development">Agriculture & rural</option>
+            <option value="small business development">Small business development</option>
+            <option value="community development">Community development</option>
+            <option value="research and science">Research & science</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Annual budget / revenue</label>
+          <select class="fi" id="f-budget">
+            <option value="under $50,000">Under $50,000</option>
+            <option value="$50,000–$250,000">$50K–$250K</option>
+            <option value="$250,000–$1 million">$250K–$1M</option>
+            <option value="over $1 million">Over $1M</option>
+            <option value="pre-revenue / startup">Pre-revenue / startup</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Describe your organization and what you do *</label>
+        <textarea class="fi" id="f-orgdesc" rows="3" placeholder="e.g. We are a Vermont-based nonprofit that provides free after-school tutoring and mentorship to at-risk youth ages 10-18 in low-income communities. Founded in 2019, we serve 200+ students annually."></textarea>
+      </div>
+
+      <div class="fg">
+        <label>What do you need funding for? *</label>
+        <textarea class="fi" id="f-need" rows="3" placeholder="e.g. We need funding to expand our tutoring program to 2 new schools, hire 3 part-time staff, and purchase laptops and educational materials for students who don't have access at home."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="fg">
+          <label>Grant amount needed</label>
+          <select class="fi" id="f-amount">
+            <option value="under $10,000">Under $10,000</option>
+            <option value="$10,000–$50,000">$10K–$50K</option>
+            <option value="$50,000–$100,000">$50K–$100K</option>
+            <option value="$100,000–$500,000">$100K–$500K</option>
+            <option value="over $500,000">Over $500K</option>
+            <option value="any amount">Any amount</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Timeline</label>
+          <select class="fi" id="f-timeline">
+            <option value="as soon as possible">ASAP</option>
+            <option value="within 3 months">Within 3 months</option>
+            <option value="within 6 months">Within 6 months</option>
+            <option value="within 1 year">Within 1 year</option>
+            <option value="ongoing / no rush">Ongoing / no rush</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Any specific demographics or populations you serve?</label>
+        <input type="text" class="fi" id="f-demo" placeholder="e.g. low-income families, BIPOC communities, veterans, rural residents, seniors">
+      </div>
+
+      <button class="btn btn-p" onclick="findGrants()">Find My Grants →</button>
+    </div>
+    <div id="finder-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;"></div>
+
+    <div class="loading" id="finder-loading">
+      <div class="spinner"></div>
+      <p>Searching for grants you qualify for…</p>
+    </div>
+
+    <div class="grants-wrap" id="grants-wrap">
+      <div class="grants-summary" id="grants-summary"></div>
+      <div id="grants-list"></div>
+      <div class="out-actions" style="margin-top:1rem">
+        <button class="btn-copy" onclick="copyGrants(this)">📋 Copy all results</button>
+        <button class="btn-copy" onclick="downloadGrants()">⬇ Download .txt</button>
+        <button class="btn-copy" onclick="resetFinder()">← New search</button>
+      </div>
+    </div>
+
+    <div class="pay-box" id="finder-pay-box">
+      <h3>Unlock your grant matches</h3>
+      <p>One subscription covers <em>all</em> Infinity Hub tools — monthly or annual. Already subscribed? Enter your email to unlock.</p>
+      <input type="email" class="pay-email" id="finder-pay-email" placeholder="Your email address">
+      <div id="finder-pay-error" style="display:none;margin:.4rem auto .6rem;max-width:380px;padding:.6rem .9rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;text-align:left"></div>
+      <div class="pay-grid">
+        <div class="pay-opt pw-annual" onclick="handlePay('annual')">
+          <div class="pw-badge">Best Value</div><div class="pay-price">$99/yr</div>
+          <div class="pay-label">Annual · save 31%</div>
+        </div>
+        <div class="pay-opt pw-monthly" onclick="handlePay('monthly')">
+          <div class="pay-price">$12/mo</div>
+          <div class="pay-label">Monthly</div>
+        </div>
+        <div class="pay-opt pw-session" onclick="handlePay('session')">
+          <div class="pay-price">$0.99</div>
+          <div class="pay-label">24-hr pass</div>
+        </div>
+      </div>
+      <p style="font-size:.7rem;color:var(--muted)">Secured by Square · Cancel anytime</p>
+    </div>
+  </div>
+
+  <!-- PROPOSAL WRITER -->
+  <div class="panel" id="panel-writer">
+    <div class="form-card">
+      <div class="form-card-title">Grant proposal details</div>
+      <div class="form-card-sub">Fill in your organization and project details. The more specific you are, the stronger the proposal.</div>
+
+      <div class="form-row">
+        <div class="fg">
+          <label>Organization name *</label>
+          <input type="text" class="fi" id="w-orgname" placeholder="Your organization name">
+        </div>
+        <div class="fg">
+          <label>Organization type</label>
+          <select class="fi" id="w-orgtype">
+            <option value="nonprofit 501(c)(3)">Nonprofit 501(c)(3)</option>
+            <option value="small business">Small business</option>
+            <option value="community organization">Community organization</option>
+            <option value="school">School</option>
+            <option value="government entity">Government entity</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Grant / funder name (optional)</label>
+        <input type="text" class="fi" id="w-funder" placeholder="e.g. USDA Community Facilities Grant, Robert Wood Johnson Foundation">
+      </div>
+
+      <div class="fg">
+        <label>About your organization *</label>
+        <textarea class="fi" id="w-orgdesc" rows="3" placeholder="Mission, founding year, what you do, who you serve, your track record and impact so far."></textarea>
+      </div>
+
+      <div class="fg">
+        <label>Project title *</label>
+        <input type="text" class="fi" id="w-title" placeholder="e.g. Expanding After-School STEM Access for Underserved Youth in Burlington, VT">
+      </div>
+
+      <div class="fg">
+        <label>Project description *</label>
+        <textarea class="fi" id="w-project" rows="4" placeholder="Describe the specific project or program you need funding for. What will you do, how, where, and over what timeframe?"></textarea>
+      </div>
+
+      <div class="fg">
+        <label>The problem / need you're addressing *</label>
+        <textarea class="fi" id="w-need" rows="3" placeholder="What problem exists in your community? Why is this project needed? Include data or statistics if you have them."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="fg">
+          <label>Funding amount requested</label>
+          <input type="text" class="fi" id="w-amount" placeholder="e.g. $75,000">
+        </div>
+        <div class="fg">
+          <label>Project duration</label>
+          <input type="text" class="fi" id="w-duration" placeholder="e.g. 12 months, 2 years">
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Target population / who you serve</label>
+        <input type="text" class="fi" id="w-population" placeholder="e.g. 150 low-income youth ages 10-18 in Chittenden County, VT">
+      </div>
+
+      <div class="fg">
+        <label>Goals and expected outcomes</label>
+        <textarea class="fi" id="w-outcomes" rows="3" placeholder="e.g. By end of year 1: serve 150 students, 80% show improved academic performance, open 2 new program sites, hire 3 staff members."></textarea>
+      </div>
+
+      <div class="fg">
+        <label>Budget breakdown (optional)</label>
+        <textarea class="fi" id="w-budget" rows="2" placeholder="e.g. Personnel: $45,000 | Equipment/supplies: $15,000 | Operations: $10,000 | Evaluation: $5,000"></textarea>
+      </div>
+
+      <div class="fg">
+        <label>Proposal sections to generate</label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:.3rem" id="sections-row">
+          <button class="tone-btn active" data-sec="executive_summary" onclick="toggleSec(this)">Executive Summary</button>
+          <button class="tone-btn active" data-sec="statement_of_need" onclick="toggleSec(this)">Statement of Need</button>
+          <button class="tone-btn active" data-sec="project_description" onclick="toggleSec(this)">Project Description</button>
+          <button class="tone-btn active" data-sec="goals_objectives" onclick="toggleSec(this)">Goals & Objectives</button>
+          <button class="tone-btn active" data-sec="evaluation_plan" onclick="toggleSec(this)">Evaluation Plan</button>
+          <button class="tone-btn active" data-sec="budget_narrative" onclick="toggleSec(this)">Budget Narrative</button>
+          <button class="tone-btn active" data-sec="organizational_capacity" onclick="toggleSec(this)">Org Capacity</button>
+        </div>
+      </div>
+
+      <button class="btn btn-p" onclick="writeProposal()">Generate Full Proposal →</button>
+    </div>
+    <div id="writer-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;"></div>
+
+    <div class="loading" id="writer-loading">
+      <div class="spinner"></div>
+      <p>Writing your grant proposal… This may take 30–60 seconds for a full proposal.</p>
+    </div>
+
+    <div class="output-wrap" id="output-wrap">
+      <div class="output-tabs" id="output-tabs"></div>
+      <div id="output-panes"></div>
+      <div class="out-actions" style="margin-top:.8rem">
+        <button class="btn-copy" onclick="copyFullProposal(this)">📋 Copy full proposal</button>
+        <button class="btn-copy" onclick="downloadFullProposal()">⬇ Download full proposal</button>
+        <button class="btn-copy" onclick="resetWriter()">← New proposal</button>
+      </div>
+    </div>
+
+    <div class="pay-box" id="writer-pay-box">
+      <h3>Unlock your grant proposal</h3>
+      <p>One subscription covers <em>all</em> Infinity Hub tools — monthly or annual.</p>
+      <input type="email" class="pay-email" id="writer-pay-email" placeholder="Your email address">
+      <div id="writer-pay-error" style="display:none;margin:.4rem auto .6rem;max-width:380px;padding:.6rem .9rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;text-align:left"></div>
+      <div class="pay-grid">
+        <div class="pay-opt pw-annual" onclick="handlePay('annual')">
+          <div class="pw-badge">Best Value</div><div class="pay-price">$99/yr</div>
+          <div class="pay-label">Annual · save 31%</div>
+        </div>
+        <div class="pay-opt pw-monthly" onclick="handlePay('monthly')">
+          <div class="pay-price">$12/mo</div>
+          <div class="pay-label">Monthly</div>
+        </div>
+        <div class="pay-opt pw-session" onclick="handlePay('session')">
+          <div class="pay-price">$0.99</div>
+          <div class="pay-label">24-hr pass</div>
+        </div>
+      </div>
+      <p style="font-size:.7rem;color:var(--muted)">Secured by Square · Cancel anytime</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="trust">
+  <div class="trust-item"><em>🔍</em> Real grant matches</div>
+  <div class="trust-item"><em>✍️</em> Full proposals generated</div>
+  <div class="trust-item"><em>📊</em> Budget narratives included</div>
+  <div class="trust-item"><em>💸</em> 99% cheaper than grant writers</div>
+</div>
+
+<footer>
+  <p>© 2026 <a href="https://infinityhub.dev">Infinity Solutions LLC</a> · All Rights Reserved · <a href="https://contact.infinityhub.dev">Support</a> · <a href="https://contactinfinitysolutionsllc-ops.github.io/terms/">Terms</a></p>
+</footer>
+
+<style>
+.tone-btn{background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:.28rem .85rem;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .18s;color:var(--muted2);font-family:inherit}
+.tone-btn:hover{border-color:var(--border2);color:var(--text)}
+.tone-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(34,197,94,.08)}
+</style>
+
+<script>
+const WORKER_URL = 'https://justdocs-worker.robertjosephreynolds.workers.dev';
+const APP_NAME          = 'grantai';
+const APP_URL           = 'https://contactinfinitysolutionsllc-ops.github.io/grantai/';
+const SQUARE_MONTHLY_URL = 'https://square.link/u/pCpKBYg8'; // replace with Square monthly plan link once created
+const SQUARE_ANNUAL_URL  = 'https://square.link/u/zRrTqrz3'; // replace with Square annual plan link once created
+let subscribedUnlocked = false;
+let selectedSections   = new Set(['executive_summary','statement_of_need','project_description','goals_objectives','evaluation_plan','budget_narrative','organizational_capacity']);
+let lastGrants  = '';
+let lastResults = {};
+let currentTool = 'finder';
+
+// ── TOOL SWITCH ──────────────────────────────────────────
+function switchTool(tool, tab){
+  currentTool=tool;
+  document.querySelectorAll('.tool-tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tool).classList.add('active');
+}
+
+function toggleSec(btn){
+  const key=btn.dataset.sec;
+  if(selectedSections.has(key)){
+    if(selectedSections.size===1) return;
+    selectedSections.delete(key);
+    btn.classList.remove('active');
+  }else{
+    selectedSections.add(key);
+    btn.classList.add('active');
+  }
+}
+
+// ── SUBSCRIPTION ─────────────────────────────────────────
+let _subCache = null;
+// isSubscribed → see getStoredSession() below
+
+// ── INLINE ERRORS ────────────────────────────────────────
+function showFinderErr(msg){ const e=document.getElementById('finder-error'); if(e){e.textContent=msg;e.style.display='block';} }
+function clearFinderErr(){ const e=document.getElementById('finder-error'); if(e) e.style.display='none'; }
+function showWriterErr(msg){ const e=document.getElementById('writer-error'); if(e){e.textContent=msg;e.style.display='block';} }
+function clearWriterErr(){ const e=document.getElementById('writer-error'); if(e) e.style.display='none'; }
+function showPayErr(id,msg){ const e=document.getElementById(id); if(e){e.textContent=msg;e.style.display='block';} }
+function clearPayErr(id){ const e=document.getElementById(id); if(e) e.style.display='none'; }
+
+// ── GRANT FINDER ─────────────────────────────────────────
+async function findGrants(){
+  clearFinderErr();
+  const orgtype=document.getElementById('f-orgtype').value;
+  const state=document.getElementById('f-state').value.trim();
+  const focus=document.getElementById('f-focus').value;
+  const orgdesc=document.getElementById('f-orgdesc').value.trim();
+  const need=document.getElementById('f-need').value.trim();
+  if(!state||!orgdesc||!need){showFinderErr('Please fill in your location, organization description, and funding need.');return;}
+
+  const sub=subscribedUnlocked||await isSubscribed();
+  if(!sub){
+    document.getElementById('finder-pay-box').style.display='block';
+    document.getElementById('finder-pay-box').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  runFinder();
+}
+
+async function runFinder(){
+  const orgtype=document.getElementById('f-orgtype').value;
+  const state=document.getElementById('f-state').value.trim();
+  const focus=document.getElementById('f-focus').value;
+  const budget=document.getElementById('f-budget').value;
+  const orgdesc=document.getElementById('f-orgdesc').value.trim();
+  const need=document.getElementById('f-need').value.trim();
+  const amount=document.getElementById('f-amount').value;
+  const timeline=document.getElementById('f-timeline').value;
+  const demo=document.getElementById('f-demo').value.trim();
+
+  const prompt=`You are a grant research expert. Find grants for the following organization.
+
+Organization profile:
+- Type: ${orgtype}
+- Location: ${state}
+- Focus area: ${focus}
+- Budget: ${budget}
+- Description: ${orgdesc}
+- Funding need: ${need}
+- Amount needed: ${amount}
+- Timeline: ${timeline}
+${demo?'- Populations served: '+demo:''}
+
+Generate a list of 10-12 specific, real grant opportunities they should pursue. Include:
+1. Federal grants (search Grants.gov categories relevant to their focus)
+2. Foundation grants (major foundations in their focus area)
+3. State/regional grants relevant to their location
+4. Corporate giving programs if applicable
+
+For each grant provide:
+GRANT: [Exact grant name]
+FUNDER: [Organization / agency name]
+AMOUNT: [Typical award range]
+ELIGIBILITY: [Who qualifies]
+MATCH_SCORE: [HIGH/MEDIUM] — how well this org fits
+DESCRIPTION: [2-3 sentences on what it funds and why this org qualifies]
+DEADLINE: [Typical deadline cycle — e.g., "Rolling", "Annual — typically March", "Spring cycle"]
+WHERE_TO_APPLY: [grants.gov / foundation website / specific URL if known]
+
+After the list, provide a STRATEGY section with 3-5 tips specific to this organization for maximizing their grant success.`;
+
+  document.getElementById('finder-pay-box').style.display='none';
+  document.getElementById('grants-wrap').style.display='none';
+  document.getElementById('finder-loading').style.display='block';
+  document.querySelector('#panel-finder .btn-p').disabled=true;
+
+  try{
+    const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'claude',prompt,email:getStoredSession()?.email||localStorage.getItem('ig_account_email')||''})});
+    const data=await r.json();
+    if(!data.result) throw new Error('Empty response');
+    lastGrants=data.result;
+    parseAndShowGrants(lastGrants);
+  }catch{
+    showFinderErr('Error finding grants. Please check your connection and try again.');
+  }
+
+  document.getElementById('finder-loading').style.display='none';
+  document.querySelector('#panel-finder .btn-p').disabled=false;
+}
+
+function parseAndShowGrants(raw){
+  // Parse individual grants
+  const grantBlocks=raw.split(/\nGRANT:/i).filter(b=>b.trim());
+  const container=document.getElementById('grants-list');
+  container.innerHTML='';
+
+  if(grantBlocks.length<=1){
+    // Fallback — just show raw
+    container.innerHTML=`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.3rem;font-size:.88rem;line-height:1.85;white-space:pre-wrap;color:var(--muted2)">${raw}</div>`;
+  }else{
+    grantBlocks.forEach(block=>{
+      const name=block.split('\n')[0].trim();
+      const funder=block.match(/FUNDER:\s*(.+)/i)?.[1]?.trim()||'';
+      const amount=block.match(/AMOUNT:\s*(.+)/i)?.[1]?.trim()||'';
+      const match=block.match(/MATCH_SCORE:\s*(HIGH|MEDIUM)/i)?.[1]||'MEDIUM';
+      const desc=block.match(/DESCRIPTION:\s*(.+?)(?=\n[A-Z_]+:|$)/is)?.[1]?.trim()||'';
+      const deadline=block.match(/DEADLINE:\s*(.+)/i)?.[1]?.trim()||'';
+      const where=block.match(/WHERE_TO_APPLY:\s*(.+)/i)?.[1]?.trim()||'';
+
+      if(!name||name.length<3) return;
+
+      const div=document.createElement('div');
+      div.className='grant-card';
+      div.innerHTML=`
+        <div class="grant-card-top">
+          <div class="grant-name">${name}</div>
+          ${amount?`<div class="grant-amount">${amount}</div>`:''}
+        </div>
+        ${funder?`<div class="grant-org">${funder}</div>`:''}
+        ${desc?`<div class="grant-desc">${desc}</div>`:''}
+        <div class="grant-tags">
+          <span class="grant-tag match">${match==='HIGH'?'✓ Strong match':'Good match'}</span>
+          ${deadline?`<span class="grant-tag deadline">📅 ${deadline}</span>`:''}
+          ${where?`<span class="grant-tag">🔗 ${where.replace(/https?:\/\//,'').split('/')[0]}</span>`:''}
+        </div>
+        <button class="btn-use-grant" onclick="prefillWriter('${name.replace(/'/g,"\\'")}','${funder.replace(/'/g,"\\'")}')">Use this grant for a proposal →</button>`;
+      container.appendChild(div);
+    });
+
+    // Show strategy section if present
+    const stratMatch=raw.match(/STRATEGY[\s\S]*/i);
+    if(stratMatch){
+      const strat=document.createElement('div');
+      strat.style.cssText='background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:12px;padding:1.1rem 1.2rem;margin-top:10px;font-size:.85rem;color:var(--muted2);line-height:1.7';
+      strat.innerHTML='<strong style="color:var(--accent);font-family:\'Syne\',sans-serif">📋 Strategy for your organization</strong><br><br>'+stratMatch[0].replace(/STRATEGY[:\s]*/i,'').replace(/\n/g,'<br>');
+      container.appendChild(strat);
+    }
+  }
+
+  document.getElementById('grants-summary').innerHTML=`Found <strong>${grantBlocks.length>1?grantBlocks.length-1:'multiple'} grant opportunities</strong> matching your profile. Click any grant to use it as the basis for a full proposal →`;
+  document.getElementById('grants-wrap').style.display='block';
+  document.getElementById('grants-wrap').scrollIntoView({behavior:'smooth'});
+}
+
+function prefillWriter(grantName,funder){
+  document.getElementById('w-funder').value=grantName+(funder?' — '+funder:'');
+  // Pre-fill org info from finder if available
+  const orgdesc=document.getElementById('f-orgdesc').value;
+  const need=document.getElementById('f-need').value;
+  if(orgdesc) document.getElementById('w-orgdesc').value=orgdesc;
+  if(need) document.getElementById('w-need').value=need;
+  switchTool('writer',document.querySelectorAll('.tool-tab')[1]);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function copyGrants(btn){
+  const orig=btn.textContent;
+  navigator.clipboard.writeText(lastGrants).then(()=>{
+    btn.textContent='✓ Copied!';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('ok');},2000);
+  });
+}
+function downloadGrants(){
+  if(!lastGrants) return;
+  const date=new Date().toISOString().slice(0,10);
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(lastGrants);
+  a.download='grant-results-'+date+'.txt';
+  a.click();
+}
+
+function resetFinder(){
+  document.getElementById('grants-wrap').style.display='none';
+  document.getElementById('finder-pay-box').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── PROPOSAL WRITER ───────────────────────────────────────
+async function writeProposal(){
+  clearWriterErr();
+  const orgname=document.getElementById('w-orgname').value.trim();
+  const orgdesc=document.getElementById('w-orgdesc').value.trim();
+  const project=document.getElementById('w-project').value.trim();
+  const need=document.getElementById('w-need').value.trim();
+  if(!orgname||!orgdesc||!project||!need){showWriterErr('Please fill in your organization name, description, project details, and statement of need.');return;}
+
+  const sub=subscribedUnlocked||await isSubscribed();
+  if(!sub){
+    document.getElementById('writer-pay-box').style.display='block';
+    document.getElementById('writer-pay-box').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  runWriter();
+}
+
+async function runWriter(){
+  const orgname=document.getElementById('w-orgname').value.trim();
+  const orgtype=document.getElementById('w-orgtype').value;
+  const funder=document.getElementById('w-funder').value.trim();
+  const orgdesc=document.getElementById('w-orgdesc').value.trim();
+  const title=document.getElementById('w-title').value.trim();
+  const project=document.getElementById('w-project').value.trim();
+  const need=document.getElementById('w-need').value.trim();
+  const amount=document.getElementById('w-amount').value.trim();
+  const duration=document.getElementById('w-duration').value.trim();
+  const population=document.getElementById('w-population').value.trim();
+  const outcomes=document.getElementById('w-outcomes').value.trim();
+  const budget=document.getElementById('w-budget').value.trim();
+
+  const secLabels={
+    executive_summary:'EXECUTIVE SUMMARY',statement_of_need:'STATEMENT OF NEED',
+    project_description:'PROJECT DESCRIPTION',goals_objectives:'GOALS AND OBJECTIVES',
+    evaluation_plan:'EVALUATION PLAN',budget_narrative:'BUDGET NARRATIVE',
+    organizational_capacity:'ORGANIZATIONAL CAPACITY'
+  };
+  const secs=Array.from(selectedSections).map(s=>secLabels[s]).join(', ');
+
+  const prompt=`You are a professional grant writer with 15+ years of experience winning competitive grants. Write a compelling, professional grant proposal.
+
+Organization: ${orgname} (${orgtype})
+${funder?'Applying to: '+funder:''}
+About the organization: ${orgdesc}
+Project title: ${title||'[Untitled Project]'}
+Project description: ${project}
+Statement of need: ${need}
+${amount?'Amount requested: '+amount:''}
+${duration?'Duration: '+duration:''}
+${population?'Target population: '+population:''}
+${outcomes?'Goals/outcomes: '+outcomes:''}
+${budget?'Budget: '+budget:''}
+
+Write the following sections: ${secs}
+
+Use these EXACT section headers (in ALL CAPS followed by a colon):
+${Array.from(selectedSections).map(s=>secLabels[s]+':').join('\n')}
+
+For each section:
+- Write in professional grant-writing style — compelling, specific, data-informed language
+- EXECUTIVE SUMMARY: 200-250 words, covers who/what/why/how/impact
+- STATEMENT OF NEED: 300-400 words, cite the problem with evidence, urgency, and why this org is positioned to address it
+- PROJECT DESCRIPTION: 400-500 words, detailed methodology, timeline, activities
+- GOALS AND OBJECTIVES: SMART goals with specific, measurable outcomes
+- EVALUATION PLAN: How success will be measured, data collection methods, reporting
+- BUDGET NARRATIVE: Justify each budget line with clear rationale
+- ORGANIZATIONAL CAPACITY: Track record, qualifications, partnerships, why this org can deliver
+
+Write as if this were going to be submitted to a major foundation. Make it compelling, specific, and fundable.`;
+
+  document.getElementById('writer-pay-box').style.display='none';
+  document.getElementById('output-wrap').style.display='none';
+  document.getElementById('writer-loading').style.display='block';
+  document.querySelector('#panel-writer .btn-p').disabled=true;
+
+  try{
+    const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'claude',prompt,max_tokens:2000,email:getStoredSession()?.email||localStorage.getItem('ig_account_email')||''})});
+    const data=await r.json();
+    if(!data.result) throw new Error('Empty response');
+    parseAndShowProposal(data.result);
+  }catch{
+    showWriterErr('Error generating proposal. Please check your connection and try again.');
+  }
+
+  document.getElementById('writer-loading').style.display='none';
+  document.querySelector('#panel-writer .btn-p').disabled=false;
+}
+
+function parseAndShowProposal(raw){
+  lastResults={};
+  const secLabels={
+    executive_summary:'EXECUTIVE SUMMARY',statement_of_need:'STATEMENT OF NEED',
+    project_description:'PROJECT DESCRIPTION',goals_objectives:'GOALS AND OBJECTIVES',
+    evaluation_plan:'EVALUATION PLAN',budget_narrative:'BUDGET NARRATIVE',
+    organizational_capacity:'ORGANIZATIONAL CAPACITY'
+  };
+  const secNames={
+    executive_summary:'Executive Summary',statement_of_need:'Statement of Need',
+    project_description:'Project Description',goals_objectives:'Goals & Objectives',
+    evaluation_plan:'Evaluation Plan',budget_narrative:'Budget Narrative',
+    organizational_capacity:'Org Capacity'
+  };
+
+  // indexOf-based extraction (robust against AI formatting variations)
+  const rawU=raw.toUpperCase();
+  const activeSecs=Array.from(selectedSections);
+  const allLabels=activeSecs.map(s=>secLabels[s]+':');
+
+  activeSecs.forEach(sec=>{
+    const label=secLabels[sec]+':';
+    const start=rawU.indexOf(label);
+    if(start===-1){ lastResults[sec]=raw; return; }
+    const contentStart=start+label.length;
+    let end=raw.length;
+    allLabels.forEach(l=>{
+      if(l===label) return;
+      const pos=rawU.indexOf(l,contentStart);
+      if(pos!==-1 && pos<end) end=pos;
+    });
+    lastResults[sec]=raw.slice(contentStart,end).replace(/^[\s\n]+/,'').trimEnd();
+  });
+
+  const tabs=document.getElementById('output-tabs');
+  const panes=document.getElementById('output-panes');
+  tabs.innerHTML=''; panes.innerHTML='';
+
+  activeSecs.forEach((sec,i)=>{
+    const tab=document.createElement('button');
+    tab.className='out-tab'+(i===0?' active':'');
+    tab.textContent=secNames[sec];
+    tab.onclick=()=>{
+      document.querySelectorAll('.out-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.out-pane').forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('pane-'+sec).classList.add('active');
+    };
+    tabs.appendChild(tab);
+
+    const pane=document.createElement('div');
+    pane.className='out-pane'+(i===0?' active':'');
+    pane.id='pane-'+sec;
+    pane.innerHTML=`<div class="output-box">${(lastResults[sec]||'').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div>
+      <div class="out-actions">
+        <button class="btn-copy" onclick="copySection('${sec}',this)">📋 Copy section</button>
+        <button class="btn-copy" onclick="downloadSection('${sec}','${secNames[sec]}')">⬇ Download</button>
+      </div>`;
+    panes.appendChild(pane);
+  });
+
+  document.getElementById('output-wrap').style.display='block';
+  document.getElementById('output-wrap').scrollIntoView({behavior:'smooth'});
+}
+
+function copySection(sec,btn){
+  const orig=btn.textContent;
+  navigator.clipboard.writeText(lastResults[sec]||'').then(()=>{
+    btn.textContent='✓ Copied!';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('ok');},2000);
+  });
+}
+function downloadSection(sec,label){
+  const text=lastResults[sec]||'';
+  if(!text) return;
+  const date=new Date().toISOString().slice(0,10);
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(text);
+  a.download='grant-'+label.toLowerCase().replace(/\s+/g,'-')+'-'+date+'.txt';
+  a.click();
+}
+function copyFullProposal(btn){
+  const full=Object.values(lastResults).join('\n\n---\n\n');
+  const orig=btn.textContent;
+  navigator.clipboard.writeText(full).then(()=>{
+    btn.textContent='✓ Copied!';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('ok');},2000);
+  });
+}
+function downloadFullProposal(){
+  const full=Object.values(lastResults).join('\n\n---\n\n');
+  if(!full.trim()) return;
+  const date=new Date().toISOString().slice(0,10);
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(full);
+  a.download='grant-proposal-'+date+'.txt';
+  a.click();
+}
+
+function resetWriter(){
+  document.getElementById('output-wrap').style.display='none';
+  document.getElementById('writer-pay-box').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── PAYMENT ──────────────────────────────────────────────
+async function handlePay(plan){
+  const isFinder=currentTool==='finder';
+  const errId=isFinder?'finder-pay-error':'writer-pay-error';
+  clearPayErr(errId);
+  const emailEl=document.getElementById(isFinder?'finder-pay-email':'writer-pay-email');
+  const email=emailEl.value.trim();
+  if(!email||!email.includes('@')){
+    emailEl.style.border='1.5px solid #ff6b6b';
+    setTimeout(()=>emailEl.style.border='',2000);
+    showPayErr(errId,'Please enter your email address first.');
+    return;
+  }
+  localStorage.setItem('grant_pending_email',email);
+  localStorage.setItem('grant_pending_plan',plan);
+  if(plan==='annual'&&SQUARE_ANNUAL_URL){window.location.href=SQUARE_ANNUAL_URL;return;}
+  if(plan==='monthly'&&SQUARE_MONTHLY_URL){window.location.href=SQUARE_MONTHLY_URL;return;}
+  const amounts={annual:99,monthly:12,session:0.99};
+  const labels={annual:'Infinity Hub – Annual',monthly:'Infinity Hub – Monthly',session:'Infinity Hub – Session Pass'};
+  try{
+    const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'createPaymentLink',docType:labels[plan],amount:amounts[plan],
+        redirectUrl:APP_URL+'?paid=true&plan='+plan})});
+    const data=await r.json();
+    if(data.url) window.location.href=data.url;
+    else showPayErr(errId,'Could not create payment link. Please try again.');
+  }catch{ showPayErr(errId,'Payment error. Please try again.'); }
+}
+
+if(window.location.search.includes('paid=true')){
+  const email=localStorage.getItem('grant_pending_email');
+  const plan=new URLSearchParams(window.location.search).get('plan')
+            ||localStorage.getItem('grant_pending_plan')||'monthly';
+  if(email){
+    fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'addSubscriber',email,app:APP_NAME,plan})
+    }).then(()=>{
+      localStorage.setItem('grant_email',email);
+      subscribedUnlocked=true;
+      _subCache=true;
+      localStorage.removeItem('grant_pending_email');
+      localStorage.removeItem('grant_pending_plan');
+    });
+  }
+  window.history.replaceState({},'',window.location.pathname);
+}
+
+// ── SESSION AUTH ─────────────────────────────────────────────────────
+function getStoredSession() {
+  let token = localStorage.getItem('ig_account_token');
+  let email = localStorage.getItem('ig_account_email');
+  let name  = localStorage.getItem('ig_account_name') || email;
+  if (!token) {
+    try {
+      const raw = localStorage.getItem('sb-zcvkgevcrgsujnqovxgd-auth-token');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        const sess = parsed?.currentSession || parsed?.session || parsed;
+        token = sess?.access_token;
+        email = sess?.user?.email;
+        name  = sess?.user?.user_metadata?.name || email;
+        if (token) {
+          localStorage.setItem('ig_account_token', token);
+          localStorage.setItem('ig_account_email', email || '');
+          if (name) localStorage.setItem('ig_account_name', name);
+        }
+      }
+    } catch(e) {}
+  }
+  if (!token || !email) return null;
+  try {
+    const p = JSON.parse(atob(token.split('.')[1]));
+    if (p.exp && Date.now()/1000 > p.exp) {
+      ['ig_account_token','ig_account_email','ig_account_name'].forEach(k=>localStorage.removeItem(k));
+      return null;
+    }
+  } catch(e) { return null; }
+  return { token, email, name };
+}
+function showSignedInBar(name, email) {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) bar.classList.add('signed-in');
+  if (lbl) { lbl.textContent = '✓ Subscribed — ' + (name || email); lbl.classList.add('ok'); }
+  if (btn) { btn.textContent = 'My Account'; btn.classList.add('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/'; }
+}
+function showSignInBar() {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) { bar.classList.remove('signed-in'); bar.classList.remove('warn'); }
+  if (lbl) { lbl.textContent = 'Sign in to use this tool.'; lbl.classList.remove('ok'); }
+  if (btn) { btn.textContent = 'Sign In →'; btn.classList.remove('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/?return=' + encodeURIComponent(window.location.href); }
+}
+function showSubscribeBar(email) {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) { bar.classList.remove('signed-in'); bar.classList.add('warn');
+             bar.style.background='rgba(240,180,41,.07)'; bar.style.borderColor='rgba(240,180,41,.25)'; }
+  if (lbl) { lbl.textContent = 'Signed in as ' + (email||'') + ' — subscribe for unlimited access.'; lbl.classList.remove('ok'); }
+  if (btn) { btn.textContent = 'Subscribe →'; btn.classList.remove('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/'; }
+}
+
+
+async function isSubscribed() {
+  if (_subCache !== null) return _subCache;
+  const session = getStoredSession();
+  const email = session?.email || localStorage.getItem('ig_account_email');
+  if (!email) { _subCache = false; return false; }
+  try {
+    const r = await fetch(WORKER_URL, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({action:'checkSubscriber', email, app: APP_NAME})
+    });
+    const d = await r.json();
+    _subCache = d.active === true;
+    setTimeout(() => { _subCache = null; }, 5 * 60 * 1000);
+    return _subCache;
+  } catch(e) { return false; }
+}
+
+(async () => {
+  const session = getStoredSession();
+  if (session) {
+    const subActive = await isSubscribed();
+    if (subActive) {
+      subscribedUnlocked = true; _subCache = true;
+      showSignedInBar(session.name, session.email);
+    } else {
+      showSubscribeBar(session.email);
+    }
+  } else {
+    showSignInBar();
+    window.addEventListener('ig_signed_in', async (e) => {
+      const sub = await isSubscribed();
+      if (sub) { subscribedUnlocked = true; _subCache = true;
+                 showSignedInBar(e.detail?.name, e.detail?.email); }
+      else { showSubscribeBar(e.detail?.email); }
+    });
+  }
+})();
+</script>
+</body>
+</html>

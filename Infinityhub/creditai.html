@@ -1,0 +1,794 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CreditAI — Credit Repair & Dispute Letters | Infinity Solutions</title>
+<meta name="description" content="AI-powered credit repair. Dispute letters, score improvement plans, and credit education. Credit repair agencies charge $100/mo. We charge $4.99.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;--bg2:#0e1320;--bg3:#141928;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);
+  --text:#f0f2f8;--muted:#7a8099;--muted2:#a0a8c0;
+  --accent:#06b6d4;--accent2:#22d3ee;--accent3:#083344;
+  --gold:#f0b429;--green:#34d399;--red:#ff6b6b;--purple:#a78bfa;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.02;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(8,11,18,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--text);text-decoration:none}
+.logo em{color:var(--accent);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:1.2rem}
+.nav-back{font-size:.8rem;color:var(--muted2);text-decoration:none;transition:color .18s}
+.nav-back:hover{color:var(--text)}
+.nav-badge{font-size:.72rem;font-weight:700;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.22);color:var(--accent2);padding:.25rem .7rem;border-radius:100px}
+
+.hero{padding:7rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:350px;background:radial-gradient(ellipse,rgba(6,182,212,.08) 0%,transparent 70%);pointer-events:none}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,5vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-.025em;margin-bottom:1rem;animation:up .6s ease both}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero-sub{font-size:1rem;color:var(--muted2);max-width:520px;margin:0 auto 1.5rem;line-height:1.7;font-weight:300;animation:up .6s .1s ease both}
+.hero-sub strong{color:var(--text);font-weight:500}
+.price-strip{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;animation:up .6s .15s ease both}
+.price-pill{background:var(--bg2);border:1px solid var(--border2);border-radius:100px;padding:.35rem 1rem;font-size:.8rem;color:var(--muted2)}
+.price-pill strong{color:var(--text);font-weight:600}
+
+.tool-tabs{display:flex;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:4px;gap:4px;max-width:600px;margin:0 auto 2rem;flex-wrap:wrap}
+.tool-tab{flex:1;min-width:100px;padding:.65rem .4rem;text-align:center;border-radius:10px;cursor:pointer;transition:all .18s;font-family:inherit}
+.tool-tab:hover{background:var(--bg3)}
+.tool-tab.active{background:var(--accent3);border:1px solid rgba(6,182,212,.25)}
+.tt-icon{font-size:1.1rem;display:block;margin-bottom:.2rem}
+.tt-name{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--text);display:block}
+
+.app-wrap{max-width:800px;margin:0 auto;padding:0 1rem 5rem}
+.panel{display:none;animation:up .25s ease both}
+.panel.active{display:block}
+
+.btn-sub{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.55rem 1.1rem;border-radius:100px;background:var(--accent);color:var(--accent3);border:none;cursor:pointer;white-space:nowrap;transition:all .18s}
+.btn-sub:hover{background:var(--accent2)}
+
+.form-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem}
+.form-card-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.25rem}
+.form-card-sub{font-size:.8rem;color:var(--muted2);margin-bottom:1.1rem;font-weight:300}
+.fg{margin-bottom:.9rem}
+.fg label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);margin-bottom:.35rem}
+.fi{width:100%;padding:.68rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none;transition:border-color .18s;resize:vertical}
+.fi:focus{border-color:var(--accent);background:var(--bg2)}
+.fi::placeholder{color:var(--muted)}
+select.fi option{background:var(--bg2)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* SCORE METER */
+.score-meter{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:1rem;text-align:center}
+.score-display{font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;margin:.5rem 0}
+.score-label{font-size:.8rem;color:var(--muted2)}
+.score-bar-wrap{background:var(--bg3);border-radius:100px;height:10px;margin:1rem 0;position:relative;overflow:hidden}
+.score-bar{height:10px;border-radius:100px;background:linear-gradient(to right,#ff6b6b 0%,#f0b429 40%,#34d399 70%,#06b6d4 100%);width:100%}
+.score-indicator{position:absolute;top:-3px;width:16px;height:16px;background:#fff;border-radius:50%;transform:translateX(-50%);transition:left .5s ease;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.score-ranges{display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);margin-top:.3rem}
+
+.btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;padding:.78rem 1.8rem;border-radius:100px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;width:100%}
+.btn-p{background:var(--accent);color:var(--accent3)}
+.btn-p:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(6,182,212,.2)}
+.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+
+.loading{display:none;text-align:center;padding:2.5rem}
+.spinner{width:34px;height:34px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto .8rem}
+.loading p{font-size:.85rem;color:var(--muted2);font-weight:300}
+
+.output-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.4rem;margin-top:1rem;display:none;animation:up .25s ease both}
+.output-card.show{display:block}
+.output-content{font-size:.88rem;line-height:1.9;color:var(--muted2);white-space:pre-wrap;max-height:520px;overflow-y:auto}
+.out-actions{display:flex;gap:8px;margin-top:.9rem}
+.btn-copy{background:var(--bg2);border:1px solid var(--border2);color:var(--muted2);font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.6rem 1.2rem;border-radius:100px;cursor:pointer;transition:all .18s;flex:1}
+.btn-copy:hover{color:var(--text)}
+.btn-copy.ok{color:var(--accent);border-color:var(--accent)}
+
+/* ACTION PLAN */
+.action-items{display:flex;flex-direction:column;gap:8px;margin-top:.8rem}
+.action-item{background:var(--bg3);border-radius:10px;padding:.9rem 1rem;display:flex;gap:.8rem;align-items:flex-start}
+.ai-priority{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.78rem;flex-shrink:0}
+.ai-priority.high{background:rgba(255,107,107,.15);color:var(--red)}
+.ai-priority.med{background:rgba(240,180,41,.15);color:var(--gold)}
+.ai-priority.low{background:rgba(52,211,153,.15);color:var(--green)}
+.ai-text{flex:1}
+.ai-title{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:2px}
+.ai-desc{font-size:.78rem;color:var(--muted2);line-height:1.5}
+.ai-impact{font-size:.68rem;font-weight:600;color:var(--accent);margin-top:3px}
+
+.pay-box{background:var(--bg2);border:1px solid rgba(6,182,212,.2);border-radius:16px;padding:1.8rem;margin-top:1rem;text-align:center;display:none}
+.pay-box h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.4rem}
+.pay-box p{font-size:.84rem;color:var(--muted2);margin-bottom:1.2rem;font-weight:300;line-height:1.6}
+.pay-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;max-width:480px;margin:0 auto 1rem}
+.pay-opt{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.85rem .7rem;cursor:pointer;transition:all .18s;text-align:center}
+.pay-opt:hover{border-color:var(--accent)}
+.pay-opt.pw-annual{border-color:rgba(240,180,41,.45);background:rgba(240,180,41,.06)}
+.pay-opt.pw-monthly{border-color:rgba(6,182,212,.35)}
+.pay-opt.pw-session{opacity:.85}
+.pw-badge{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f0b429;margin-bottom:.25rem}
+.pay-price{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--accent)}
+.pay-label{font-size:.68rem;color:var(--muted2);margin-top:3px}
+.pay-email{width:100%;max-width:380px;margin:0 auto .8rem;display:block;padding:.65rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none}
+.pay-email:focus{border-color:var(--accent)}
+
+.disclaimer{background:rgba(240,180,41,.07);border:1px solid rgba(240,180,41,.18);border-radius:10px;padding:.75rem 1rem;font-size:.76rem;color:rgba(240,180,41,.85);line-height:1.6;margin-bottom:1rem}
+.disclaimer strong{color:var(--gold)}
+
+.trust{background:var(--bg2);border-top:1px solid var(--border);padding:1.2rem 2rem;display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:2rem}
+.trust-item{font-size:.74rem;color:var(--muted2);display:flex;align-items:center;gap:.4rem}
+.trust-item em{color:var(--accent);font-style:normal}
+footer{text-align:center;padding:1.5rem;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border)}
+footer a{color:var(--accent2);text-decoration:none}
+@media(max-width:560px){.form-row,.pay-grid{grid-template-columns:1fr}nav{padding:1rem 1.2rem}}
+
+.btn-sub{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.45rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .18s}
+.btn-sub:hover{background:var(--accent2)}
+.btn-sub.signed-in{background:transparent;border:1px solid rgba(52,211,153,.3);color:var(--green);cursor:default}
+.sub-bar{background:rgba(79,142,255,.06);border:1px solid rgba(79,142,255,.15);border-radius:12px;padding:.75rem 1rem;display:flex;gap:.75rem;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;transition:all .3s}
+.sub-bar.signed-in{background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.2)}
+.sub-bar-lbl{font-size:.8rem;color:var(--muted2);flex:1;line-height:1.5}
+.sub-bar-lbl.ok{color:var(--green)}
+.btn-sub{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;padding:.45rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .18s}
+.btn-sub:hover{background:var(--accent2)}
+.btn-sub.signed-in{background:transparent;border:1px solid rgba(52,211,153,.3);color:var(--green)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://infinityhub.dev" class="logo">Infinity<em>.</em>Solutions</a>
+  <div class="nav-right">
+    <a href="https://infinityhub.dev" class="nav-back">← Hub</a>
+    <span class="nav-badge">CreditAI</span>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="eyebrow">Credit Repair · Dispute Letters · Score Improvement</div>
+  <h1>Fix your credit.<br><em>Do it yourself.</em></h1>
+  <p class="hero-sub">Dispute letters for every situation, a personalized score improvement plan, and plain-English education about your rights. <strong>Credit repair agencies charge $100/mo to do what you can do yourself for $4.99.</strong></p>
+  <div class="price-strip">
+    <div class="price-pill"><strong>$4.99</strong> per dispute letter</div>
+    <div class="price-pill"><strong>$14.99/mo</strong> unlimited</div>
+    <div class="price-pill"><strong>You have rights</strong> — use them</div>
+  </div>
+</div>
+
+<div class="app-wrap">
+
+  <div class="sub-bar" id="sub-bar">
+    <span class="sub-bar-lbl" id="sub-bar-lbl">Sign in to use this tool.</span>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/account/" id="sub-bar-btn" class="btn-sub">Sign In →</a>
+  </div>
+
+  <div class="tool-tabs">
+    <div class="tool-tab active" onclick="switchTool('dispute',this)"><span class="tt-icon">✉️</span><span class="tt-name">Dispute Letter</span></div>
+    <div class="tool-tab" onclick="switchTool('plan',this)"><span class="tt-icon">📈</span><span class="tt-name">Score Plan</span></div>
+    <div class="tool-tab" onclick="switchTool('education',this)"><span class="tt-icon">📚</span><span class="tt-name">Know Your Rights</span></div>
+    <div class="tool-tab" onclick="switchTool('goodwill',this)"><span class="tt-icon">🤝</span><span class="tt-name">Goodwill Letter</span></div>
+  </div>
+
+  <!-- DISPUTE LETTERS -->
+  <div class="panel active" id="panel-dispute">
+    <div class="disclaimer"><strong>Your rights:</strong> Under the Fair Credit Reporting Act (FCRA), you have the right to dispute any inaccurate, unverifiable, or outdated information on your credit report. Bureaus must investigate within 30 days.</div>
+    <div class="form-card">
+      <div class="form-card-title">Dispute letter details</div>
+      <div class="form-card-sub">Generate a powerful dispute letter referencing the exact laws that protect you.</div>
+      <div class="form-row">
+        <div class="fg"><label>Your full name *</label><input type="text" class="fi" id="d-name" placeholder="Jane Smith"></div>
+        <div class="fg"><label>Your address *</label><input type="text" class="fi" id="d-address" placeholder="123 Main St, Burlington VT 05401"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Date of birth (for verification)</label><input type="text" class="fi" id="d-dob" placeholder="For identity — e.g. January 1, 1985"></div>
+        <div class="fg"><label>Last 4 of SSN (optional)</label><input type="text" class="fi" id="d-ssn" placeholder="For dispute form only — XXXX"></div>
+      </div>
+      <div class="fg">
+        <label>Send dispute to *</label>
+        <select class="fi" id="d-bureau">
+          <option value="Equifax">Equifax</option>
+          <option value="Experian">Experian</option>
+          <option value="TransUnion">TransUnion</option>
+          <option value="All three bureaus (Equifax, Experian, and TransUnion)">All three bureaus</option>
+          <option value="the original creditor">Original creditor directly</option>
+          <option value="a debt collection agency">Debt collection agency</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Dispute type *</label>
+        <select class="fi" id="d-type">
+          <option value="inaccurate information — the details are factually wrong">Inaccurate information (wrong details)</option>
+          <option value="account that does not belong to me — possible identity theft">Not my account / identity theft</option>
+          <option value="late payment that was actually paid on time">Late payment I paid on time</option>
+          <option value="account that was already paid in full but shows as unpaid">Paid account showing unpaid</option>
+          <option value="duplicate account listed multiple times">Duplicate account</option>
+          <option value="outdated information beyond the 7-year reporting limit">Outdated — beyond 7 years</option>
+          <option value="incorrect account balance or credit limit">Wrong balance or credit limit</option>
+          <option value="account included in bankruptcy but still showing">Included in bankruptcy</option>
+          <option value="mixed file — another person's information on my report">Mixed file (another person's info)</option>
+          <option value="charge-off that has been paid">Paid charge-off</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Describe the item to dispute *</label>
+        <textarea class="fi" id="d-item" rows="3" placeholder="e.g. A collection account from ABC Medical for $840 showing as unpaid. This was paid in full in March 2024. The account number listed is 123456."></textarea>
+      </div>
+      <div class="fg">
+        <label>Creditor / account name</label>
+        <input type="text" class="fi" id="d-creditor" placeholder="e.g. ABC Medical, Chase Bank, Capital One">
+      </div>
+      <div class="fg">
+        <label>Supporting evidence you have (optional)</label>
+        <input type="text" class="fi" id="d-evidence" placeholder="e.g. Payment confirmation email, bank statement, settlement letter, police report for ID theft">
+      </div>
+      <button class="btn btn-p" onclick="generate('dispute')">Generate Dispute Letter →</button>
+    </div>
+    <div class="loading" id="dispute-loading"><div class="spinner"></div><p>Drafting your dispute letter…</p></div>
+    <div id="dispute-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;">Something went wrong generating your letter. Please try again in a moment.</div>
+    <div class="output-card" id="dispute-output">
+      <div class="output-content" id="dispute-result"></div>
+      <div class="out-actions">
+        <button class="btn-copy" onclick="copyOut('dispute-result',this)">📋 Copy</button>
+        <button class="btn-copy" onclick="dlOut('dispute-result','dispute_letter')">⬇ Download</button>
+      </div>
+    </div>
+    <div class="pay-box" id="dispute-pay">
+      <h3>Generate your dispute letter</h3>
+      <p>A single letter or unlimited monthly access — you decide.</p>
+      <input type="email" class="pay-email" id="dispute-pay-email" placeholder="Your email address">
+      <div class="pay-grid">
+        <div class="pay-opt pw-annual" onclick="handlePay('annual','dispute-pay-email')"><div class="pw-badge">Best Value</div><div class="pay-price">$99/yr</div><div class="pay-label">Annual · save 31%</div></div>
+        <div class="pay-opt pw-monthly" onclick="handlePay('monthly','dispute-pay-email')"><div class="pay-price">$12/mo</div><div class="pay-label">Monthly</div></div>
+        <div class="pay-opt pw-session" onclick="handlePay('session','dispute-pay-email')"><div class="pay-price">$0.99</div><div class="pay-label">24-hr pass</div></div>
+      </div>
+      <p style="font-size:.7rem;color:var(--muted)">Secured by Square · Cancel anytime</p>
+    </div>
+  </div>
+
+  <!-- SCORE IMPROVEMENT PLAN -->
+  <div class="panel" id="panel-plan">
+    <div class="form-card">
+      <div class="form-card-title">Credit score improvement plan</div>
+      <div class="form-card-sub">Tell us about your current credit situation and get a personalized, prioritized action plan.</div>
+
+      <div class="fg">
+        <label>Current credit score (approximate)</label>
+        <select class="fi" id="p-score" onchange="updateScoreDisplay()">
+          <option value="300-499" data-num="400">300–499 (Very poor)</option>
+          <option value="500-579" data-num="540">500–579 (Poor)</option>
+          <option value="580-619" data-num="600">580–619 (Fair)</option>
+          <option value="620-659" data-num="640">620–659 (Fair)</option>
+          <option value="660-699" data-num="680">660–699 (Good)</option>
+          <option value="700-739" data-num="720">700–739 (Good)</option>
+          <option value="740-799" data-num="770">740–799 (Very good)</option>
+          <option value="800+" data-num="820">800+ (Exceptional)</option>
+          <option value="unknown" data-num="600">I don't know my score</option>
+        </select>
+      </div>
+
+      <div class="score-meter" id="score-meter">
+        <div class="score-label">Your approximate score</div>
+        <div class="score-display" id="score-num" style="color:var(--gold)">600</div>
+        <div class="score-bar-wrap">
+          <div class="score-bar"></div>
+          <div class="score-indicator" id="score-indicator" style="left:40%"></div>
+        </div>
+        <div class="score-ranges"><span>300</span><span>Poor</span><span>Fair</span><span>Good</span><span>Excellent</span><span>850</span></div>
+      </div>
+
+      <div class="fg"><label>What negative items are on your report?</label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap" id="neg-items">
+          <button class="tone-btn" data-item="late payments" onclick="toggleItem(this)">Late payments</button>
+          <button class="tone-btn" data-item="collections accounts" onclick="toggleItem(this)">Collections</button>
+          <button class="tone-btn" data-item="charge-offs" onclick="toggleItem(this)">Charge-offs</button>
+          <button class="tone-btn" data-item="high credit utilization" onclick="toggleItem(this)">High utilization</button>
+          <button class="tone-btn" data-item="too many hard inquiries" onclick="toggleItem(this)">Too many inquiries</button>
+          <button class="tone-btn" data-item="no credit history" onclick="toggleItem(this)">No credit history</button>
+          <button class="tone-btn" data-item="bankruptcy" onclick="toggleItem(this)">Bankruptcy</button>
+          <button class="tone-btn" data-item="repossession" onclick="toggleItem(this)">Repossession</button>
+          <button class="tone-btn" data-item="medical debt" onclick="toggleItem(this)">Medical debt</button>
+          <button class="tone-btn" data-item="student loan delinquency" onclick="toggleItem(this)">Student loans</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Total credit card debt</label><select class="fi" id="p-ccdebt"><option value="none">No credit cards</option><option value="under $1,000">Under $1,000</option><option value="$1,000–$5,000">$1K–$5K</option><option value="$5,000–$15,000">$5K–$15K</option><option value="over $15,000">Over $15K</option></select></div>
+        <div class="fg"><label>Credit utilization (% of limit used)</label><select class="fi" id="p-util"><option value="under 10%">Under 10% — excellent</option><option value="10–30%">10–30% — good</option><option value="30–50%">30–50% — fair</option><option value="over 50%">Over 50% — hurting score</option><option value="maxed out">Maxed out</option><option value="unsure">Not sure</option></select></div>
+      </div>
+      <div class="fg"><label>Score goal</label><select class="fi" id="p-goal"><option value="700 (good credit)">700 — good credit</option><option value="720 (qualify for better rates)">720 — better rates</option><option value="750 (very good credit)">750 — very good</option><option value="800+ (excellent credit)">800+ — excellent</option><option value="as high as possible">As high as possible</option></select></div>
+      <div class="fg"><label>Timeline</label><select class="fi" id="p-timeline"><option value="3 months">3 months</option><option value="6 months">6 months</option><option value="1 year">1 year</option><option value="2 years">2 years</option><option value="no set timeline">No rush</option></select></div>
+      <button class="btn btn-p" onclick="generate('plan')">Build My Credit Plan →</button>
+    </div>
+    <div class="loading" id="plan-loading"><div class="spinner"></div><p>Building your personalized credit plan…</p></div>
+    <div id="plan-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;">Something went wrong building your plan. Please try again in a moment.</div>
+    <div class="output-card" id="plan-output">
+      <div class="output-content" id="plan-result"></div>
+      <div class="out-actions">
+        <button class="btn-copy" onclick="copyOut('plan-result',this)">📋 Copy plan</button>
+        <button class="btn-copy" onclick="dlOut('plan-result','credit_improvement_plan')">⬇ Download</button>
+      </div>
+    </div>
+    <div class="pay-box" id="plan-pay">
+      <h3>Get your credit improvement plan</h3>
+      <p>A personalized roadmap to a better score — cheaper than one month of a credit repair service.</p>
+      <input type="email" class="pay-email" id="plan-pay-email" placeholder="Your email address">
+      <div class="pay-grid">
+        <div class="pay-opt pw-annual" onclick="handlePay('annual','plan-pay-email')"><div class="pw-badge">Best Value</div><div class="pay-price">$99/yr</div><div class="pay-label">Annual · save 31%</div></div>
+        <div class="pay-opt pw-monthly" onclick="handlePay('monthly','plan-pay-email')"><div class="pay-price">$12/mo</div><div class="pay-label">Monthly</div></div>
+        <div class="pay-opt pw-session" onclick="handlePay('session','plan-pay-email')"><div class="pay-price">$0.99</div><div class="pay-label">24-hr pass</div></div>
+      </div>
+      <p style="font-size:.7rem;color:var(--muted)">Secured by Square · Cancel anytime</p>
+    </div>
+  </div>
+
+  <!-- KNOW YOUR RIGHTS -->
+  <div class="panel" id="panel-education">
+    <div class="form-card">
+      <div class="form-card-title">Know your credit rights</div>
+      <div class="form-card-sub">Ask any question about credit, debt, or your consumer rights. Free — no payment required.</div>
+      <div class="fg"><label>What do you want to understand? *</label>
+        <textarea class="fi" id="e-question" rows="4" placeholder="e.g. Can a debt collector contact me at work? How long does a bankruptcy stay on my report? What happens when I dispute an item? Can a collection account be removed if it's paid? What is a pay-for-delete agreement?"></textarea>
+      </div>
+      <div class="fg"><label>Quick topics</label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="tone-btn" onclick="setQuestion('How long do negative items stay on my credit report?')">How long do negatives stay?</button>
+          <button class="tone-btn" onclick="setQuestion('What is the statute of limitations on debt collection?')">Statute of limitations</button>
+          <button class="tone-btn" onclick="setQuestion('What is a pay-for-delete agreement and how do I use one?')">Pay-for-delete</button>
+          <button class="tone-btn" onclick="setQuestion('What can and cannot debt collectors legally do?')">Debt collector rules</button>
+          <button class="tone-btn" onclick="setQuestion('How does credit utilization affect my score and what is the ideal percentage?')">Credit utilization</button>
+          <button class="tone-btn" onclick="setQuestion('How do I build credit from scratch with no credit history?')">Build credit from zero</button>
+          <button class="tone-btn" onclick="setQuestion('What is a hard vs soft credit inquiry and how long do hard inquiries affect my score?')">Hard vs soft inquiry</button>
+          <button class="tone-btn" onclick="setQuestion('How does the CFPB 2025 medical debt rule affect my credit report?')">2025 medical debt rule</button>
+        </div>
+      </div>
+      <button class="btn btn-p" onclick="generate('education')">Get My Answer →</button>
+    </div>
+    <div class="loading" id="education-loading"><div class="spinner"></div><p>Looking up your answer…</p></div>
+    <div id="education-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;">Something went wrong. Please try again in a moment.</div>
+    <div class="output-card" id="education-output">
+      <div class="output-content" id="education-result"></div>
+      <div class="out-actions">
+        <button class="btn-copy" onclick="copyOut('education-result',this)">📋 Copy</button>
+        <button class="btn-copy" onclick="dlOut('education-result','credit-rights-answer')">⬇ Download .txt</button>
+      </div>
+    </div>
+    <div style="margin-top:1.2rem;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem">
+      <div style="font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--muted2);margin-bottom:.7rem;letter-spacing:.04em">OFFICIAL RESOURCES</div>
+      <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.8rem">
+        <a href="https://www.consumer.ftc.gov/articles/0155-free-credit-reports" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none">→ FTC: Your Free Annual Credit Reports (AnnualCreditReport.com)</a>
+        <a href="https://www.consumerfinance.gov/consumer-tools/credit-reports-and-scores/answer/how-do-i-dispute-an-error-on-my-credit-report/" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none">→ CFPB: How to Dispute Credit Report Errors</a>
+        <a href="https://www.ftc.gov/legal-library/browse/statutes/fair-credit-reporting-act" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none">→ Full text: Fair Credit Reporting Act (FCRA)</a>
+        <a href="https://www.ftc.gov/legal-library/browse/statutes/fair-debt-collection-practices-act" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none">→ Full text: Fair Debt Collection Practices Act (FDCPA)</a>
+        <a href="https://www.consumerfinance.gov/complaint/" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none">→ CFPB Complaint Portal — file against bureaus or creditors</a>
+        <a href="https://www.equifax.com/personal/credit-report-services/free-credit-reports/" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none">→ Equifax: Dispute online</a>
+        <a href="https://www.experian.com/disputes/main.html" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none">→ Experian: Dispute online</a>
+        <a href="https://dispute.transunion.com/" target="_blank" rel="noopener" style="color:var(--accent2);text-decoration:none">→ TransUnion: Dispute online</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOODWILL LETTERS -->
+  <div class="panel" id="panel-goodwill">
+    <div class="form-card">
+      <div class="form-card-title">Goodwill letter</div>
+      <div class="form-card-sub">A goodwill letter asks a creditor to remove a negative mark as a courtesy — especially useful for one-time mistakes or isolated late payments on otherwise good accounts.</div>
+      <div class="form-row">
+        <div class="fg"><label>Your full name *</label><input type="text" class="fi" id="g-name" placeholder="Jane Smith"></div>
+        <div class="fg"><label>Account number (partial)</label><input type="text" class="fi" id="g-account" placeholder="Last 4 digits or partial"></div>
+      </div>
+      <div class="fg"><label>Creditor / company name *</label><input type="text" class="fi" id="g-creditor" placeholder="e.g. Chase, Capital One, Discover"></div>
+      <div class="fg"><label>What negative mark are you asking to remove? *</label><textarea class="fi" id="g-issue" rows="2" placeholder="e.g. A 30-day late payment in March 2023 — the only late payment in 5 years of on-time payments."></textarea></div>
+      <div class="fg"><label>Your explanation / circumstances</label><textarea class="fi" id="g-reason" rows="3" placeholder="e.g. I was hospitalized unexpectedly and missed the payment. I have been a customer since 2018 with 60+ consecutive on-time payments before and after this incident."></textarea></div>
+      <div class="fg"><label>Your current account standing</label><select class="fi" id="g-standing"><option value="current with no other late payments">Current — no other late payments</option><option value="current but with a few other late payments">Current — a few other lates</option><option value="paid off / closed account">Paid off or closed account</option></select></div>
+      <button class="btn btn-p" onclick="generate('goodwill')">Write Goodwill Letter →</button>
+    </div>
+    <div class="loading" id="goodwill-loading"><div class="spinner"></div><p>Writing your goodwill letter…</p></div>
+    <div id="goodwill-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;">Something went wrong. Please try again in a moment.</div>
+    <div class="output-card" id="goodwill-output">
+      <div class="output-content" id="goodwill-result"></div>
+      <div class="out-actions">
+        <button class="btn-copy" onclick="copyOut('goodwill-result',this)">📋 Copy</button>
+        <button class="btn-copy" onclick="dlOut('goodwill-result','goodwill_letter')">⬇ Download</button>
+      </div>
+    </div>
+    <div class="pay-box" id="goodwill-pay">
+      <h3>Generate your goodwill letter</h3>
+      <p>One letter could remove a negative mark that's costing you points on your score.</p>
+      <input type="email" class="pay-email" id="goodwill-pay-email" placeholder="Your email address">
+      <div class="pay-grid">
+        <div class="pay-opt pw-annual" onclick="handlePay('annual','goodwill-pay-email')"><div class="pw-badge">Best Value</div><div class="pay-price">$99/yr</div><div class="pay-label">Annual · save 31%</div></div>
+        <div class="pay-opt pw-monthly" onclick="handlePay('monthly','goodwill-pay-email')"><div class="pay-price">$12/mo</div><div class="pay-label">Monthly</div></div>
+        <div class="pay-opt pw-session" onclick="handlePay('session','goodwill-pay-email')"><div class="pay-price">$0.99</div><div class="pay-label">24-hr pass</div></div>
+      </div>
+      <p style="font-size:.7rem;color:var(--muted)">Secured by Square · Cancel anytime</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="trust">
+  <div class="trust-item"><em>⚖️</em> FCRA-compliant letters</div>
+  <div class="trust-item"><em>📈</em> Personalized score plans</div>
+  <div class="trust-item"><em>📚</em> Know your rights — free</div>
+  <div class="trust-item"><em>💸</em> 97% cheaper than agencies</div>
+</div>
+
+<footer>
+  <p>© 2026 <a href="https://infinityhub.dev">Infinity Solutions LLC</a> · All Rights Reserved · Not legal or financial advice · <a href="https://contact.infinityhub.dev">Support</a> · <a href="https://contactinfinitysolutionsllc-ops.github.io/terms/">Terms</a></p>
+</footer>
+
+<style>
+.tone-btn{background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:.28rem .85rem;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .18s;color:var(--muted2);font-family:inherit}
+.tone-btn:hover{border-color:var(--border2);color:var(--text)}
+.tone-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(6,182,212,.08)}
+</style>
+
+<script>
+const WORKER_URL = 'https://justdocs-worker.robertjosephreynolds.workers.dev';
+const APP_NAME          = 'creditai';
+const APP_URL           = 'https://contactinfinitysolutionsllc-ops.github.io/creditai/';
+const SQUARE_MONTHLY_URL = 'https://square.link/u/pCpKBYg8'; // replace with Square monthly plan link once created
+const SQUARE_ANNUAL_URL  = 'https://square.link/u/zRrTqrz3'; // replace with Square annual plan link once created
+let subscribedUnlocked = false;
+let selectedItems = new Set();
+let currentTool = 'dispute';
+
+// ── TOOL SWITCH ──────────────────────────────────────────
+function switchTool(tool,tab){
+  currentTool=tool;
+  document.querySelectorAll('.tool-tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tool).classList.add('active');
+}
+
+function toggleItem(btn){
+  const item=btn.dataset.item;
+  if(selectedItems.has(item)){selectedItems.delete(item);btn.classList.remove('active');}
+  else{selectedItems.add(item);btn.classList.add('active');}
+}
+
+function setQuestion(q){document.getElementById('e-question').value=q;}
+
+// ── SCORE DISPLAY ─────────────────────────────────────────
+function updateScoreDisplay(){
+  const sel=document.getElementById('p-score');
+  const num=parseInt(sel.selectedOptions[0]?.dataset.num||600);
+  document.getElementById('score-num').textContent=num;
+  const pct=((num-300)/550)*100;
+  document.getElementById('score-indicator').style.left=pct+'%';
+  const color=num<580?'var(--red)':num<670?'var(--gold)':num<740?'var(--green)':'var(--accent)';
+  document.getElementById('score-num').style.color=color;
+}
+
+// ── SUBSCRIPTION ─────────────────────────────────────────
+let _subCache = null;
+// isSubscribed → see getStoredSession() below
+
+// ── GENERATE ─────────────────────────────────────────────
+async function generate(tool){
+  // Education is free
+  if(tool!=='education'){
+    const sub=subscribedUnlocked||await isSubscribed();
+    if(!sub){
+      document.getElementById(tool+'-pay').style.display='block';
+      document.getElementById(tool+'-pay').scrollIntoView({behavior:'smooth'});
+      return;
+    }
+  }
+  runGenerate(tool);
+}
+
+async function runGenerate(tool){
+  const prompt=buildPrompt(tool);
+  if(!prompt) return;
+  document.getElementById(tool+'-output').classList.remove('show');
+  const errEl=document.getElementById(tool+'-error');
+  if(errEl) errEl.style.display='none';
+  document.getElementById(tool+'-loading').style.display='block';
+  document.querySelector('#panel-'+tool+' .btn-p').disabled=true;
+  try{
+    const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'claude',prompt,email:getStoredSession()?.email||localStorage.getItem('ig_account_email')||''})});
+    const data=await r.json();
+    if(data.result){
+      document.getElementById(tool+'-result').textContent=data.result;
+      document.getElementById(tool+'-output').classList.add('show');
+      document.getElementById(tool+'-output').scrollIntoView({behavior:'smooth'});
+    } else {
+      if(errEl) errEl.style.display='block';
+    }
+  }catch{
+    if(errEl) errEl.style.display='block';
+  }
+  document.getElementById(tool+'-loading').style.display='none';
+  document.querySelector('#panel-'+tool+' .btn-p').disabled=false;
+}
+
+function buildPrompt(tool){
+  switch(tool){
+    case 'dispute':{
+      const name=document.getElementById('d-name').value.trim();
+      const address=document.getElementById('d-address').value.trim();
+      const bureau=document.getElementById('d-bureau').value;
+      const type=document.getElementById('d-type').value;
+      const item=document.getElementById('d-item').value.trim();
+      if(!name||!address||!item){alert('Please fill in your name, address, and the item to dispute.');return null;}
+      const dob=document.getElementById('d-dob').value.trim();
+      const ssn=document.getElementById('d-ssn').value.trim();
+      const creditor=document.getElementById('d-creditor').value.trim();
+      const evidence=document.getElementById('d-evidence').value.trim();
+      return `Write a formal credit report dispute letter under the Fair Credit Reporting Act (FCRA).
+
+Consumer: ${name}
+Address: ${address}
+${dob?'DOB: '+dob:''}
+${ssn?'SSN last 4: '+ssn:''}
+Sending to: ${bureau}
+Dispute type: ${type}
+Item to dispute: ${item}
+${creditor?'Creditor/account: '+creditor:''}
+${evidence?'Evidence available: '+evidence:''}
+
+Write a firm, professional dispute letter that:
+- Cites FCRA Section 611 (right to dispute) and Section 623 (furnisher responsibilities)
+- Clearly identifies the inaccurate/unverifiable item
+- Demands investigation and removal/correction within 30 days
+- Requests written confirmation of investigation results
+- Notes that failure to respond constitutes an FCRA violation
+- Includes a request for a copy of the updated report
+- Is formatted as a proper business letter with date, addresses, salutation, body, and signature block
+- Ends with: [YOUR SIGNATURE] placeholder`;
+    }
+    case 'plan':{
+      const score=document.getElementById('p-score').value;
+      const negItems=Array.from(selectedItems).join(', ')||'none specified';
+      const ccdebt=document.getElementById('p-ccdebt').value;
+      const util=document.getElementById('p-util').value;
+      const goal=document.getElementById('p-goal').value;
+      const timeline=document.getElementById('p-timeline').value;
+      return `Create a personalized credit score improvement plan.
+
+Current situation:
+- Credit score range: ${score}
+- Negative items: ${negItems}
+- Credit card debt: ${ccdebt}
+- Current utilization: ${util}
+- Goal score: ${goal}
+- Timeline: ${timeline}
+
+Create a detailed, prioritized action plan with:
+
+1. SCORE ANALYSIS: Current situation assessment and realistic score improvement potential in their timeline
+
+2. IMMEDIATE ACTIONS (do this month):
+List 3-5 high-impact actions they should take right now, ranked by score impact
+
+3. SHORT-TERM ACTIONS (1-3 months):
+Specific steps to take in the next 1-3 months
+
+4. LONG-TERM STRATEGY (ongoing):
+Habits and strategies to maintain and continue building
+
+5. WHAT TO DISPUTE:
+If they have negative items, explain which ones are worth disputing and why
+
+6. CREDIT BUILDING TIPS:
+Specific product recommendations (secured cards, credit-builder loans, etc.) appropriate to their situation
+
+7. WHAT NOT TO DO:
+Common mistakes that could hurt their score further
+
+Make it specific, actionable, and encouraging. Include estimated score impact for each major action.`;
+    }
+    case 'education':{
+      const question=document.getElementById('e-question').value.trim();
+      if(!question){alert('Please enter your question.');return null;}
+      return `You are a consumer credit rights expert. Answer the following question clearly and accurately, citing relevant laws (FCRA, FDCPA, CFPB rules) where applicable.
+
+Question: ${question}
+
+Provide:
+1. A clear, direct answer in plain English
+2. The relevant law or regulation that governs this
+3. Practical steps the consumer can take
+4. Any important caveats or exceptions to be aware of
+
+Keep it educational and empowering — help them understand exactly what their rights are and how to use them. No legal advice disclaimer needed — this is educational information.`;
+    }
+    case 'goodwill':{
+      const name=document.getElementById('g-name').value.trim();
+      const creditor=document.getElementById('g-creditor').value.trim();
+      const issue=document.getElementById('g-issue').value.trim();
+      if(!name||!creditor||!issue){alert('Please fill in your name, creditor, and the issue.');return null;}
+      const account=document.getElementById('g-account').value.trim();
+      const reason=document.getElementById('g-reason').value.trim();
+      const standing=document.getElementById('g-standing').value;
+      return `Write a compelling goodwill letter from ${name} to ${creditor}.
+${account?'Account: '+account:''}
+Negative mark to remove: ${issue}
+${reason?'Circumstances/explanation: '+reason:''}
+Current standing: ${standing}
+
+Write a warm, persuasive goodwill letter that:
+- Opens by acknowledging the mistake and taking responsibility
+- Explains the circumstances clearly and sympathetically without making excuses
+- Highlights the positive history with the creditor (length of relationship, on-time payments before/after)
+- Makes a specific, humble request to remove the negative mark as a goodwill gesture
+- Emphasizes the impact the negative mark has on their financial life
+- Closes graciously, expressing appreciation regardless of outcome
+- Is 3-4 paragraphs, personal in tone, not legalistic
+- Includes proper letter format with date, address, and signature block
+- Ends with: [YOUR SIGNATURE] placeholder
+
+Note: Keep it human and genuine — goodwill letters work when they feel real.`;
+    }
+  }
+  return null;
+}
+
+// ── UTILS ─────────────────────────────────────────────────
+function copyOut(id,btn){
+  const text=document.getElementById(id)?.textContent||'';
+  const original=btn.textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='✓ Copied!';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent=original;btn.classList.remove('ok');},2000);
+  });
+}
+function dlOut(id,filename){
+  const text=document.getElementById(id)?.textContent||'';
+  if(!text) return;
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(text);
+  a.download=filename+'-'+new Date().toISOString().slice(0,10)+'.txt';
+  a.click();
+}
+
+// ── PAYMENT ──────────────────────────────────────────────
+async function handlePay(plan,emailId){
+  const email=document.getElementById(emailId).value.trim();
+  if(!email||!email.includes('@')){alert('Please enter your email first.');return;}
+  localStorage.setItem('credit_pending_email',email);
+  localStorage.setItem('credit_pending_plan',plan);
+  if(plan==='annual'&&SQUARE_ANNUAL_URL){window.location.href=SQUARE_ANNUAL_URL;return;}
+  if(plan==='monthly'&&SQUARE_MONTHLY_URL){window.location.href=SQUARE_MONTHLY_URL;return;}
+  const amounts={annual:99,monthly:12,session:0.99};
+  const labels={annual:'Infinity Hub – Annual',monthly:'Infinity Hub – Monthly',session:'Infinity Hub – Session Pass'};
+  try{
+    const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'createPaymentLink',docType:labels[plan],amount:amounts[plan],
+        redirectUrl:APP_URL+'?paid=true&plan='+plan})});
+    const data=await r.json();
+    if(data.url) window.location.href=data.url;
+    else alert('Could not create payment link. Please try again.');
+  }catch{alert('Payment error. Please try again.');}
+}
+
+if(window.location.search.includes('paid=true')){
+  const email=localStorage.getItem('credit_pending_email');
+  const plan=new URLSearchParams(window.location.search).get('plan')
+            ||localStorage.getItem('credit_pending_plan')||'monthly';
+  if(email){
+    fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'addSubscriber',email,app:APP_NAME,plan})
+    }).then(()=>{
+      localStorage.setItem('credit_email',email);
+      subscribedUnlocked=true;
+      _subCache=true;
+      localStorage.removeItem('credit_pending_email');
+      localStorage.removeItem('credit_pending_plan');
+    });
+  }
+  window.history.replaceState({},'',window.location.pathname);
+}
+
+// ── SESSION AUTH ─────────────────────────────────────────────────────
+function getStoredSession() {
+  let token = localStorage.getItem('ig_account_token');
+  let email = localStorage.getItem('ig_account_email');
+  let name  = localStorage.getItem('ig_account_name') || email;
+  if (!token) {
+    try {
+      const raw = localStorage.getItem('sb-zcvkgevcrgsujnqovxgd-auth-token');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        const sess = parsed?.currentSession || parsed?.session || parsed;
+        token = sess?.access_token;
+        email = sess?.user?.email;
+        name  = sess?.user?.user_metadata?.name || email;
+        if (token) {
+          localStorage.setItem('ig_account_token', token);
+          localStorage.setItem('ig_account_email', email || '');
+          if (name) localStorage.setItem('ig_account_name', name);
+        }
+      }
+    } catch(e) {}
+  }
+  if (!token || !email) return null;
+  try {
+    const p = JSON.parse(atob(token.split('.')[1]));
+    if (p.exp && Date.now()/1000 > p.exp) {
+      ['ig_account_token','ig_account_email','ig_account_name'].forEach(k=>localStorage.removeItem(k));
+      return null;
+    }
+  } catch(e) { return null; }
+  return { token, email, name };
+}
+function showSignedInBar(name, email) {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) bar.classList.add('signed-in');
+  if (lbl) { lbl.textContent = '✓ Subscribed — ' + (name || email); lbl.classList.add('ok'); }
+  if (btn) { btn.textContent = 'My Account'; btn.classList.add('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/'; }
+}
+function showSignInBar() {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) { bar.classList.remove('signed-in'); bar.classList.remove('warn'); }
+  if (lbl) { lbl.textContent = 'Sign in to use this tool.'; lbl.classList.remove('ok'); }
+  if (btn) { btn.textContent = 'Sign In →'; btn.classList.remove('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/?return=' + encodeURIComponent(window.location.href); }
+}
+function showSubscribeBar(email) {
+  const bar = document.getElementById('sub-bar');
+  const lbl = document.getElementById('sub-bar-lbl');
+  const btn = document.getElementById('sub-bar-btn');
+  if (bar) { bar.classList.remove('signed-in'); bar.classList.add('warn');
+             bar.style.background='rgba(240,180,41,.07)'; bar.style.borderColor='rgba(240,180,41,.25)'; }
+  if (lbl) { lbl.textContent = 'Signed in as ' + (email||'') + ' — subscribe for unlimited access.'; lbl.classList.remove('ok'); }
+  if (btn) { btn.textContent = 'Subscribe →'; btn.classList.remove('signed-in');
+             btn.href = 'https://contactinfinitysolutionsllc-ops.github.io/account/'; }
+}
+
+
+async function isSubscribed() {
+  if (_subCache !== null) return _subCache;
+  const session = getStoredSession();
+  const email = session?.email || localStorage.getItem('ig_account_email');
+  if (!email) { _subCache = false; return false; }
+  try {
+    const r = await fetch(WORKER_URL, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({action:'checkSubscriber', email, app: APP_NAME})
+    });
+    const d = await r.json();
+    _subCache = d.active === true;
+    setTimeout(() => { _subCache = null; }, 5 * 60 * 1000);
+    return _subCache;
+  } catch(e) { return false; }
+}
+
+(async () => {
+  const session = getStoredSession();
+  if (session) {
+    const subActive = await isSubscribed();
+    if (subActive) {
+      subscribedUnlocked = true; _subCache = true;
+      showSignedInBar(session.name, session.email);
+    } else {
+      showSubscribeBar(session.email);
+    }
+  } else {
+    showSignInBar();
+    window.addEventListener('ig_signed_in', async (e) => {
+      const sub = await isSubscribed();
+      if (sub) { subscribedUnlocked = true; _subCache = true;
+                 showSignedInBar(e.detail?.name, e.detail?.email); }
+      else { showSubscribeBar(e.detail?.email); }
+    });
+  }
+})();
+</script>
+</body>
+</html>

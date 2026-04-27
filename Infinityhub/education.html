@@ -1,0 +1,3186 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinity Learn — AI Tutoring for Everyone | Infinity Solutions</title>
+<meta name="description" content="AI-powered tutoring, flashcards, study plans, and lessons for homeschool families, students, and adult learners. From $12/month.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4f8eff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Infinity Learn">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--bg2:#0d1119;--bg3:#131822;--bg4:#192030;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.14);
+  --text:#eef0f8;--muted:#6e7590;--muted2:#9ba3c0;
+  --accent:#f0b429;--accent2:#fcd34d;--accent3:#92640a;
+  --blue:#4f8eff;--green:#34d399;--purple:#a78bfa;--teal:#2dd4bf;--red:#ff6b6b;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.02;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ── UTILS ── */
+.hidden{display:none!important}
+.screen{display:none !important;min-height:100vh}
+.screen.active{display:block !important}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes flip{0%{transform:rotateY(0)}100%{transform:rotateY(180deg)}}
+
+/* ── LANDING ── */
+#screen-landing{background:var(--bg)}
+.land-nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem;border-bottom:1px solid var(--border)}
+.land-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;text-decoration:none;color:var(--text)}
+.land-logo em{color:var(--accent);font-style:normal}
+.land-nav-btns{display:flex;gap:8px}
+.btn-n{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.45rem 1.1rem;border-radius:100px;cursor:pointer;transition:all .18s;border:none}
+.btn-n-ghost{background:transparent;color:var(--muted2);border:1px solid var(--border2)}
+.btn-n-ghost:hover{color:var(--text)}
+.btn-n-solid{background:var(--accent);color:#1a0e00}
+.btn-n-solid:hover{background:var(--accent2);transform:translateY(-1px)}
+
+.land-hero{padding:5.5rem 2rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.land-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(240,180,41,.08) 0%,transparent 68%);pointer-events:none}
+.eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.85rem;animation:up .5s ease both}
+.land-h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5.5vw,3.6rem);font-weight:800;line-height:1.07;letter-spacing:-.03em;margin-bottom:1rem;animation:up .6s .06s ease both}
+.land-h1 em{color:var(--accent);font-style:normal}
+.land-sub{font-size:1rem;color:var(--muted2);max-width:520px;margin:0 auto 1.8rem;line-height:1.75;font-weight:300;animation:up .6s .12s ease both}
+.land-sub strong{color:var(--text);font-weight:500}
+.land-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;animation:up .6s .18s ease both}
+.btn-cta{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;padding:.85rem 2rem;border-radius:100px;border:none;cursor:pointer;transition:all .2s}
+.btn-cta-p{background:var(--accent);color:#1a0e00}
+.btn-cta-p:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 10px 28px rgba(240,180,41,.2)}
+.btn-cta-g{background:transparent;color:var(--muted2);border:1px solid var(--border2)}
+.btn-cta-g:hover{color:var(--text)}
+
+.land-pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:2rem 0;animation:up .6s .22s ease both}
+.land-pill{background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.3rem .9rem;font-size:.78rem;color:var(--muted2)}
+.land-pill em{color:var(--accent);font-style:normal;font-weight:600}
+
+.land-features{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px;max-width:920px;margin:0 auto;padding:0 1.5rem 4rem;animation:up .6s .28s ease both}
+.feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.3rem;transition:border-color .18s}
+.feat-card:hover{border-color:var(--border2)}
+.feat-icon{font-size:1.4rem;margin-bottom:.6rem}
+.feat-name{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.3rem}
+.feat-desc{font-size:.78rem;color:var(--muted2);line-height:1.5;font-weight:300}
+
+/* ── AUTH ── */
+#screen-auth{display:flex;align-items:center;justify-content:center;background:var(--bg);padding:2rem 1rem}
+.auth-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:420px;animation:up .4s ease both}
+.auth-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;text-align:center;margin-bottom:.25rem}
+.auth-logo em{color:var(--accent);font-style:normal}
+.auth-tag{text-align:center;font-size:.82rem;color:var(--muted2);margin-bottom:1.8rem;font-weight:300}
+.auth-tabs{display:flex;background:var(--bg3);border-radius:100px;padding:3px;margin-bottom:1.4rem}
+.auth-tab{flex:1;padding:.48rem;text-align:center;font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;border-radius:100px;cursor:pointer;transition:all .18s;color:var(--muted2)}
+.auth-tab.active{background:var(--accent);color:#1a0e00}
+.auth-form{display:flex;flex-direction:column;gap:.75rem}
+.form-lbl{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);margin-bottom:.35rem;display:block}
+.form-inp{width:100%;padding:.7rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.92rem;color:var(--text);outline:none;transition:border-color .18s}
+.form-inp:focus{border-color:var(--accent);background:var(--bg2)}
+.form-inp::placeholder{color:var(--muted)}
+.btn-auth{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;padding:.82rem;border-radius:100px;border:none;cursor:pointer;background:var(--accent);color:#1a0e00;transition:all .2s;margin-top:.2rem}
+.btn-auth:hover{background:var(--accent2)}
+.btn-auth:disabled{opacity:.4;cursor:not-allowed}
+.auth-err{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);color:var(--red);border-radius:8px;padding:.6rem .9rem;font-size:.82rem;display:none}
+
+/* ── APP SHELL ── */
+#screen-app{display:none;flex-direction:column;min-height:100vh}
+#screen-app.active{display:flex}
+.app-hdr{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.app-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem}
+.app-logo em{color:var(--accent);font-style:normal}
+.app-hdr-right{display:flex;align-items:center;gap:.8rem}
+.app-avatar{width:32px;height:32px;border-radius:50%;background:rgba(240,180,41,.15);border:1px solid rgba(240,180,41,.3);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;color:var(--accent)}
+.btn-so{font-size:.75rem;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .18s}
+.btn-so:hover{color:var(--text)}
+.free-chip{font-size:.7rem;font-weight:700;background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.22);color:var(--accent);padding:.22rem .65rem;border-radius:100px}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(7,9,15,.96);backdrop-filter:blur(14px);border-top:1px solid var(--border);padding:.55rem 0 calc(.55rem + env(safe-area-inset-bottom));display:flex;justify-content:space-around}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:.28rem .7rem;border-radius:10px;transition:all .18s;color:var(--muted);font-size:.58rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;min-width:52px}
+.nav-item:hover{color:var(--muted2)}
+.nav-item.active{color:var(--accent)}
+.nav-icon{font-size:1.15rem;line-height:1}
+
+.app-content{flex:1;padding:1.4rem 1rem 6.5rem;max-width:740px;margin:0 auto;width:100%}
+.tool-screen{display:none;animation:up .25s ease both}
+.tool-screen.active{display:block}
+
+/* ── DASHBOARD ── */
+.dash-welcome{margin-bottom:1.4rem}
+.dash-welcome h2{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:700;margin-bottom:.2rem}
+.dash-welcome p{font-size:.85rem;color:var(--muted2);font-weight:300}
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.2rem}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.9rem;text-align:center}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--accent)}
+.stat-lbl{font-size:.68rem;color:var(--muted2);margin-top:2px}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dash-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.dash-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--c,var(--accent));opacity:0;transition:opacity .2s}
+.dash-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.dash-card:hover::after{opacity:1}
+.dc-icon{font-size:1.4rem;margin-bottom:.5rem}
+.dc-name{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.18rem}
+.dc-desc{font-size:.74rem;color:var(--muted2);font-weight:300;line-height:1.4}
+.recent-section{margin-top:1.3rem}
+.section-lbl{font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.recent-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;display:flex;align-items:center;gap:.8rem;margin-bottom:6px;cursor:pointer;transition:border-color .18s}
+.recent-item:hover{border-color:var(--border2)}
+.ri-icon{font-size:1rem;flex-shrink:0}
+.ri-text{flex:1;font-size:.85rem}
+.ri-meta{font-size:.68rem;color:var(--muted)}
+
+/* ── TOOL HEADER ── */
+.tool-hdr{margin-bottom:1.2rem}
+.tool-hdr h2{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:.2rem}
+.tool-hdr p{font-size:.82rem;color:var(--muted2);font-weight:300}
+
+/* ── FORM ELEMENTS ── */
+.fg{margin-bottom:.9rem}
+.fg label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);margin-bottom:.35rem}
+.fi{width:100%;padding:.68rem .9rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none;transition:border-color .18s;resize:vertical}
+.fi:focus{border-color:var(--accent);background:var(--bg3)}
+.fi::placeholder{color:var(--muted)}
+select.fi option{background:var(--bg2)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ── BUTTONS ── */
+.btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;padding:.75rem 1.6rem;border-radius:100px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:.4rem}
+.btn-p{background:var(--accent);color:#1a0e00;width:100%}
+.btn-p:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--muted2);font-size:.85rem}
+.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.25)}
+
+/* ── OUTPUT ── */
+.output-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin-top:1rem;display:none;animation:up .25s ease both}
+.output-card.show{display:block}
+.output-content{font-size:.9rem;line-height:1.85;color:var(--muted2);white-space:pre-wrap;max-height:500px;overflow-y:auto}
+.output-actions{display:flex;gap:8px;margin-top:.9rem}
+.btn-copy{background:var(--bg3);border:1px solid var(--border2);color:var(--muted2);font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.58rem 1.1rem;border-radius:100px;cursor:pointer;transition:all .18s;flex:1}
+.btn-copy:hover{color:var(--text)}
+.btn-copy.ok{color:var(--accent);border-color:var(--accent)}
+
+/* ── LOADING ── */
+.loading{display:none;text-align:center;padding:2.2rem}
+.spinner{width:32px;height:32px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto .7rem}
+.loading p{font-size:.82rem;color:var(--muted2);font-weight:300}
+
+/* ── FLASHCARDS ── */
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:1rem}
+.fc-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;min-height:140px;cursor:pointer;transition:all .2s;perspective:600px;position:relative}
+.fc-card:hover{border-color:var(--border2)}
+.fc-inner{width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d;position:relative;min-height:140px}
+.fc-card.flipped .fc-inner{transform:rotateY(180deg)}
+.fc-front,.fc-back{position:absolute;inset:0;backface-visibility:hidden;padding:1.2rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border-radius:14px}
+.fc-front{background:var(--bg2)}
+.fc-back{background:var(--bg3);transform:rotateY(180deg)}
+.fc-label{font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.fc-text{font-size:.9rem;line-height:1.5;color:var(--text)}
+.fc-hint{font-size:.7rem;color:var(--muted);margin-top:.5rem}
+.fc-controls{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.fc-count{font-size:.8rem;color:var(--muted2);margin-bottom:.8rem}
+
+/* ── QUIZ ── */
+.quiz-q{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.3rem;margin-bottom:1rem}
+.quiz-num{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem}
+.quiz-text{font-size:1rem;font-weight:500;line-height:1.5;margin-bottom:1rem}
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.72rem 1rem;cursor:pointer;transition:all .18s;font-size:.9rem;text-align:left;color:var(--text);font-family:inherit}
+.quiz-opt:hover{border-color:var(--border2)}
+.quiz-opt.correct{border-color:var(--green);background:rgba(52,211,153,.08);color:var(--green)}
+.quiz-opt.wrong{border-color:var(--red);background:rgba(255,107,107,.08);color:var(--red)}
+.quiz-opt.reveal{border-color:var(--green);background:rgba(52,211,153,.05)}
+.quiz-exp{font-size:.82rem;color:var(--muted2);line-height:1.6;margin-top:.7rem;padding-top:.7rem;border-top:1px solid var(--border);display:none}
+.quiz-score{background:var(--bg2);border:1px solid rgba(240,180,41,.2);border-radius:14px;padding:1.5rem;text-align:center;display:none}
+.quiz-score h3{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem}
+.score-big{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:var(--accent);margin:.5rem 0}
+
+/* ── PROGRESS ── */
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:1.2rem}
+.subj-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.9rem;cursor:pointer;transition:all .18s;text-align:center}
+.subj-card:hover{border-color:var(--border2)}
+.subj-card.active-subj{border-color:var(--accent);background:rgba(240,180,41,.06)}
+.subj-icon{font-size:1.3rem;margin-bottom:.35rem}
+.subj-name{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700}
+.subj-prog{font-size:.68rem;color:var(--muted2);margin-top:2px}
+.prog-bar{background:var(--bg3);border-radius:100px;height:5px;margin-top:5px;overflow:hidden}
+.prog-fill{height:5px;border-radius:100px;background:var(--accent);transition:width .4s ease}
+.prog-detail{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;display:none}
+.prog-detail.show{display:block;animation:up .25s ease both}
+.prog-session{background:var(--bg3);border-radius:10px;padding:.75rem 1rem;margin-bottom:6px;display:flex;align-items:center;gap:.8rem}
+.ps-icon{font-size:1rem}
+.ps-text{flex:1;font-size:.84rem}
+.ps-date{font-size:.68rem;color:var(--muted)}
+
+/* ── PAYWALL ── */
+.paywall-overlay{position:fixed;inset:0;background:rgba(7,9,15,.93);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+.paywall-overlay.show{display:flex;animation:fadeIn .2s ease both}
+.pw-card{background:var(--bg2);border:1px solid rgba(240,180,41,.2);border-radius:20px;padding:2rem;max-width:420px;width:100%;text-align:center}
+.pw-icon{font-size:2.5rem;margin-bottom:.8rem}
+.pw-card h2{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:.4rem}
+.pw-card p{font-size:.84rem;color:var(--muted2);margin-bottom:1.3rem;font-weight:300;line-height:1.6}
+.pw-plans{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.1rem}
+.pw-plan{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.85rem .7rem;cursor:pointer;transition:all .18s;text-align:center}
+.pw-plan:hover{border-color:var(--accent)}
+.pw-plan.pw-annual{border-color:rgba(240,180,41,.45);background:rgba(240,180,41,.06)}
+.pw-plan.pw-monthly{border-color:rgba(79,142,255,.35)}
+.pw-plan.pw-session{opacity:.85}
+.pw-badge{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#f0b429;margin-bottom:.25rem}
+.pw-price{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--accent)}
+.pw-lbl{font-size:.68rem;color:var(--muted2);margin-top:2px}
+.pw-email{width:100%;padding:.65rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none;margin-bottom:.8rem}
+.pw-email:focus{border-color:var(--accent)}
+.pw-unlock{display:flex;gap:8px;margin-bottom:1rem}
+.pw-unlock input{flex:1;padding:.58rem .85rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-family:'Instrument Sans',sans-serif;font-size:.88rem;color:var(--text);outline:none}
+.pw-unlock input:focus{border-color:var(--accent)}
+.btn-pwu{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:.58rem 1rem;border-radius:100px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;white-space:nowrap;transition:all .18s}
+.btn-pwu:hover{color:var(--text)}
+.btn-pwclose{background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer;margin-top:.2rem;transition:color .18s}
+.btn-pwclose:hover{color:var(--text)}
+
+@media(max-width:480px){
+  .dash-grid,.form-row,.pw-plans{grid-template-columns:1fr}
+  .dash-stats{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ── HOMESCHOOL HUB ── */
+.hs-hub{margin-top:1.2rem}
+.asb{background:rgba(240,180,41,.07);border:1px solid rgba(240,180,41,.18);border-radius:10px;padding:.65rem 1rem;margin-bottom:.7rem;display:flex;align-items:center;gap:.8rem}
+.asb-info{flex:1;min-width:0}
+.asb-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;color:var(--accent)}
+.asb-grade{font-size:.7rem;color:var(--muted2);margin-top:1px}
+.back-btn-s{background:none;border:none;color:var(--muted);font-family:inherit;font-size:.8rem;cursor:pointer;padding:0;margin-bottom:1rem;display:inline-flex;align-items:center;gap:.3rem;transition:color .18s}
+.back-btn-s:hover{color:var(--text)}
+/* Student cards */
+.student-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.05rem;margin-bottom:8px;display:flex;align-items:flex-start;gap:.85rem;transition:border-color .18s}
+.student-card.active-s{border-color:var(--accent);background:rgba(240,180,41,.04)}
+.sc-av{width:38px;height:38px;border-radius:50%;background:rgba(240,180,41,.14);border:1px solid rgba(240,180,41,.24);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--accent);flex-shrink:0}
+.sc-body{flex:1;min-width:0}
+.sc-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem}
+.sc-meta{font-size:.73rem;color:var(--muted2);margin-top:1px}
+.sc-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:.4rem}
+.sc-tag{font-size:.63rem;font-weight:600;padding:.15rem .5rem;border-radius:100px;background:rgba(79,142,255,.1);border:1px solid rgba(79,142,255,.2);color:var(--blue)}
+.sc-actions{display:flex;gap:5px;margin-top:.5rem;flex-wrap:wrap}
+.btn-xs{font-size:.68rem;font-weight:700;padding:.24rem .7rem;border-radius:100px;border:none;cursor:pointer;font-family:'Syne',sans-serif;transition:all .18s}
+.btn-xs-acc{background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.22);color:var(--accent)}
+.btn-xs-acc.on{background:var(--accent);color:#1a0e00}
+.btn-xs-del{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.15);color:var(--red)}
+/* Add forms */
+.add-form{background:var(--bg2);border:1px solid rgba(240,180,41,.14);border-radius:14px;padding:1.2rem;margin-bottom:.8rem;display:none;animation:up .25s ease both}
+.add-form.show{display:block}
+.tog-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:.4rem}
+.tog-btn{font-size:.71rem;font-weight:600;padding:.25rem .7rem;border-radius:100px;background:var(--bg3);border:1px solid var(--border);color:var(--muted2);cursor:pointer;font-family:inherit;transition:all .18s}
+.tog-btn:hover{border-color:var(--border2)}
+.tog-btn.on{background:rgba(79,142,255,.1);border-color:rgba(79,142,255,.28);color:var(--blue)}
+/* Lesson log */
+.log-entry{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;margin-bottom:6px}
+.le-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.25rem}
+.le-date{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700}
+.le-hrs{font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:100px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);color:var(--green);white-space:nowrap;flex-shrink:0}
+.le-student{font-size:.7rem;color:var(--accent);font-weight:600}
+.le-subjs{font-size:.75rem;color:var(--muted2)}
+.le-notes{font-size:.74rem;color:var(--muted);margin-top:.28rem;font-style:italic}
+/* Assignments */
+.assign-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;margin-bottom:6px;display:flex;gap:.75rem;align-items:flex-start;transition:opacity .18s}
+.assign-item.done{opacity:.5}
+.asgn-chk{width:18px;height:18px;border:1.5px solid var(--border2);border-radius:4px;cursor:pointer;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .18s;font-size:.75rem;background:transparent}
+.asgn-chk.done{background:var(--green);border-color:var(--green);color:#fff}
+.asgn-chk:not(.done):hover{border-color:var(--accent)}
+.asgn-title{font-family:'Syne',sans-serif;font-size:.87rem;font-weight:700}
+.asgn-meta{font-size:.7rem;color:var(--muted2);margin-top:2px}
+.due-chip{display:inline-block;font-size:.64rem;font-weight:700;padding:.13rem .48rem;border-radius:100px;margin-top:.3rem}
+.due-chip.overdue{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.2);color:var(--red)}
+.due-chip.upcoming{background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.2);color:var(--accent)}
+.due-chip.done{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);color:var(--green)}
+/* Attendance calendar */
+.att-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:.8rem}
+.att-d{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.67rem;font-weight:600;transition:all .18s;border:1px solid var(--border);background:var(--bg3);color:var(--muted)}
+.att-d:not(.att-hdr):not(.att-emp){cursor:pointer}
+.att-d:not(.att-hdr):not(.att-emp):hover{border-color:var(--border2)}
+.att-d.school{background:rgba(52,211,153,.15);border-color:rgba(52,211,153,.3);color:var(--green)}
+.att-d.today{border-color:var(--accent);color:var(--accent)}
+.att-d.att-hdr{background:transparent;border:none;font-size:.59rem;color:var(--muted)}
+.att-d.att-emp{background:transparent;border:none}
+.att-stats{display:flex;justify-content:space-around;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.85rem;margin-bottom:.9rem}
+.att-st{text-align:center}
+.att-st-n{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--accent)}
+.att-st-l{font-size:.63rem;color:var(--muted2);margin-top:1px}
+/* ── Goals tracker ── */
+.goal-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:.7rem}
+.goal-card.achieved{opacity:.6}
+.goal-hd{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem;margin-bottom:.3rem}
+.goal-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;color:var(--fg);flex:1;line-height:1.35}
+.goal-subj{font-size:.72rem;color:var(--muted2);margin:.15rem 0 .5rem}
+.goal-achieved-badge{font-size:.67rem;padding:.15rem .5rem;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.25);border-radius:20px;color:#34d399;white-space:nowrap;flex-shrink:0}
+.goal-target{font-size:.72rem;color:var(--muted);margin-bottom:.5rem}
+.progress-bar-wrap{height:5px;border-radius:3px;background:var(--bg3);margin:.55rem 0 .4rem;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:3px;background:var(--accent);transition:width .4s}
+.prog-log-item{display:flex;gap:.6rem;align-items:flex-start;font-size:.73rem;padding:.3rem 0;border-bottom:1px solid var(--border);color:var(--muted2);line-height:1.45}
+.prog-log-item:last-child{border-bottom:none}
+.prog-log-rating{font-weight:800;color:var(--fg);min-width:1.4rem;font-size:.78rem}
+.rating-btns{display:flex;gap:.4rem;margin:.35rem 0 .6rem}
+.rating-btn{width:2.2rem;height:2.2rem;border-radius:50%;border:1.5px solid var(--border2);background:var(--bg2);color:var(--fg);font-size:.82rem;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
+.rating-btn.on,.rating-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.goal-ai-output{margin-top:.6rem;padding:.7rem .9rem;background:var(--bg3);border-radius:10px;font-size:.78rem;line-height:1.65;color:var(--muted2);white-space:pre-wrap}
+/* ── State Report ── */
+.state-level-pill{display:inline-block;padding:.18rem .55rem;border-radius:20px;font-size:.7rem;font-weight:700;margin-left:.45rem;vertical-align:middle}
+.spl-none{background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.25)}
+.spl-low{background:rgba(79,142,255,.12);color:#4f8eff;border:1px solid rgba(79,142,255,.25)}
+.spl-medium{background:rgba(240,180,41,.12);color:#f0b429;border:1px solid rgba(240,180,41,.25)}
+.spl-high{background:rgba(255,107,107,.12);color:#ff6b6b;border:1px solid rgba(255,107,107,.25)}
+.report-data-row{display:flex;justify-content:space-between;align-items:center;padding:.38rem 0;border-bottom:1px solid var(--border);font-size:.8rem}
+.report-data-row:last-child{border-bottom:none}
+.report-data-row strong{color:var(--fg)}
+.report-data-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.75rem .95rem;margin:.5rem 0}
+.state-req-box{background:rgba(79,142,255,.05);border:1px solid rgba(79,142,255,.15);border-radius:12px;padding:.75rem .95rem;margin:.5rem 0;font-size:.78rem;color:var(--muted2);line-height:1.65}
+.state-req-box strong{color:var(--fg)}
+/* ── What's Next widget ── */
+.wnext-card{background:linear-gradient(135deg,rgba(79,142,255,.07),rgba(167,139,250,.07));border:1px solid rgba(79,142,255,.2);border-radius:14px;padding:1rem 1.1rem}
+.wnext-subj{font-family:'Syne',sans-serif;font-weight:800;font-size:.78rem;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem}
+.wnext-activity{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;color:var(--fg);line-height:1.35;margin-bottom:.4rem}
+.wnext-reason{font-size:.78rem;color:var(--muted2);line-height:1.65}
+/* ── Subject strength chips ── */
+.strength-grid{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+.str-chip{font-size:.7rem;padding:.2rem .55rem;border-radius:20px;font-weight:700}
+.str-strong{background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.25)}
+.str-ontarget{background:rgba(79,142,255,.12);color:#4f8eff;border:1px solid rgba(79,142,255,.25)}
+.str-struggling{background:rgba(255,107,107,.12);color:#ff6b6b;border:1px solid rgba(255,107,107,.25)}
+.str-untested{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
+/* ── Sync status dot ── */
+.sync-dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-left:.4rem;vertical-align:middle}
+.sync-dot.ok{background:#34d399}
+.sync-dot.pending{background:#f0b429}
+.sync-dot.off{background:var(--border2)}
+/* ── Portfolio ── */
+.port-section{margin-bottom:1.4rem}
+.port-section-title{font-family:'Syne',sans-serif;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:.6rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+.port-kv{display:flex;justify-content:space-between;align-items:baseline;padding:.3rem 0;border-bottom:1px solid var(--border);font-size:.82rem}
+.port-kv:last-child{border-bottom:none}
+.port-kv strong{color:var(--fg)}
+.port-kv span{color:var(--muted2);text-align:right;max-width:60%}
+.port-lesson-row{padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.78rem;color:var(--muted2)}
+.port-lesson-row:last-child{border-bottom:none}
+.port-lesson-row strong{color:var(--fg);display:block;margin-bottom:.1rem}
+.port-goal-row{padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.78rem;color:var(--muted2)}
+.port-goal-row:last-child{border-bottom:none}
+.port-goal-row strong{color:var(--fg)}
+.port-achieved{color:#34d399;font-size:.7rem;font-weight:700;margin-left:.4rem}
+.port-preview{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-top:.8rem}
+/* Print styles */
+@media print{
+  body{background:#fff!important;color:#111!important}
+  .bottom-nav,.paywall-overlay,.screen:not(.active),.tool-screen:not(#tool-portfolio),.tool-screen:not(#tool-portfolio) *{display:none!important}
+  #tool-portfolio{display:block!important;padding:0!important;max-width:100%!important}
+  .back-btn-s,.port-no-print{display:none!important}
+  .port-preview{border:none!important;background:#fff!important;padding:0!important}
+  .port-section-title{color:#333!important;border-bottom:2px solid #333!important}
+  .port-kv strong{color:#111!important}
+  .port-kv span,.port-lesson-row,.port-goal-row{color:#555!important}
+  .port-lesson-row strong,.port-goal-row strong{color:#111!important}
+  .port-achieved{color:#1a7a4a!important}
+  h1,h2,h3{color:#111!important}
+  @page{margin:1.8cm}
+}
+</style>
+</head>
+<body>
+
+<!-- ── LANDING ── -->
+<div id="screen-landing" class="screen active">
+  <nav class="land-nav">
+    <a href="https://infinityhub.dev" class="land-logo">Infinity<em>.</em>Learn</a>
+    <div style="display:flex;align-items:center;gap:1rem">
+      <a href="https://infinityhub.dev" style="font-size:.78rem;color:var(--muted2);text-decoration:none;transition:color .18s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted2)'">← Hub</a>
+      <div class="land-nav-btns" id="land-nav-btns">
+        <button class="btn-n btn-n-ghost" onclick="showAuth('login')">Sign in</button>
+        <button class="btn-n btn-n-solid" onclick="showAuth('signup')">Start free</button>
+      </div>
+    </div>
+  </nav>
+  <div class="land-hero">
+    <div class="land-glow"></div>
+    <div class="eyebrow">AI Tutoring · Every Subject · Every Age</div>
+    <h1 class="land-h1">Learning that actually<br><em>works for you.</em></h1>
+    <p class="land-sub">An AI tutor, flashcard maker, quiz generator, custom study plans, and progress tracker — all in one affordable place. <strong>For homeschool families, students, and adult learners.</strong></p>
+    <div class="land-btns">
+      <button class="btn-cta btn-cta-p" onclick="showAuth('signup')">Start free — 5 sessions free</button>
+      <button class="btn-cta btn-cta-g" onclick="showAuth('login')">Already have an account</button>
+    </div>
+  </div>
+  <div class="land-pills">
+    <div class="land-pill"><em>5</em> free sessions/month</div>
+    <div class="land-pill"><em>$12/mo</em> unlimited</div>
+    <div class="land-pill"><em>Every</em> subject</div>
+    <div class="land-pill"><em>All</em> ages</div>
+  </div>
+  <div class="land-features">
+    <div class="feat-card"><div class="feat-icon">🧑‍🏫</div><div class="feat-name">AI Tutor</div><div class="feat-desc">Ask anything — get a clear, personalized explanation at your level</div></div>
+    <div class="feat-card"><div class="feat-icon">🃏</div><div class="feat-name">Flashcard Generator</div><div class="feat-desc">Turn any topic into study-ready flashcards in seconds</div></div>
+    <div class="feat-card"><div class="feat-icon">❓</div><div class="feat-name">Quiz Generator</div><div class="feat-desc">Practice with AI-generated quizzes that explain your mistakes</div></div>
+    <div class="feat-card"><div class="feat-icon">📅</div><div class="feat-name">Study Plan Builder</div><div class="feat-desc">Get a personalized study schedule built around your goals and timeline</div></div>
+    <div class="feat-card"><div class="feat-icon">📈</div><div class="feat-name">Progress Tracker</div><div class="feat-desc">Track what you've learned across every subject over time</div></div>
+  </div>
+</div>
+
+<!-- ── AUTH ── -->
+<div id="screen-auth" class="screen">
+  <div class="auth-card">
+    <div class="auth-logo">Infinity<em>.</em>Learn</div>
+    <div class="auth-tag">Learning made affordable for everyone.</div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tab-signup" onclick="switchAuthTab('signup')">Create account</div>
+      <div class="auth-tab" id="tab-login" onclick="switchAuthTab('login')">Sign in</div>
+    </div>
+    <div class="auth-err" id="auth-err"></div>
+    <div class="auth-form" id="signup-form">
+      <div><label class="form-lbl">Your name</label><input type="text" class="form-inp" id="su-name" placeholder="First name"></div>
+      <div><label class="form-lbl">Email address</label><input type="email" class="form-inp" id="su-email" placeholder="you@email.com"></div>
+      <div><label class="form-lbl">Password</label><input type="password" class="form-inp" id="su-pass" placeholder="At least 6 characters"></div>
+      <button class="btn-auth" onclick="doSignup()">Create account →</button>
+    </div>
+    <div class="auth-form hidden" id="login-form">
+      <div><label class="form-lbl">Email address</label><input type="email" class="form-inp" id="li-email" placeholder="you@email.com"></div>
+      <div><label class="form-lbl">Password</label><input type="password" class="form-inp" id="li-pass" placeholder="Your password"></div>
+      <button class="btn-auth" onclick="doLogin()">Sign in →</button>
+    </div>
+    <div style="text-align:center;margin-top:1rem">
+      <button onclick="showScreen('landing')" style="background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="screen-app" class="screen">
+  <header class="app-hdr">
+    <div class="app-logo">Infinity<em>.</em>Learn</div>
+    <div class="app-hdr-right">
+      <span class="free-chip" id="free-chip">5 free left</span>
+      <button class="btn-so" id="mode-toggle" onclick="toggleParentMode()" title="Switch between student and parent view">👨‍👧 Parent</button>
+      <div class="app-avatar" id="user-avatar">?</div>
+      <button class="btn-so" onclick="doSignout()">Sign out</button>
+    </div>
+  </header>
+
+  <div class="app-content">
+
+    <!-- DASHBOARD -->
+    <div class="tool-screen active" id="tool-dashboard">
+      <div class="dash-welcome">
+        <h2 id="dash-greeting">Welcome back 📚</h2>
+        <p id="dash-sub">What are we learning today?</p>
+      </div>
+      <div class="dash-stats">
+        <div class="stat-card"><div class="stat-num" id="stat-sessions">0</div><div class="stat-lbl">Sessions</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-subjects">0</div><div class="stat-lbl">Subjects</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-streak">0</div><div class="stat-lbl">Day streak 🔥</div></div>
+      </div>
+      <div class="dash-grid">
+        <div class="dash-card" style="--c:#f0b429" onclick="switchTool('tutor')"><div class="dc-icon">🧑‍🏫</div><div class="dc-name">AI Tutor</div><div class="dc-desc">Ask anything, get explained</div></div>
+        <div class="dash-card" style="--c:#a78bfa" onclick="switchTool('flashcards')"><div class="dc-icon">🃏</div><div class="dc-name">Flashcards</div><div class="dc-desc">Generate &amp; study cards</div></div>
+        <div class="dash-card" style="--c:#34d399" onclick="switchTool('quiz')"><div class="dc-icon">❓</div><div class="dc-name">Quiz</div><div class="dc-desc">Test your knowledge</div></div>
+        <div class="dash-card" style="--c:#4f8eff" onclick="switchTool('studyplan')"><div class="dc-icon">📅</div><div class="dc-name">Study Plan</div><div class="dc-desc">Build your schedule</div></div>
+      </div>
+      <div class="dash-card" style="--c:#2dd4bf;margin-top:10px" onclick="switchTool('progress')"><div class="dc-icon">📈</div><div class="dc-name">Progress Tracker</div><div class="dc-desc">See what you've learned</div></div>
+      <div class="dash-card" style="--c:#f97316;margin-top:10px" onclick="switchTool('path')"><div class="dc-icon">🗺️</div><div class="dc-name">Learning Path</div><div class="dc-desc">Structured week-by-week curriculum for any subject</div></div>
+      <div id="assign-card" style="display:none;background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.2);border-radius:14px;padding:1.2rem;margin-top:10px;cursor:pointer" onclick="assignTopic()">
+        <div class="dc-icon">📋</div>
+        <div class="dc-name">Assign a Topic</div>
+        <div class="dc-desc">Pre-fill the tutor with a topic for your student</div>
+      </div>
+      <div class="recent-section" id="recent-section" style="display:none">
+        <div class="section-lbl">Recent sessions</div>
+        <div id="recent-list"></div>
+      </div>
+
+      <!-- HOMESCHOOL HUB (parent mode) -->
+      <div class="hs-hub" id="hs-hub" style="display:none">
+        <div class="section-lbl" style="margin-bottom:.6rem">Homeschool Management</div>
+        <div class="asb" id="active-student-bar" style="display:none">
+          <div class="asb-info">
+            <div class="asb-name" id="asb-name">No student selected</div>
+            <div class="asb-grade" id="asb-grade">Select a student to personalize all tools</div>
+          </div>
+          <button class="btn-xs btn-xs-del" onclick="clearActiveStudent()">✕ Clear</button>
+        </div>
+        <div id="no-student-hint" style="font-size:.77rem;color:var(--muted);margin-bottom:.7rem;padding:.5rem .85rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;line-height:1.5">
+          💡 <strong style="color:var(--muted2)">Tip:</strong> Select an active student to auto-personalize the tutor, quizzes, and flashcards for their grade level and learning needs.
+        </div>
+        <!-- WHAT'S NEXT WIDGET -->
+        <div id="wnext-wrap" style="display:none;margin-bottom:.8rem">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem">
+            <div class="section-lbl" style="margin:0">Today's focus</div>
+            <span id="sync-indicator" title="Sync status" style="font-size:.68rem;color:var(--muted)">sync<span class="sync-dot off" id="sync-dot"></span></span>
+          </div>
+          <div id="wnext-content"></div>
+        </div>
+        <div class="dash-grid">
+          <div class="dash-card" style="--c:#a78bfa" onclick="switchTool('students')"><div class="dc-icon">👤</div><div class="dc-name">Students</div><div class="dc-desc">Profiles, grade &amp; learning needs</div></div>
+          <div class="dash-card" style="--c:#34d399" onclick="switchTool('lessonlog')"><div class="dc-icon">📓</div><div class="dc-name">Lesson Log</div><div class="dc-desc">Record daily school activity</div></div>
+          <div class="dash-card" style="--c:#4f8eff" onclick="switchTool('assignments')"><div class="dc-icon">📋</div><div class="dc-name">Assignments</div><div class="dc-desc">Track what's been assigned</div></div>
+          <div class="dash-card" style="--c:#2dd4bf" onclick="switchTool('attendance')"><div class="dc-icon">📅</div><div class="dc-name">Attendance</div><div class="dc-desc">Log school days toward 180</div></div>
+          <div class="dash-card" style="--c:#f97316" onclick="switchTool('goals')"><div class="dc-icon">🎯</div><div class="dc-name">Learning Goals</div><div class="dc-desc">IEP-style goals &amp; progress tracking</div></div>
+          <div class="dash-card" style="--c:#a78bfa" onclick="switchTool('report')"><div class="dc-icon">📄</div><div class="dc-name">State Report</div><div class="dc-desc">Generate your compliance report</div></div>
+          <div class="dash-card" style="--c:#34d399" onclick="switchTool('portfolio')"><div class="dc-icon">🗂️</div><div class="dc-name">Portfolio</div><div class="dc-desc">Print-ready academic record</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI TUTOR -->
+    <div class="tool-screen" id="tool-tutor">
+      <div class="tool-hdr"><h2>🧑‍🏫 AI Tutor</h2><p>Ask any question on any subject. Get a clear, personalized explanation.</p></div>
+      <div class="fg">
+        <label>Subject</label>
+        <select class="fi" id="tutor-subject">
+          <option value="Mathematics">Mathematics</option>
+          <option value="Science">Science</option>
+          <option value="History">History</option>
+          <option value="English / Language Arts">English / Language Arts</option>
+          <option value="Geography">Geography</option>
+          <option value="Biology">Biology</option>
+          <option value="Chemistry">Chemistry</option>
+          <option value="Physics">Physics</option>
+          <option value="Computer Science">Computer Science</option>
+          <option value="Economics">Economics</option>
+          <option value="Philosophy">Philosophy</option>
+          <option value="Art History">Art History</option>
+          <option value="Foreign Language">Foreign Language</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Grade / level</label>
+        <select class="fi" id="tutor-level">
+          <option value="elementary school (grades 1-5)">Elementary (Grades 1–5)</option>
+          <option value="middle school (grades 6-8)">Middle School (Grades 6–8)</option>
+          <option value="high school (grades 9-12)" selected>High School (Grades 9–12)</option>
+          <option value="college / university">College / University</option>
+          <option value="adult learner">Adult Learner</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Your question *</label>
+        <textarea class="fi" id="tutor-q" rows="4" placeholder="e.g. Explain the difference between mitosis and meiosis. Why does it matter?"></textarea>
+      </div>
+      <button class="btn btn-p" onclick="runTutor()">Explain This →</button>
+      <div id="tutor-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;"></div>
+      <div class="loading" id="tutor-loading"><div class="spinner"></div><p>Thinking through your question…</p></div>
+      <div class="output-card" id="tutor-output">
+        <div class="output-content" id="tutor-result"></div>
+        <div class="output-actions">
+          <button class="btn-copy" onclick="copyOutput('tutor-result',this)">📋 Copy</button>
+          <button class="btn-copy" onclick="explainDifferently()">🔄 Explain differently</button>
+          <button class="btn-copy" onclick="downloadOutput('tutor-result','tutor-explanation')">⬇ Download</button>
+          <button class="btn-copy" onclick="saveSession('tutor')">💾 Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLASHCARDS -->
+    <div class="tool-screen" id="tool-flashcards">
+      <div class="tool-hdr"><h2>🃏 Flashcard Generator</h2><p>Enter a topic and get a deck of study-ready flashcards. Click any card to flip it.</p></div>
+      <div class="form-row">
+        <div class="fg"><label>Topic *</label><input type="text" class="fi" id="fc-topic" placeholder="e.g. The American Revolution"></div>
+        <div class="fg"><label>Number of cards</label>
+          <select class="fi" id="fc-count">
+            <option value="8">8 cards</option>
+            <option value="12" selected>12 cards</option>
+            <option value="16">16 cards</option>
+            <option value="20">20 cards</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Subject</label><select class="fi" id="fc-subject"><option>History</option><option>Science</option><option>Math</option><option>English</option><option>Biology</option><option>Chemistry</option><option>Physics</option><option>Geography</option><option>Other</option></select></div>
+        <div class="fg"><label>Level</label><select class="fi" id="fc-level"><option value="elementary">Elementary</option><option value="middle school">Middle School</option><option value="high school" selected>High School</option><option value="college">College</option></select></div>
+      </div>
+      <button class="btn btn-p" onclick="runFlashcards()">Generate Flashcards →</button>
+      <div id="fc-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;"></div>
+      <div class="loading" id="fc-loading"><div class="spinner"></div><p>Creating your flashcard deck…</p></div>
+      <div id="fc-output" style="display:none;animation:up .25s ease both">
+        <div class="fc-count" id="fc-count-label"></div>
+        <div class="fc-controls">
+          <button class="btn btn-ghost" onclick="shuffleCards()">🔀 Shuffle</button>
+          <button class="btn btn-ghost" onclick="resetCards()">↺ Reset all</button>
+          <button class="btn-copy" onclick="downloadFlashcards()">⬇ Download</button>
+          <button class="btn-copy" onclick="saveSession('flashcards')">💾 Save deck</button>
+        </div>
+        <div class="fc-grid" id="fc-grid"></div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="tool-screen" id="tool-quiz">
+      <div class="tool-hdr"><h2>❓ Quiz Generator</h2><p>Test your knowledge with AI-generated questions. Wrong answers get explained.</p></div>
+      <div class="form-row">
+        <div class="fg"><label>Topic *</label><input type="text" class="fi" id="quiz-topic" placeholder="e.g. World War II causes"></div>
+        <div class="fg"><label>Questions</label>
+          <select class="fi" id="quiz-count">
+            <option value="5">5 questions</option>
+            <option value="8" selected>8 questions</option>
+            <option value="10">10 questions</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Subject</label><select class="fi" id="quiz-subject"><option>History</option><option>Science</option><option>Math</option><option>English</option><option>Biology</option><option>Chemistry</option><option>Physics</option><option>Geography</option><option>Other</option></select></div>
+        <div class="fg"><label>Level</label><select class="fi" id="quiz-level"><option value="elementary">Elementary</option><option value="middle school">Middle School</option><option value="high school" selected>High School</option><option value="college">College</option></select></div>
+      </div>
+      <button class="btn btn-p" id="quiz-gen-btn" onclick="runQuiz()">Generate Quiz →</button>
+      <div id="quiz-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;"></div>
+      <div class="loading" id="quiz-loading"><div class="spinner"></div><p>Writing your quiz questions…</p></div>
+      <div id="quiz-output" style="display:none;animation:up .25s ease both">
+        <div id="quiz-questions"></div>
+        <div class="quiz-score" id="quiz-score">
+          <div style="font-size:2rem">🎓</div>
+          <h3>Quiz complete!</h3>
+          <div class="score-big" id="score-display">0/0</div>
+          <p style="font-size:.84rem;color:var(--muted2)" id="score-msg"></p>
+          <div style="margin-top:1rem;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn-p" style="width:auto;padding:.7rem 1.5rem" onclick="runQuiz()">Try again</button>
+            <button class="btn btn-ghost" onclick="switchTool('tutor')">Study this topic</button>
+          </div>
+          <div id="quiz-reteach"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUDY PLAN -->
+    <div class="tool-screen" id="tool-studyplan">
+      <div class="tool-hdr"><h2>📅 Study Plan Builder</h2><p>Get a personalized study schedule built around your goals and timeline.</p></div>
+      <div class="fg"><label>What are you studying / preparing for? *</label><textarea class="fi" id="sp-goal" rows="2" placeholder="e.g. AP Biology exam in 6 weeks, passing my GED Math section, learning Spanish for a trip"></textarea></div>
+      <div class="form-row">
+        <div class="fg"><label>Timeframe</label><select class="fi" id="sp-time"><option>1 week</option><option>2 weeks</option><option>1 month</option><option selected>6 weeks</option><option>3 months</option><option>6 months</option><option>1 year</option></select></div>
+        <div class="fg"><label>Hours available per week</label><select class="fi" id="sp-hours"><option value="2-3">2–3 hours</option><option value="4-6" selected>4–6 hours</option><option value="7-10">7–10 hours</option><option value="11-15">11–15 hours</option><option value="15+">15+ hours</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Current level</label><select class="fi" id="sp-level"><option>Complete beginner</option><option selected>Some background knowledge</option><option>Intermediate</option><option>Advanced — just need review</option></select></div>
+        <div class="fg"><label>Learning style</label><select class="fi" id="sp-style"><option>Reading and notes</option><option>Practice problems</option><option selected>Mix of everything</option><option>Visual / diagrams</option><option>Teaching others</option></select></div>
+      </div>
+      <div class="fg"><label>Any specific challenges or areas to focus on?</label><input type="text" class="fi" id="sp-focus" placeholder="e.g. I always struggle with fractions, I need help with essay writing"></div>
+      <button class="btn btn-p" onclick="runStudyPlan()">Build My Study Plan →</button>
+      <div id="sp-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;"></div>
+      <div class="loading" id="sp-loading"><div class="spinner"></div><p>Building your personalized plan…</p></div>
+      <div class="output-card" id="sp-output">
+        <div class="output-content" id="sp-result"></div>
+        <div class="output-actions">
+          <button class="btn-copy" onclick="copyOutput('sp-result',this)">📋 Copy</button>
+          <button class="btn-copy" onclick="downloadOutput('sp-result','study-plan')">⬇ Download</button>
+          <button class="btn-copy" onclick="saveSession('studyplan')">💾 Save plan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEARNING PATH -->
+    <div class="tool-screen" id="tool-path">
+      <div class="tool-hdr"><h2>🗺️ Learning Path</h2><p>Pick a subject and level — get a structured week-by-week curriculum with checkable topics. Click any topic to study it in the tutor.</p></div>
+      <div class="form-row">
+        <div class="fg">
+          <label>Subject *</label>
+          <select class="fi" id="path-subject">
+            <option>Mathematics</option>
+            <option>Science</option>
+            <option>History</option>
+            <option>English / Language Arts</option>
+            <option>Biology</option>
+            <option>Chemistry</option>
+            <option>Physics</option>
+            <option>Computer Science</option>
+            <option>Geography</option>
+            <option>Economics</option>
+            <option>Philosophy</option>
+            <option>Foreign Language</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Grade / Level *</label>
+          <select class="fi" id="path-level">
+            <option value="elementary school (grades 1-5)">Elementary (Grades 1–5)</option>
+            <option value="middle school (grades 6-8)">Middle School (Grades 6–8)</option>
+            <option value="high school (grades 9-12)" selected>High School (Grades 9–12)</option>
+            <option value="college / university">College / University</option>
+            <option value="adult learner">Adult Learner</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label>Timeframe</label>
+          <select class="fi" id="path-time">
+            <option>2 weeks</option>
+            <option>1 month</option>
+            <option selected>6 weeks</option>
+            <option>3 months</option>
+            <option>6 months</option>
+            <option>1 year</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Goal (optional)</label>
+          <input type="text" class="fi" id="path-goal" placeholder="e.g. Pass AP exam, master algebra basics">
+        </div>
+      </div>
+      <button class="btn btn-p" onclick="runPath()">Build My Learning Path →</button>
+      <div id="path-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;"></div>
+      <div class="loading" id="path-loading"><div class="spinner"></div><p>Building your learning path…</p></div>
+      <div id="path-output" style="display:none;animation:up .25s ease both">
+        <div id="path-checklist"></div>
+        <div class="output-actions" style="margin-top:.5rem">
+          <button class="btn-copy" onclick="downloadPath()">⬇ Download path</button>
+          <button class="btn-copy" onclick="saveSession('path')">💾 Save path</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="tool-screen" id="tool-progress">
+      <div class="tool-hdr"><h2>📈 Progress Tracker</h2><p>Your learning journey across every subject.</p></div>
+      <div class="section-lbl">Subjects studied</div>
+      <div class="subj-grid" id="subj-grid"></div>
+      <div class="prog-detail" id="prog-detail">
+        <div class="section-lbl" id="prog-detail-title">Sessions</div>
+        <div id="prog-sessions"></div>
+      </div>
+      <div class="empty-state" id="prog-empty" style="text-align:center;padding:2rem;color:var(--muted);font-size:.88rem">
+        <div style="font-size:2rem;margin-bottom:.5rem">📈</div>
+        Complete sessions in any tool to track your progress here.
+      </div>
+    </div>
+
+    <!-- STUDENTS -->
+    <div class="tool-screen" id="tool-students">
+      <button class="back-btn-s" onclick="switchTool('dashboard')">← Dashboard</button>
+      <div class="tool-hdr"><h2>👤 Student Profiles</h2><p>Add each student. Set one as active to personalize every tool for their grade, learning style, and needs.</p></div>
+      <button class="btn btn-p" onclick="toggleAddStudentForm()" id="add-s-btn">+ Add student</button>
+      <div class="add-form" id="add-student-form" style="margin-top:.9rem">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;margin-bottom:.9rem">New Student</div>
+        <div class="form-row">
+          <div class="fg"><label>Name *</label><input type="text" class="fi" id="ns-name" placeholder="First name"></div>
+          <div class="fg"><label>Grade</label>
+            <select class="fi" id="ns-grade">
+              <option>Kindergarten</option><option>1st Grade</option><option>2nd Grade</option><option>3rd Grade</option><option>4th Grade</option><option>5th Grade</option><option>6th Grade</option><option>7th Grade</option><option>8th Grade</option><option>9th Grade</option><option>10th Grade</option><option>11th Grade</option><option>12th Grade</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>Learning style</label>
+            <select class="fi" id="ns-style">
+              <option value="">Not specified</option>
+              <option value="visual">Visual — pictures, diagrams</option>
+              <option value="auditory">Auditory — verbal, discussion</option>
+              <option value="reading">Reading / Writing focused</option>
+              <option value="hands-on">Hands-on — examples first</option>
+            </select>
+          </div>
+          <div class="fg"><label>Pace</label>
+            <select class="fi" id="ns-pace">
+              <option value="standard">Standard</option>
+              <option value="accelerated">Accelerated / Gifted</option>
+              <option value="relaxed">Relaxed — needs more time</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Special needs / learning differences</label>
+          <div class="tog-btns" id="ns-needs">
+            <button class="tog-btn" data-need="dyslexia" onclick="toggleNeed(this)">Dyslexia</button>
+            <button class="tog-btn" data-need="adhd" onclick="toggleNeed(this)">ADHD</button>
+            <button class="tog-btn" data-need="autism" onclick="toggleNeed(this)">Autism Spectrum</button>
+            <button class="tog-btn" data-need="dyscalculia" onclick="toggleNeed(this)">Dyscalculia</button>
+            <button class="tog-btn" data-need="gifted" onclick="toggleNeed(this)">Gifted</button>
+            <button class="tog-btn" data-need="processing-delays" onclick="toggleNeed(this)">Processing delays</button>
+            <button class="tog-btn" data-need="vision" onclick="toggleNeed(this)">Vision impairment</button>
+            <button class="tog-btn" data-need="hearing" onclick="toggleNeed(this)">Hearing impairment</button>
+          </div>
+        </div>
+        <div class="fg"><label>Notes (optional)</label><textarea class="fi" id="ns-notes" rows="2" placeholder="Interests, what works well, anything the tutor should know…"></textarea></div>
+        <div id="student-form-err" style="display:none;margin-bottom:.6rem;padding:.55rem .85rem;border-radius:8px;font-size:.82rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);color:#ff6b6b"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-p" style="flex:1" onclick="saveStudent()">Save student</button>
+          <button class="btn btn-ghost" onclick="toggleAddStudentForm()">Cancel</button>
+        </div>
+      </div>
+      <div id="students-list" style="margin-top:.8rem"></div>
+      <div id="students-empty" style="display:none;text-align:center;padding:2.5rem;color:var(--muted);font-size:.87rem"><div style="font-size:2rem;margin-bottom:.5rem">👤</div>No students yet. Add your first student above.</div>
+    </div>
+
+    <!-- LESSON LOG -->
+    <div class="tool-screen" id="tool-lessonlog">
+      <button class="back-btn-s" onclick="switchTool('dashboard')">← Dashboard</button>
+      <div class="tool-hdr"><h2>📓 Lesson Log</h2><p>Record each school day. This data builds the foundation for state compliance reports.</p></div>
+      <div class="add-form show" id="lesson-form">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:.8rem">Log a school day</div>
+        <div class="form-row">
+          <div class="fg"><label>Date</label><input type="date" class="fi" id="ll-date"></div>
+          <div class="fg"><label>Student</label>
+            <select class="fi" id="ll-student"><option value="">— All / unspecified —</option></select>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Subjects covered</label>
+          <div class="tog-btns" id="ll-subjects">
+            <button class="tog-btn" data-subj="Mathematics" onclick="toggleSubj(this)">Math</button>
+            <button class="tog-btn" data-subj="Science" onclick="toggleSubj(this)">Science</button>
+            <button class="tog-btn" data-subj="History" onclick="toggleSubj(this)">History</button>
+            <button class="tog-btn" data-subj="English / Language Arts" onclick="toggleSubj(this)">English</button>
+            <button class="tog-btn" data-subj="Geography" onclick="toggleSubj(this)">Geography</button>
+            <button class="tog-btn" data-subj="Art" onclick="toggleSubj(this)">Art</button>
+            <button class="tog-btn" data-subj="Music" onclick="toggleSubj(this)">Music</button>
+            <button class="tog-btn" data-subj="PE" onclick="toggleSubj(this)">PE</button>
+            <button class="tog-btn" data-subj="Foreign Language" onclick="toggleSubj(this)">Foreign Language</button>
+            <button class="tog-btn" data-subj="Computer Science" onclick="toggleSubj(this)">Computer Science</button>
+            <button class="tog-btn" data-subj="Bible / Character" onclick="toggleSubj(this)">Bible / Character</button>
+            <button class="tog-btn" data-subj="Life Skills" onclick="toggleSubj(this)">Life Skills</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>Hours of instruction</label>
+            <select class="fi" id="ll-hours">
+              <option value="1">1 hr</option><option value="1.5">1.5 hrs</option><option value="2">2 hrs</option><option value="2.5">2.5 hrs</option><option value="3">3 hrs</option><option value="3.5">3.5 hrs</option><option value="4" selected>4 hrs</option><option value="4.5">4.5 hrs</option><option value="5">5 hrs</option><option value="5.5">5.5 hrs</option><option value="6">6 hrs</option><option value="6+">6+ hrs</option>
+            </select>
+          </div>
+          <div class="fg"><label>Log attendance too?</label>
+            <select class="fi" id="ll-att">
+              <option value="yes" selected>Yes — count as school day</option>
+              <option value="no">No — notes only</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label>Notes — what was covered</label><textarea class="fi" id="ll-notes" rows="3" placeholder="e.g. Finished chapter 4 fractions, read pages 20–35, drew plant cell diagram…"></textarea></div>
+        <div id="lesson-form-err" style="display:none;margin-bottom:.6rem;padding:.55rem .85rem;border-radius:8px;font-size:.82rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);color:#ff6b6b"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-p" style="flex:1" id="ll-save-btn" onclick="saveLesson()">Log school day</button>
+          <button class="btn btn-ghost" onclick="downloadLessons()">⬇ Export</button>
+        </div>
+      </div>
+      <div class="section-lbl" style="margin-top:1.1rem;margin-bottom:.6rem">Recent entries</div>
+      <div id="lessons-list"></div>
+      <div id="lessons-empty" style="display:none;text-align:center;padding:1.5rem;color:var(--muted);font-size:.85rem">No lessons logged yet. Fill in the form above to get started.</div>
+    </div>
+
+    <!-- ASSIGNMENTS -->
+    <div class="tool-screen" id="tool-assignments">
+      <button class="back-btn-s" onclick="switchTool('dashboard')">← Dashboard</button>
+      <div class="tool-hdr"><h2>📋 Assignments</h2><p>Create and track assignments for your students. Check them off when complete.</p></div>
+      <button class="btn btn-ghost" style="width:100%;margin-bottom:.8rem" onclick="toggleAssignForm()">+ Add assignment</button>
+      <div class="add-form" id="assign-form">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:.8rem">New Assignment</div>
+        <div class="form-row">
+          <div class="fg"><label>Student</label><select class="fi" id="af-student"><option value="">— Any —</option></select></div>
+          <div class="fg"><label>Subject</label>
+            <select class="fi" id="af-subject">
+              <option>Mathematics</option><option>Science</option><option>History</option><option>English / Language Arts</option><option>Geography</option><option>Art</option><option>Music</option><option>PE</option><option>Foreign Language</option><option>Computer Science</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label>Title *</label><input type="text" class="fi" id="af-title" placeholder="e.g. Read chapter 5 and write a summary"></div>
+        <div class="form-row">
+          <div class="fg"><label>Due date</label><input type="date" class="fi" id="af-due"></div>
+          <div class="fg"><label>Notes</label><input type="text" class="fi" id="af-notes" placeholder="Optional details"></div>
+        </div>
+        <div id="assign-form-err" style="display:none;margin-bottom:.6rem;padding:.55rem .85rem;border-radius:8px;font-size:.82rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);color:#ff6b6b"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-p" style="flex:1" onclick="saveAssignment()">Add assignment</button>
+          <button class="btn btn-ghost" onclick="toggleAssignForm()">Cancel</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.8rem" id="assign-filter-bar">
+        <button class="tog-btn on" onclick="setAssignFilter(this,'active')">Active</button>
+        <button class="tog-btn" onclick="setAssignFilter(this,'done')">Completed</button>
+        <button class="tog-btn" onclick="setAssignFilter(this,'all')">All</button>
+      </div>
+      <div id="assignments-list"></div>
+      <div id="assignments-empty" style="display:none;text-align:center;padding:1.5rem;color:var(--muted);font-size:.85rem">No assignments. Add one above.</div>
+    </div>
+
+    <!-- ATTENDANCE -->
+    <div class="tool-screen" id="tool-attendance">
+      <button class="back-btn-s" onclick="switchTool('dashboard')">← Dashboard</button>
+      <div class="tool-hdr"><h2>📅 Attendance</h2><p>Click any day to mark it as a school day. Most states require 180 days per year.</p></div>
+      <div class="fg" style="margin-bottom:.8rem"><label>Student</label>
+        <select class="fi" id="att-student" onchange="renderAttCalendar()"><option value="">— Select student —</option></select>
+      </div>
+      <div class="att-stats">
+        <div class="att-st"><div class="att-st-n" id="att-year-total">0</div><div class="att-st-l">Days this year</div></div>
+        <div class="att-st"><div class="att-st-n" id="att-month-total">0</div><div class="att-st-l">This month</div></div>
+        <div class="att-st"><div class="att-st-n" id="att-remaining">180</div><div class="att-st-l">Days remaining</div></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem">
+        <button class="btn btn-ghost" style="padding:.38rem .9rem;font-size:.82rem" onclick="changeAttMonth(-1)">←</button>
+        <span id="att-month-label" style="font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem"></span>
+        <button class="btn btn-ghost" style="padding:.38rem .9rem;font-size:.82rem" onclick="changeAttMonth(1)">→</button>
+      </div>
+      <div class="att-cal" id="att-cal"></div>
+      <button class="btn btn-ghost" style="width:100%;margin-top:.4rem" onclick="downloadAttendance()">⬇ Export attendance log</button>
+    </div>
+
+    <!-- LEARNING GOALS -->
+    <div class="tool-screen" id="tool-goals">
+      <button class="back-btn-s" onclick="switchTool('dashboard')">← Dashboard</button>
+      <div class="tool-hdr"><h2>🎯 Learning Goals</h2><p>Set measurable goals for each student, log weekly progress, and generate narrative reports.</p></div>
+
+      <!-- Add goal form -->
+      <button class="btn btn-ghost" style="width:100%;margin-bottom:.6rem" onclick="toggleGoalForm()">+ Add New Goal</button>
+      <div class="add-form" id="goal-form">
+        <div class="fg"><label>Student *</label>
+          <select class="fi" id="gf-student"><option value="">— Select student —</option></select>
+        </div>
+        <div class="fg"><label>Subject / Area</label>
+          <select class="fi" id="gf-subject">
+            <option value="Reading">Reading</option><option value="Writing">Writing</option>
+            <option value="Math">Math</option><option value="Science">Science</option>
+            <option value="History">History</option><option value="Social Skills">Social Skills</option>
+            <option value="Communication">Communication</option><option value="Life Skills">Life Skills</option>
+            <option value="Organization">Organization</option><option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Goal Description *</label>
+          <textarea class="fi" id="gf-desc" rows="2" placeholder="e.g. Student will read grade-level passages with 80% comprehension"></textarea>
+        </div>
+        <div class="fg"><label>Measurable Indicator</label>
+          <input type="text" class="fi" id="gf-metric" placeholder="e.g. Score 80%+ on weekly reading checks">
+        </div>
+        <div class="fg"><label>Target Date</label>
+          <input type="date" class="fi" id="gf-target">
+        </div>
+        <div id="goal-form-err" style="display:none;padding:.5rem .8rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:8px;font-size:.78rem;color:#ff6b6b;margin-bottom:.4rem"></div>
+        <button class="btn btn-p" onclick="saveGoal()">Save Goal</button>
+      </div>
+
+      <div id="goals-list"></div>
+      <div id="goals-empty" style="display:none;text-align:center;padding:1.5rem;color:var(--muted);font-size:.85rem">No goals yet. Add one above.</div>
+    </div>
+
+    <!-- STATE COMPLIANCE REPORT -->
+    <div class="tool-screen" id="tool-report">
+      <button class="back-btn-s" onclick="switchTool('dashboard')">← Dashboard</button>
+      <div class="tool-hdr"><h2>📄 State Compliance Report</h2><p>Generate a homeschool progress report tailored to your state's requirements.</p></div>
+
+      <div class="fg"><label>Student *</label>
+        <select class="fi" id="rpt-student" onchange="updateReportDataPreview()"><option value="">— Select student —</option></select>
+      </div>
+      <div class="fg"><label>State *</label>
+        <select class="fi" id="rpt-state" onchange="onStateChange()"><option value="">— Select state —</option></select>
+      </div>
+      <div id="rpt-state-info" style="display:none" class="state-req-box"></div>
+
+      <div class="report-data-box" id="rpt-data-preview" style="display:none">
+        <div class="report-data-row"><strong>School days logged</strong><span id="rpt-days">—</span></div>
+        <div class="report-data-row"><strong>Subjects covered</strong><span id="rpt-subjects">—</span></div>
+        <div class="report-data-row"><strong>Active goals</strong><span id="rpt-goals">—</span></div>
+        <div class="report-data-row"><strong>Completed goals</strong><span id="rpt-goals-done">—</span></div>
+        <div class="report-data-row"><strong>Lessons logged</strong><span id="rpt-lessons">—</span></div>
+      </div>
+
+      <div class="fg" style="margin-top:.5rem"><label>Additional context <span style="color:var(--muted);font-size:.75rem">(optional)</span></label>
+        <textarea class="fi" id="rpt-context" rows="2" placeholder="e.g. Student completed a science fair project in February. Participated in community service hours."></textarea>
+      </div>
+
+      <button class="btn btn-p" onclick="generateReport()">Generate Report →</button>
+      <div id="rpt-error" style="display:none;margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b"></div>
+      <div class="loading" id="rpt-loading"><div class="spinner"></div><p>Drafting your compliance report…</p></div>
+      <div class="output-card" id="rpt-output">
+        <div class="output-content" id="rpt-result" style="white-space:pre-wrap"></div>
+        <div class="output-actions">
+          <button class="btn-copy" onclick="copyOutput('rpt-result',this)">📋 Copy</button>
+          <button class="btn-copy" onclick="downloadReport()">⬇ Download</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PORTFOLIO -->
+    <div class="tool-screen" id="tool-portfolio">
+      <button class="back-btn-s port-no-print" onclick="switchTool('dashboard')">← Dashboard</button>
+      <div class="tool-hdr port-no-print"><h2>🗂️ Academic Portfolio</h2><p>A print-ready record of the school year. Use File → Print (or Ctrl+P) to save as PDF.</p></div>
+
+      <div class="port-no-print" style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.9rem">
+        <div class="fg" style="flex:1;min-width:160px"><label>Student</label>
+          <select class="fi" id="pf-student" onchange="buildPortfolioPreview()"><option value="">— Select student —</option></select>
+        </div>
+        <div class="fg" style="flex:1;min-width:120px"><label>School year</label>
+          <select class="fi" id="pf-year" onchange="buildPortfolioPreview()"></select>
+        </div>
+      </div>
+      <div id="pf-error" style="display:none;margin-bottom:.8rem;padding:.6rem .9rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b"></div>
+
+      <div class="port-no-print" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem">
+        <button class="btn btn-p" onclick="buildPortfolioPreview()" style="flex:1">Build Portfolio</button>
+        <button class="btn btn-ghost" id="pf-narrative-btn" onclick="generatePortfolioNarrative()" style="flex:1;display:none">✨ Add AI Narrative</button>
+        <button class="btn btn-ghost" onclick="window.print()" style="flex:1">🖨️ Print / Save PDF</button>
+      </div>
+
+      <!-- ── PRINTABLE DOCUMENT ── -->
+      <div class="port-preview" id="pf-preview" style="display:none">
+
+        <!-- Cover -->
+        <div class="port-section" id="pf-cover">
+          <div style="text-align:center;padding:1rem 0 1.4rem">
+            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;color:var(--fg)" id="pf-cover-name"></div>
+            <div style="font-size:.85rem;color:var(--muted2);margin-top:.3rem" id="pf-cover-sub"></div>
+            <div style="font-size:.78rem;color:var(--muted);margin-top:.2rem" id="pf-cover-year"></div>
+          </div>
+        </div>
+
+        <!-- AI Narrative -->
+        <div class="port-section" id="pf-narrative-section" style="display:none">
+          <div class="port-section-title">Academic Overview</div>
+          <div id="pf-narrative-text" style="font-size:.83rem;line-height:1.8;color:var(--muted2);white-space:pre-wrap"></div>
+        </div>
+
+        <!-- Student Profile -->
+        <div class="port-section">
+          <div class="port-section-title">Student Profile</div>
+          <div id="pf-profile"></div>
+        </div>
+
+        <!-- Attendance -->
+        <div class="port-section">
+          <div class="port-section-title">Attendance</div>
+          <div id="pf-attendance"></div>
+        </div>
+
+        <!-- Academic Summary -->
+        <div class="port-section">
+          <div class="port-section-title">Academic Summary</div>
+          <div id="pf-summary"></div>
+        </div>
+
+        <!-- Lesson Log -->
+        <div class="port-section">
+          <div class="port-section-title">Lesson Log <span id="pf-lesson-count" style="font-weight:400;text-transform:none;font-size:.75rem;color:var(--muted)"></span></div>
+          <div id="pf-lessons"></div>
+        </div>
+
+        <!-- Assignments Completed -->
+        <div class="port-section" id="pf-assign-section">
+          <div class="port-section-title">Completed Assignments</div>
+          <div id="pf-assigns"></div>
+        </div>
+
+        <!-- Learning Goals -->
+        <div class="port-section" id="pf-goals-section">
+          <div class="port-section-title">Learning Goals</div>
+          <div id="pf-goals"></div>
+        </div>
+
+        <!-- Subject Strengths -->
+        <div class="port-section" id="pf-scores-section" style="display:none">
+          <div class="port-section-title">Quiz Performance by Subject</div>
+          <div id="pf-scores"></div>
+        </div>
+
+        <!-- Signature -->
+        <div class="port-section" style="margin-top:2rem">
+          <div class="port-section-title">Parent / Instructor Attestation</div>
+          <div style="font-size:.8rem;color:var(--muted2);line-height:1.8">
+            I hereby certify that the information contained in this portfolio accurately reflects the home education program provided during the school year indicated above, and that instruction was provided in a bona fide manner consistent with applicable state requirements.
+          </div>
+          <div style="margin-top:1.5rem;display:flex;gap:2rem;flex-wrap:wrap">
+            <div style="flex:1;min-width:180px;border-top:1px solid var(--border2);padding-top:.4rem;font-size:.72rem;color:var(--muted)">Parent / Instructor Signature &amp; Date</div>
+            <div style="flex:1;min-width:180px;border-top:1px solid var(--border2);padding-top:.4rem;font-size:.72rem;color:var(--muted)">Printed Name</div>
+          </div>
+        </div>
+
+      </div><!-- end port-preview -->
+
+      <div id="pf-empty" style="text-align:center;padding:2rem;color:var(--muted);font-size:.85rem">Select a student and click Build Portfolio to generate a printable record.</div>
+    </div>
+
+  </div><!-- end app-content -->
+
+  <nav class="bottom-nav">
+    <div class="nav-item active" id="nav-dashboard" onclick="switchTool('dashboard')"><div class="nav-icon">🏠</div><span>Home</span></div>
+    <div class="nav-item" id="nav-tutor" onclick="switchTool('tutor')"><div class="nav-icon">🧑‍🏫</div><span>Tutor</span></div>
+    <div class="nav-item" id="nav-flashcards" onclick="switchTool('flashcards')"><div class="nav-icon">🃏</div><span>Cards</span></div>
+    <div class="nav-item" id="nav-quiz" onclick="switchTool('quiz')"><div class="nav-icon">❓</div><span>Quiz</span></div>
+    <div class="nav-item" id="nav-path" onclick="switchTool('path')"><div class="nav-icon">🗺️</div><span>Path</span></div>
+    <div class="nav-item" id="nav-progress" onclick="switchTool('progress')"><div class="nav-icon">📈</div><span>Progress</span></div>
+  </nav>
+</div>
+
+<!-- ── PAYWALL ── -->
+<div class="paywall-overlay" id="paywall">
+  <div class="pw-card">
+    <div class="pw-icon">📚</div>
+    <h2>Keep learning — upgrade to unlimited</h2>
+    <p>You've used your free sessions. One subscription covers <em>all</em> Infinity Hub tools — monthly or annual. Already subscribed? Enter your email to unlock.</p>
+    <div class="pw-unlock">
+      <input type="email" id="pw-unlock-email" placeholder="Your email">
+      <button class="btn-pwu" onclick="paywallUnlock()">Unlock</button>
+    </div>
+    <div id="pw-error" style="display:none;margin:.4rem auto .6rem;padding:.6rem .9rem;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:10px;font-size:.82rem;color:#ff6b6b;text-align:left"></div>
+    <input type="email" class="pw-email" id="pw-pay-email" placeholder="Your email (for subscription)">
+    <div class="pw-plans">
+      <div class="pw-plan pw-annual" onclick="paywallPay('annual')"><div class="pw-badge">Best Value</div><div class="pw-price">$99/yr</div><div class="pw-lbl">Annual · save 31%</div></div>
+      <div class="pw-plan pw-monthly" onclick="paywallPay('monthly')"><div class="pw-price">$12/mo</div><div class="pw-lbl">Monthly</div></div>
+      <div class="pw-plan pw-session" onclick="paywallPay('session')"><div class="pw-price">$0.99</div><div class="pw-lbl">24-hr pass</div></div>
+    </div>
+    <button class="btn-pwclose" onclick="closePaywall()">Maybe later</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════
+const WORKER_URL   = 'https://justdocs-worker.robertjosephreynolds.workers.dev';
+const SUPABASE_URL = 'https://zcvkgevcrgsujnqovxgd.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_WeAsyK0Xo7G-VbhIwFUlNQ_pGNmu75T';
+const APP_NAME          = 'infinitylearn';
+const APP_URL           = 'https://contactinfinitysolutionsllc-ops.github.io/education/';
+const SQUARE_MONTHLY_URL = 'https://square.link/u/pCpKBYg8'; // replace with Square monthly plan link once created
+const SQUARE_ANNUAL_URL  = 'https://square.link/u/zRrTqrz3'; // replace with Square annual plan link once created
+const FREE_KEY     = 'learn_free';
+const FREE_LIMIT   = 5;
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let currentUser = null;
+let sessions    = [];
+let flashcardDeck = [];
+let quizData    = [];
+let quizAnswers = {};
+let quizSubmitted = false;
+
+// ══════════════════════════════════════════
+// SCREENS
+// ══════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.classList.remove('active');
+    s.style.setProperty('display','none','important');
+  });
+  const el=document.getElementById('screen-'+id);
+  if(el){
+    el.classList.add('active');
+    el.style.setProperty('display','block','important');
+  }
+}
+function showAuth(tab){showScreen('auth');switchAuthTab(tab);}
+function switchAuthTab(tab){
+  document.getElementById('signup-form').classList.toggle('hidden',tab==='login');
+  document.getElementById('login-form').classList.toggle('hidden',tab==='signup');
+  document.getElementById('tab-signup').classList.toggle('active',tab==='signup');
+  document.getElementById('tab-login').classList.toggle('active',tab==='login');
+  document.getElementById('auth-err').style.display='none';
+}
+function showAuthError(msg){const el=document.getElementById('auth-err');el.textContent=msg;el.style.display='block';}
+
+// ══════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════
+async function sbAuth(path,body){
+  const r=await fetch(SUPABASE_URL+'/auth/v1'+path,{
+    method:'POST',
+    headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  return r.json();
+}
+
+async function doSignup(){
+  const name=document.getElementById('su-name').value.trim();
+  const email=document.getElementById('su-email').value.trim();
+  const pass=document.getElementById('su-pass').value;
+  if(!email||!pass){showAuthError('Please fill in all fields.');return;}
+  if(pass.length<6){showAuthError('Password must be at least 6 characters.');return;}
+  const btn=document.querySelector('#signup-form .btn-auth');
+  btn.disabled=true;btn.textContent='Creating…';
+  const data=await sbAuth('/signup',{email,password:pass,data:{name:name||email.split('@')[0]}});
+  btn.disabled=false;btn.textContent='Create account →';
+  if(data.error){showAuthError(data.error.message||'Signup failed.');return;}
+  if(data.user||data.access_token){
+    loginSuccess(data.user||data,data.access_token||data.session?.access_token,name||email.split('@')[0]);
+  }else{
+    showAuthError('Check your email to confirm, then sign in.');
+    switchAuthTab('login');
+  }
+}
+
+async function doLogin(){
+  const email=document.getElementById('li-email').value.trim();
+  const pass=document.getElementById('li-pass').value;
+  if(!email||!pass){showAuthError('Please fill in all fields.');return;}
+  const btn=document.querySelector('#login-form .btn-auth');
+  btn.disabled=true;btn.textContent='Signing in…';
+  const data=await sbAuth('/token?grant_type=password',{email,password:pass});
+  btn.disabled=false;btn.textContent='Sign in →';
+  if(data.error){showAuthError(data.error.message||'Sign in failed.');return;}
+  loginSuccess(data.user,data.access_token,data.user?.user_metadata?.name||email.split('@')[0]);
+}
+
+function loginSuccess(user,token,name){
+  currentUser={id:user.id,email:user.email,name,token};
+  localStorage.setItem('learn_user',JSON.stringify(currentUser));
+  localStorage.setItem('ig_account_email',user.email);
+  if(token) localStorage.setItem('ig_account_token',token);
+  if(name)  localStorage.setItem('ig_account_name',name);
+  initApp();
+}
+
+function doSignout(){
+  currentUser=null;
+  localStorage.removeItem('learn_user');
+  showScreen('landing');
+}
+
+// ══════════════════════════════════════════
+// APP INIT
+// ══════════════════════════════════════════
+function updateLandingNav(){
+  const email = currentUser?.email;
+  if(!email) return;
+  const btns = document.getElementById('land-nav-btns');
+  if(!btns) return;
+  btns.innerHTML = `
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/account/"
+       style="display:inline-flex;align-items:center;gap:.4rem;font-family:'Syne',sans-serif;
+              font-weight:700;font-size:.82rem;color:var(--text);text-decoration:none;
+              background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.22);
+              padding:.42rem 1rem;border-radius:100px">
+      <span style="width:20px;height:20px;border-radius:50%;background:rgba(240,180,41,.2);
+                   display:inline-flex;align-items:center;justify-content:center;
+                   font-size:.65rem;color:var(--accent);">${email[0].toUpperCase()}</span>
+      My Account
+    </a>
+    <button class="btn-n btn-n-solid" onclick="showScreen('app')">Open App →</button>`;
+}
+
+function initApp(){
+  updateLandingNav();
+  showScreen('app');
+  const init=currentUser.name?.[0]?.toUpperCase()||'?';
+  document.getElementById('user-avatar').textContent=init;
+  const h=new Date().getHours();
+  const greet=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  document.getElementById('dash-greeting').textContent=greet+', '+currentUser.name+' 📚';
+  loadSessions();
+  loadStudents();
+  loadLessons();
+  loadAssigns();
+  loadGoals();
+  loadQuizScores();
+  // Pull cloud data in background — localStorage wins if Supabase is unavailable
+  pullAllFromSupabase();
+  // Set today's date in lesson log
+  const llDate=document.getElementById('ll-date');
+  if(llDate) llDate.value=new Date().toISOString().slice(0,10);
+  populateStudentSelects();
+  updateFreeUI();
+  updateDashStats();
+  applyMode();
+  if(window.location.search.includes('paid=true')){handlePaidReturn();window.history.replaceState({},'',window.location.pathname);}
+}
+
+// ══════════════════════════════════════════
+// FREE / SUBSCRIPTION
+// ══════════════════════════════════════════
+function getFree(){
+  const d=JSON.parse(localStorage.getItem(FREE_KEY)||'{}');
+  const m=new Date().toISOString().slice(0,7);
+  return d.month===m?(d.count||0):0;
+}
+function incFree(){
+  const m=new Date().toISOString().slice(0,7);
+  localStorage.setItem(FREE_KEY,JSON.stringify({month:m,count:getFree()+1}));
+  updateFreeUI();
+}
+function updateFreeUI(){
+  const rem=Math.max(0,FREE_LIMIT-getFree());
+  const chip=document.getElementById('free-chip');
+  if(chip) chip.textContent=rem+' free left';
+}
+async function isSubscribed(){
+  if(!currentUser) return false;
+  const email = currentUser.email || localStorage.getItem('ig_account_email');
+  if(!email) return false;
+  try{
+    const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'checkSubscriber',email,app:APP_NAME})});
+    return (await r.json()).active===true;
+  }catch{return false;}
+}
+async function checkAccess(){
+  if(await isSubscribed()) return true;
+  if(getFree()<FREE_LIMIT) return true;
+  showPaywall(); return false;
+}
+function showPaywall(){document.getElementById('paywall').classList.add('show');}
+function closePaywall(){document.getElementById('paywall').classList.remove('show');}
+
+function showPwErr(msg){const e=document.getElementById('pw-error');if(e){e.textContent=msg;e.style.display='block';}}
+function clearPwErr(){const e=document.getElementById('pw-error');if(e)e.style.display='none';}
+function showToolErr(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.style.display='block';}}
+function clearToolErr(id){const e=document.getElementById(id);if(e)e.style.display='none';}
+
+async function paywallUnlock(){
+  clearPwErr();
+  const email=document.getElementById('pw-unlock-email').value.trim();
+  if(!email||!email.includes('@')){showPwErr('Please enter a valid email address.');return;}
+  const btn=document.querySelector('.btn-pwu');
+  if(btn){btn.textContent='Checking…';btn.disabled=true;}
+  try{
+    const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'checkSubscriber',email,app:APP_NAME})});
+    const data=await r.json();
+    if(data.active){closePaywall();}
+    else showPwErr('No active subscription found for that email. Please subscribe below.');
+  }catch{showPwErr('Error checking subscription. Please try again.');}
+  if(btn){btn.textContent='Unlock';btn.disabled=false;}
+}
+
+async function paywallPay(plan){
+  clearPwErr();
+  const emailEl=document.getElementById('pw-pay-email');
+  const email=emailEl.value.trim();
+  if(!email||!email.includes('@')){
+    emailEl.style.border='1.5px solid #ff6b6b';
+    setTimeout(()=>emailEl.style.border='',2000);
+    showPwErr('Please enter your email address first.');
+    return;
+  }
+  localStorage.setItem('learn_pending_email',email);
+  localStorage.setItem('learn_pending_plan',plan);
+  // Use Square subscription plan URLs when configured (auto-renewing)
+  if(plan==='annual'&&SQUARE_ANNUAL_URL){window.location.href=SQUARE_ANNUAL_URL;return;}
+  if(plan==='monthly'&&SQUARE_MONTHLY_URL){window.location.href=SQUARE_MONTHLY_URL;return;}
+  // Fallback: one-time Square payment link
+  const amounts={annual:99,monthly:12,session:0.99};
+  const labels={annual:'Infinity Hub – Annual',monthly:'Infinity Hub – Monthly',session:'Infinity Hub – Session Pass'};
+  try{
+    const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'createPaymentLink',docType:labels[plan],amount:amounts[plan],
+        redirectUrl:APP_URL+'?paid=true&plan='+plan})});
+    const data=await r.json();
+    if(data.url) window.location.href=data.url;
+    else showPwErr('Could not create payment link. Please try again.');
+  }catch{showPwErr('Payment error. Please try again.');}
+}
+
+async function handlePaidReturn(){
+  const email=localStorage.getItem('learn_pending_email');
+  const plan=new URLSearchParams(window.location.search).get('plan')
+            ||localStorage.getItem('learn_pending_plan')||'monthly';
+  if(email){
+    await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'addSubscriber',email,app:APP_NAME,plan})});
+    localStorage.removeItem('learn_pending_email');
+    localStorage.removeItem('learn_pending_plan');
+    updateFreeUI();
+  }
+}
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function switchTool(tool){
+  document.querySelectorAll('.tool-screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('tool-'+tool)?.classList.add('active');
+  document.getElementById('nav-'+tool)?.classList.add('active');
+  if(tool==='progress') renderProgress();
+  if(tool==='dashboard'){ updateDashStats(); if(parentMode) updateActiveStudentUI(); if(activeStudent) refreshWhatNext(); }
+  if(tool==='students'){ renderStudents(); }
+  if(tool==='lessonlog'){ populateStudentSelects(); renderLessons(); }
+  if(tool==='assignments'){ populateStudentSelects(); renderAssignments(); }
+  if(tool==='attendance'){ populateStudentSelects(); renderAttCalendar(); }
+  if(tool==='goals'){ populateStudentSelects(); renderGoals(); }
+  if(tool==='report'){ populateStudentSelects(); populateStateDropdown(); updateReportDataPreview(); }
+  if(tool==='portfolio'){ populateStudentSelects(); populatePortfolioYear(); buildPortfolioPreview(); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+// SESSIONS
+// ══════════════════════════════════════════
+function loadSessions(){
+  if(!currentUser) return;
+  const s=localStorage.getItem(`learn_sessions_${currentUser.id}`);
+  sessions=s?JSON.parse(s):[];
+}
+function saveSessions(){
+  if(!currentUser) return;
+  localStorage.setItem(`learn_sessions_${currentUser.id}`,JSON.stringify(sessions.slice(0,200)));
+}
+function saveSession(type){
+  const titles={tutor:'Tutor session',flashcards:'Flashcard deck',studyplan:'Study plan'};
+  const content={
+    tutor:document.getElementById('tutor-result')?.textContent,
+    flashcards:flashcardDeck.map(c=>c.front+'|'+c.back).join('\n'),
+    studyplan:document.getElementById('sp-result')?.textContent,
+  }[type];
+  if(!content) return;
+  const subject={
+    tutor:document.getElementById('tutor-subject')?.value,
+    flashcards:document.getElementById('fc-subject')?.value,
+    studyplan:'Study Plan',
+  }[type];
+  sessions.unshift({id:Date.now(),type,title:titles[type],subject,content,date:new Date().toISOString()});
+  saveSessions();
+  updateDashStats();
+  updateStreak();
+  const btns=document.querySelectorAll('.btn-copy');
+  btns.forEach(b=>{if(b.textContent.includes('Save')){b.textContent='✓ Saved!';setTimeout(()=>b.textContent='💾 Save',2000);}});
+}
+
+function updateDashStats(){
+  document.getElementById('stat-sessions').textContent=sessions.length;
+  const subjs=new Set(sessions.map(s=>s.subject).filter(Boolean));
+  document.getElementById('stat-subjects').textContent=subjs.size;
+  const key=`learn_streak_${currentUser?.id}`;
+  const s=JSON.parse(localStorage.getItem(key)||'{"count":0}');
+  document.getElementById('stat-streak').textContent=s.count||0;
+  renderRecent();
+}
+
+function updateStreak(){
+  if(!currentUser) return;
+  const key=`learn_streak_${currentUser.id}`;
+  const today=new Date().toISOString().slice(0,10);
+  const yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
+  const s=JSON.parse(localStorage.getItem(key)||'{"count":0,"last":""}');
+  if(s.last===today) return;
+  const count=s.last===yesterday?s.count+1:1;
+  localStorage.setItem(key,JSON.stringify({count,last:today}));
+  document.getElementById('stat-streak').textContent=count;
+}
+
+function renderRecent(){
+  const sec=document.getElementById('recent-section');
+  const list=document.getElementById('recent-list');
+  if(sessions.length===0){sec.style.display='none';return;}
+  sec.style.display='block';
+  const icons={tutor:'🧑‍🏫',flashcards:'🃏',quiz:'❓',studyplan:'📅',path:'🗺️'};
+  list.innerHTML=sessions.slice(0,5).map(s=>{
+    const d=new Date(s.date).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    return `<div class="recent-item" onclick="switchTool('${s.type}')">
+      <span class="ri-icon">${icons[s.type]||'📚'}</span>
+      <span class="ri-text">${s.title}${s.subject?' — '+s.subject:''}</span>
+      <span class="ri-date ri-meta">${d}</span>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// AI CALLS
+// ══════════════════════════════════════════
+async function callAI(prompt,system){
+  let finalSystem=system||'';
+  // If a student profile is active, prepend their context to every AI call
+  if(activeStudent){
+    const ctx=buildStudentContext();
+    if(ctx) finalSystem=ctx+(finalSystem?'\n\n'+finalSystem:'');
+  }
+  const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action:'claude',prompt,system:finalSystem||undefined,email:localStorage.getItem('ig_account_email')||''})});
+  const data=await r.json();
+  return data.result||'';
+}
+
+// ══════════════════════════════════════════
+// TUTOR
+// ══════════════════════════════════════════
+async function runTutor(){
+  clearToolErr('tutor-error');
+  const q=document.getElementById('tutor-q').value.trim();
+  if(!q){showToolErr('tutor-error','Please enter a question first.');return;}
+  if(!await checkAccess()) return;
+  const subject=document.getElementById('tutor-subject').value;
+  const level=document.getElementById('tutor-level').value;
+  document.getElementById('tutor-output').classList.remove('show');
+  document.getElementById('tutor-loading').style.display='block';
+  document.querySelector('#tool-tutor .btn-p').disabled=true;
+  const system=`You are a patient, encouraging tutor specializing in ${subject} for ${level} students. Explain clearly with examples. Use analogies where helpful. Break down complex ideas into digestible steps. End with a brief check-for-understanding question.`;
+  try{
+    const result=await callAI(q,system);
+    if(!result) throw new Error('Empty');
+    document.getElementById('tutor-result').textContent=result;
+    document.getElementById('tutor-output').classList.add('show');
+    if(!await isSubscribed()) incFree();
+    updateStreak();
+  }catch{showToolErr('tutor-error','Error getting explanation. Please check your connection and try again.');}
+  document.getElementById('tutor-loading').style.display='none';
+  document.querySelector('#tool-tutor .btn-p').disabled=false;
+}
+
+async function explainDifferently(){
+  clearToolErr('tutor-error');
+  const q=document.getElementById('tutor-q').value.trim();
+  if(!q) return;
+  if(!await checkAccess()) return;
+  const subject=document.getElementById('tutor-subject').value;
+  const level=document.getElementById('tutor-level').value;
+  document.getElementById('tutor-output').classList.remove('show');
+  document.getElementById('tutor-loading').style.display='block';
+  document.querySelector('#tool-tutor .btn-p').disabled=true;
+  const system=`You are a creative tutor for ${subject} at ${level} level. The student didn't fully grasp the previous explanation. Try a completely different approach — use a real-world analogy, a story, a worked example, or explain it like they're hearing it for the first time. Change the framing entirely. Make it click.`;
+  try{
+    const result=await callAI('Explain this using a completely different approach: '+q,system);
+    if(!result) throw new Error('Empty');
+    document.getElementById('tutor-result').textContent=result;
+    document.getElementById('tutor-output').classList.add('show');
+    if(!await isSubscribed()) incFree();
+    updateStreak();
+  }catch{showToolErr('tutor-error','Error generating alternate explanation. Please try again.');}
+  document.getElementById('tutor-loading').style.display='none';
+  document.querySelector('#tool-tutor .btn-p').disabled=false;
+}
+
+// ══════════════════════════════════════════
+// FLASHCARDS
+// ══════════════════════════════════════════
+async function runFlashcards(){
+  clearToolErr('fc-error');
+  const topic=document.getElementById('fc-topic').value.trim();
+  if(!topic){showToolErr('fc-error','Please enter a topic first.');return;}
+  if(!await checkAccess()) return;
+  const count=document.getElementById('fc-count').value;
+  const subject=document.getElementById('fc-subject').value;
+  const level=document.getElementById('fc-level').value;
+  document.getElementById('fc-output').style.display='none';
+  document.getElementById('fc-loading').style.display='block';
+  document.querySelector('#tool-flashcards .btn-p').disabled=true;
+  const prompt=`Create ${count} flashcards about "${topic}" for ${level} ${subject} students. 
+Return ONLY a JSON array with no markdown, no explanation, no backticks — just the raw JSON array:
+[{"front":"Question or term","back":"Answer or definition"},...]
+Make the fronts concise questions or terms. Make the backs clear, complete answers. Cover the most important concepts.`;
+  const raw=await callAI(prompt);
+  document.getElementById('fc-loading').style.display='none';
+  document.querySelector('#tool-flashcards .btn-p').disabled=false;
+  try{
+    const clean=raw.replace(/```json|```/g,'').trim();
+    flashcardDeck=JSON.parse(clean);
+    renderFlashcards();
+    if(!await isSubscribed()) incFree();
+    updateStreak();
+  }catch{showToolErr('fc-error','Error generating flashcards. Please try again.');}
+}
+
+function renderFlashcards(){
+  const grid=document.getElementById('fc-grid');
+  document.getElementById('fc-count-label').textContent=`${flashcardDeck.length} cards — click to flip`;
+  grid.innerHTML=flashcardDeck.map((c,i)=>`
+    <div class="fc-card" id="fc-${i}" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="fc-label">Question</div><div class="fc-text">${c.front}</div><div class="fc-hint">Tap to reveal</div></div>
+        <div class="fc-back"><div class="fc-label">Answer</div><div class="fc-text">${c.back}</div></div>
+      </div>
+    </div>`).join('');
+  document.getElementById('fc-output').style.display='block';
+}
+
+function shuffleCards(){
+  flashcardDeck=flashcardDeck.sort(()=>Math.random()-.5);
+  renderFlashcards();
+}
+function resetCards(){
+  document.querySelectorAll('.fc-card').forEach(c=>c.classList.remove('flipped'));
+}
+
+// ══════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════
+async function runQuiz(){
+  clearToolErr('quiz-error');
+  const topic=document.getElementById('quiz-topic').value.trim();
+  if(!topic){showToolErr('quiz-error','Please enter a topic first.');return;}
+  if(!await checkAccess()) return;
+  const count=document.getElementById('quiz-count').value;
+  const subject=document.getElementById('quiz-subject').value;
+  const level=document.getElementById('quiz-level').value;
+  document.getElementById('quiz-output').style.display='none';
+  document.getElementById('quiz-score').style.display='none';
+  document.getElementById('quiz-loading').style.display='block';
+  document.getElementById('quiz-gen-btn').disabled=true;
+  quizAnswers={}; quizSubmitted=false;
+  const prompt=`Create ${count} multiple choice quiz questions about "${topic}" for ${level} ${subject} students.
+Return ONLY a JSON array with no markdown, no backticks — just the raw JSON:
+[{"question":"...","options":["A) ...","B) ...","C) ...","D) ..."],"correct":"A","explanation":"Brief explanation of why A is correct"}]
+Make questions clear and educational. Distractors should be plausible. Explanation should be 1-2 sentences.`;
+  const raw=await callAI(prompt);
+  document.getElementById('quiz-loading').style.display='none';
+  document.getElementById('quiz-gen-btn').disabled=false;
+  try{
+    const clean=raw.replace(/```json|```/g,'').trim();
+    quizData=JSON.parse(clean);
+    renderQuiz();
+    if(!await isSubscribed()) incFree();
+    updateStreak();
+  }catch{showToolErr('quiz-error','Error generating quiz. Please try again.');}
+}
+
+function renderQuiz(){
+  const container=document.getElementById('quiz-questions');
+  container.innerHTML=quizData.map((q,i)=>`
+    <div class="quiz-q" id="qq-${i}">
+      <div class="quiz-num">Question ${i+1} of ${quizData.length}</div>
+      <div class="quiz-text">${q.question}</div>
+      <div class="quiz-opts">
+        ${q.options.map((opt,j)=>`<button class="quiz-opt" onclick="selectAnswer(${i},'${String.fromCharCode(65+j)}')" id="qo-${i}-${j}">${opt}</button>`).join('')}
+      </div>
+      <div class="quiz-exp" id="qe-${i}">${q.explanation||''}</div>
+    </div>`).join('');
+  container.innerHTML+=`<button class="btn btn-p" id="quiz-submit-btn" onclick="submitQuiz()" style="margin-top:.5rem">Submit Quiz →</button>`;
+  document.getElementById('quiz-output').style.display='block';
+}
+
+function selectAnswer(qi,letter){
+  if(quizSubmitted) return;
+  quizAnswers[qi]=letter;
+  const q=quizData[qi];
+  document.querySelectorAll(`[id^="qo-${qi}-"]`).forEach(b=>b.classList.remove('selected'));
+  const idx=letter.charCodeAt(0)-65;
+  document.getElementById(`qo-${qi}-${idx}`)?.classList.add('selected');
+  // Style selected
+  document.querySelectorAll(`[id^="qo-${qi}-"]`).forEach((b,j)=>{
+    b.style.borderColor=j===idx?'var(--accent)':'';
+    b.style.background=j===idx?'rgba(240,180,41,.08)':'';
+  });
+}
+
+function submitQuiz(){
+  quizSubmitted=true;
+  let correct=0;
+  quizData.forEach((q,i)=>{
+    const userAns=quizAnswers[i];
+    const correctIdx=q.correct.charCodeAt(0)-65;
+    for(let j=0;j<q.options.length;j++){
+      const btn=document.getElementById(`qo-${i}-${j}`);
+      if(!btn) continue;
+      btn.style.borderColor=''; btn.style.background='';
+      if(j===correctIdx){btn.classList.add('correct');}
+      else if(userAns&&j===userAns.charCodeAt(0)-65){btn.classList.add('wrong');}
+    }
+    if(userAns===q.correct) correct++;
+    document.getElementById(`qe-${i}`).style.display='block';
+  });
+  document.getElementById('quiz-submit-btn')?.remove();
+  const pct=Math.round(correct/quizData.length*100);
+  // Record score against active student profile
+  const quizSubject=document.getElementById('quiz-subject').value;
+  recordQuizScore(quizSubject, correct, quizData.length);
+  // Invalidate what's next cache so next dashboard visit re-generates
+  wnextCache=null;
+  document.getElementById('score-display').textContent=`${correct}/${quizData.length}`;
+  document.getElementById('quiz-reteach').innerHTML='';
+  const scoreEl=document.getElementById('quiz-score');
+  scoreEl.style.display='block';
+
+  if(pct>=80){
+    document.getElementById('score-msg').textContent='Excellent work! 🎉';
+  } else if(pct>=60){
+    document.getElementById('score-msg').textContent='Good effort — review the explanations above.';
+    document.getElementById('quiz-reteach').innerHTML=`<button class="btn btn-p" style="margin-top:1rem" onclick="reteachWeakAreas()">📖 Re-teach my weak areas →</button>`;
+  } else {
+    document.getElementById('score-msg').textContent='Keep at it — let\'s re-teach the tricky parts before trying again.';
+    document.getElementById('quiz-reteach').innerHTML=`<button class="btn btn-p" style="margin-top:1rem" onclick="reteachWeakAreas()">📖 Re-teach my weak areas →</button>`;
+  }
+
+  sessions.unshift({id:Date.now(),type:'quiz',title:`Quiz — ${correct}/${quizData.length}`,subject:document.getElementById('quiz-subject').value,date:new Date().toISOString()});
+  saveSessions();
+}
+
+async function reteachWeakAreas(){
+  const wrongQs=quizData.filter((_,i)=>quizAnswers[i]!==quizData[i].correct).map(q=>q.question);
+  if(!wrongQs.length) return;
+  const reteachEl=document.getElementById('quiz-reteach');
+  reteachEl.innerHTML=`<div style="text-align:center;padding:1.5rem"><div class="spinner" style="width:28px;height:28px;border-width:2px;margin:0 auto .6rem"></div><p style="font-size:.82rem;color:var(--muted2)">Re-teaching weak areas…</p></div>`;
+  const subject=document.getElementById('quiz-subject').value;
+  const level=document.getElementById('quiz-level').value;
+  const system=`You are a patient tutor for ${subject} at ${level} level. The student just answered these quiz questions incorrectly. Re-teach each underlying concept briefly and clearly. Use simple language and a concrete example for each one. Keep it encouraging.`;
+  try{
+    const result=await callAI('Re-teach the concepts behind these questions the student got wrong:\n'+wrongQs.map((q,i)=>`${i+1}. ${q}`).join('\n'),system);
+    reteachEl.innerHTML=`
+      <div style="background:rgba(79,142,255,.07);border:1px solid rgba(79,142,255,.18);border-radius:12px;padding:1.2rem;margin-top:1rem;text-align:left">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;color:var(--blue);margin-bottom:.6rem">📖 Quick re-teach — weak areas</div>
+        <div style="font-size:.87rem;line-height:1.8;color:var(--muted2);white-space:pre-wrap">${result}</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap">
+        <button class="btn btn-p" style="flex:1" onclick="runQuiz()">Quiz me again →</button>
+        <button class="btn btn-ghost" style="flex:1" onclick="switchTool('tutor')">Deep dive in tutor</button>
+      </div>`;
+  }catch{
+    reteachEl.innerHTML=`<p style="font-size:.82rem;color:var(--red);margin-top:.8rem">Error loading re-teach. Try the tutor for extra help.</p>`;
+  }
+}
+
+// ══════════════════════════════════════════
+// STUDY PLAN
+// ══════════════════════════════════════════
+async function runStudyPlan(){
+  clearToolErr('sp-error');
+  const goal=document.getElementById('sp-goal').value.trim();
+  if(!goal){showToolErr('sp-error','Please describe your study goal first.');return;}
+  if(!await checkAccess()) return;
+  const time=document.getElementById('sp-time').value;
+  const hours=document.getElementById('sp-hours').value;
+  const level=document.getElementById('sp-level').value;
+  const style=document.getElementById('sp-style').value;
+  const focus=document.getElementById('sp-focus').value.trim();
+  document.getElementById('sp-output').classList.remove('show');
+  document.getElementById('sp-loading').style.display='block';
+  document.querySelector('#tool-studyplan .btn-p').disabled=true;
+  const prompt=`Create a detailed, personalized study plan for: "${goal}"
+Timeframe: ${time} | Available: ${hours}/week | Level: ${level} | Style: ${style}${focus?` | Focus areas: ${focus}`:''}
+Include:
+- Week-by-week breakdown with specific topics to cover each week
+- Recommended resources (types, not specific links)
+- Daily/weekly study session structure
+- Milestone checkpoints to measure progress
+- Tips specific to the learning style
+- What to do in the final week before any exam/deadline
+Make it practical, specific, and motivating.`;
+  const result=await callAI(prompt);
+  document.getElementById('sp-loading').style.display='none';
+  document.querySelector('#tool-studyplan .btn-p').disabled=false;
+  document.getElementById('sp-result').textContent=result;
+  document.getElementById('sp-output').classList.add('show');
+  if(!await isSubscribed()) incFree();
+  updateStreak();
+}
+
+// ══════════════════════════════════════════
+// PROGRESS
+// ══════════════════════════════════════════
+function renderProgress(){
+  const grid=document.getElementById('subj-grid');
+  const empty=document.getElementById('prog-empty');
+  const detail=document.getElementById('prog-detail');
+  if(sessions.length===0){empty.style.display='block';grid.innerHTML='';detail.classList.remove('show');return;}
+  empty.style.display='none';
+  const subjectMap={};
+  sessions.forEach(s=>{
+    const subj=s.subject||'General';
+    if(!subjectMap[subj]) subjectMap[subj]=[];
+    subjectMap[subj].push(s);
+  });
+  const icons={'Mathematics':'🔢','Science':'🔬','History':'📜','English / Language Arts':'📝','Biology':'🧬','Chemistry':'⚗️','Physics':'⚛️','Geography':'🌍','Computer Science':'💻','Study Plan':'📅','General':'📚'};
+  grid.innerHTML=Object.entries(subjectMap).map(([subj,sArr])=>`
+    <div class="subj-card" onclick="showSubjDetail('${subj}')">
+      <div class="subj-icon">${icons[subj]||'📚'}</div>
+      <div class="subj-name">${subj}</div>
+      <div class="subj-prog">${sArr.length} session${sArr.length!==1?'s':''}</div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${Math.min(100,sArr.length*20)}%"></div></div>
+    </div>`).join('');
+}
+
+function showSubjDetail(subj){
+  const filtered=sessions.filter(s=>(s.subject||'General')===subj);
+  document.getElementById('prog-detail-title').textContent=subj+' — '+filtered.length+' sessions';
+  const icons={tutor:'🧑‍🏫',flashcards:'🃏',quiz:'❓',studyplan:'📅',path:'🗺️'};
+  document.getElementById('prog-sessions').innerHTML=filtered.map(s=>{
+    const d=new Date(s.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    return `<div class="prog-session"><span class="ps-icon">${icons[s.type]||'📚'}</span><span class="ps-text">${s.title}</span><span class="ps-date">${d}</span></div>`;
+  }).join('');
+  document.getElementById('prog-detail').classList.add('show');
+}
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function copyOutput(id,btn){
+  const orig=btn.textContent;
+  const text=document.getElementById(id)?.textContent||'';
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='✓ Copied!'; btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('ok');},2000);
+  });
+}
+function downloadOutput(id,filename){
+  const text=document.getElementById(id)?.textContent||'';
+  if(!text) return;
+  const date=new Date().toISOString().slice(0,10);
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(text);
+  a.download=filename+'-'+date+'.txt';
+  a.click();
+}
+function downloadFlashcards(){
+  if(!flashcardDeck.length) return;
+  const text=flashcardDeck.map((c,i)=>`Card ${i+1}\nQ: ${c.front}\nA: ${c.back}`).join('\n\n');
+  const date=new Date().toISOString().slice(0,10);
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(text);
+  a.download='flashcards-'+date+'.txt';
+  a.click();
+}
+
+// ══════════════════════════════════════════
+// LEARNING PATH
+// ══════════════════════════════════════════
+let currentPath=[];
+
+async function runPath(){
+  clearToolErr('path-error');
+  if(!await checkAccess()) return;
+  const subject=document.getElementById('path-subject').value;
+  const level=document.getElementById('path-level').value;
+  const time=document.getElementById('path-time').value;
+  const goal=document.getElementById('path-goal').value.trim();
+  document.getElementById('path-output').style.display='none';
+  document.getElementById('path-loading').style.display='block';
+  document.querySelector('#tool-path .btn-p').disabled=true;
+  const prompt=`Create a structured learning path for a ${level} student studying ${subject} over ${time}.${goal?' Their goal: '+goal:''}
+Return ONLY a JSON array — no markdown, no backticks, raw JSON only:
+[{"week":1,"theme":"Week theme","topics":["Topic 1","Topic 2","Topic 3"],"milestone":"What student can do by end of week"}]
+Include 3-4 specific, teachable topics per week. Make topics concrete, not vague. Milestones should be measurable.`;
+  try{
+    const raw=await callAI(prompt);
+    const clean=raw.replace(/```json|```/g,'').trim();
+    currentPath=JSON.parse(clean);
+    renderPath(currentPath,subject,level);
+    sessions.unshift({id:Date.now(),type:'path',title:`${subject} — ${time} path`,subject,date:new Date().toISOString()});
+    saveSessions();updateDashStats();updateStreak();
+    if(!await isSubscribed()) incFree();
+  }catch{showToolErr('path-error','Error building learning path. Please try again.');}
+  document.getElementById('path-loading').style.display='none';
+  document.querySelector('#tool-path .btn-p').disabled=false;
+}
+
+function renderPath(path,subject,level){
+  const storageKey=`path_${currentUser?.id}_${subject}_${level}`.replace(/\s+/g,'_');
+  const saved=JSON.parse(localStorage.getItem(storageKey)||'{}');
+  document.getElementById('path-checklist').innerHTML=path.map(week=>{
+    const topicsHtml=week.topics.map(topic=>{
+      const k=`w${week.week}_${topic}`;
+      const done=!!saved[k];
+      return `<div style="display:flex;align-items:center;gap:.6rem;background:var(--bg3);border-radius:8px;padding:.55rem .85rem;margin-bottom:5px">
+        <input type="checkbox" ${done?'checked':''} onchange="markTopic('${storageKey}','${k.replace(/'/g,"\\'")}',this.checked)" style="accent-color:var(--accent);width:15px;height:15px;flex-shrink:0;cursor:pointer">
+        <span style="font-size:.87rem;flex:1;${done?'color:var(--muted);text-decoration:line-through':''}">${topic}</span>
+        <button onclick="studyTopic('${subject}','${level}','${topic.replace(/'/g,"\\'")}')" style="font-family:'Syne',sans-serif;font-weight:700;font-size:.7rem;padding:.22rem .7rem;border-radius:100px;background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.22);color:var(--accent);cursor:pointer;white-space:nowrap">Study →</button>
+      </div>`;
+    }).join('');
+    return `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.2rem;margin-bottom:10px">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;margin-bottom:.7rem">Week ${week.week}: ${week.theme}</div>
+      ${topicsHtml}
+      <div style="font-size:.75rem;color:var(--muted2);border-top:1px solid var(--border);padding-top:.6rem;margin-top:.5rem">🎯 <em>${week.milestone}</em></div>
+    </div>`;
+  }).join('');
+  document.getElementById('path-output').style.display='block';
+  document.getElementById('path-output').scrollIntoView({behavior:'smooth'});
+}
+
+function markTopic(storageKey,topicKey,checked){
+  const saved=JSON.parse(localStorage.getItem(storageKey)||'{}');
+  saved[topicKey]=checked;
+  localStorage.setItem(storageKey,JSON.stringify(saved));
+}
+function studyTopic(subject,level,topic){
+  const levelMap={'elementary school (grades 1-5)':'elementary school (grades 1-5)','middle school (grades 6-8)':'middle school (grades 6-8)','high school (grades 9-12)':'high school (grades 9-12)','college / university':'college / university','adult learner':'adult learner'};
+  document.getElementById('tutor-subject').value=subject;
+  document.getElementById('tutor-level').value=level;
+  document.getElementById('tutor-q').value=`Teach me about: ${topic}. Start with the key concepts, give a clear explanation with real examples, and end with a quick check question.`;
+  switchTool('tutor');
+}
+function downloadPath(){
+  if(!currentPath.length) return;
+  const text=currentPath.map(w=>[
+    `WEEK ${w.week}: ${w.theme}`,
+    w.topics.map(t=>`  • ${t}`).join('\n'),
+    `  🎯 Milestone: ${w.milestone}`
+  ].join('\n')).join('\n\n');
+  const date=new Date().toISOString().slice(0,10);
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(text);
+  a.download='learning-path-'+date+'.txt';
+  a.click();
+}
+
+// ══════════════════════════════════════════
+// PARENT MODE
+// ══════════════════════════════════════════
+let parentMode=localStorage.getItem('learn_mode')==='parent';
+
+function toggleParentMode(){
+  parentMode=!parentMode;
+  localStorage.setItem('learn_mode',parentMode?'parent':'student');
+  applyMode();
+}
+function applyMode(){
+  const btn=document.getElementById('mode-toggle');
+  if(btn) btn.textContent=parentMode?'🎒 Student view':'👨‍👧 Parent view';
+  const sub=document.getElementById('dash-sub');
+  const assignCard=document.getElementById('assign-card');
+  const hub=document.getElementById('hs-hub');
+  if(parentMode){
+    if(sub) sub.textContent="Here's what's been studied. Assign a topic or manage your homeschool below.";
+    if(assignCard) assignCard.style.display='block';
+    if(hub){ hub.style.display='block'; updateActiveStudentUI(); }
+  }else{
+    if(sub) sub.textContent='What are we learning today?';
+    if(assignCard) assignCard.style.display='none';
+    if(hub) hub.style.display='none';
+  }
+}
+function assignTopic(){
+  // Switch to tutor with a helper prompt pre-filled so parent can type the topic
+  document.getElementById('tutor-q').value='Teach me about: ';
+  switchTool('tutor');
+  setTimeout(()=>document.getElementById('tutor-q').focus(),200);
+}
+
+// ══════════════════════════════════════════
+// HOMESCHOOL — STATE
+// ══════════════════════════════════════════
+let activeStudent   = null;
+let students        = [];
+let lessons         = [];
+let assignments     = [];
+let goals           = [];
+let quizScores      = {};
+let selectedNeeds   = new Set();
+let selectedSubjects= new Set();
+let assignFilter    = 'active';
+let attViewYear     = new Date().getFullYear();
+let attViewMonthNum = new Date().getMonth();
+let goalRatingSelected = 0;
+// Sync
+let syncTimer       = null;
+let syncQueue       = new Set();
+let syncAvailable   = false;
+let wnextCache      = null;
+let wnextStudentId  = null;
+
+// ── Storage ──
+function studentsKey(){ return `learn_students_${currentUser?.id}`; }
+function lessonsKey(){  return `learn_lessons_${currentUser?.id}`;  }
+function assignsKey(){  return `learn_assigns_${currentUser?.id}`;  }
+function attKey(sid){   return `learn_att_${currentUser?.id}_${sid}`; }
+
+function loadStudents(){ const s=localStorage.getItem(studentsKey()); students=s?JSON.parse(s):[]; }
+function saveStudents(){ localStorage.setItem(studentsKey(),JSON.stringify(students)); queueSync('students'); }
+function loadLessons(){  const s=localStorage.getItem(lessonsKey());  lessons=s?JSON.parse(s):[];  }
+function saveLessons(){  localStorage.setItem(lessonsKey(),JSON.stringify(lessons.slice(0,500))); queueSync('lessons'); }
+function loadAssigns(){  const s=localStorage.getItem(assignsKey());  assignments=s?JSON.parse(s):[]; }
+function saveAssigns(){  localStorage.setItem(assignsKey(),JSON.stringify(assignments)); queueSync('assigns'); }
+function loadAttData(sid){ if(!sid) return {}; const s=localStorage.getItem(attKey(sid)); return s?JSON.parse(s):{}; }
+function saveAttData(sid,data){ if(!sid) return; localStorage.setItem(attKey(sid),JSON.stringify(data)); queueSync('att_'+sid); }
+function goalsKey(){ return `learn_goals_${currentUser?.id}`; }
+function loadGoals(){ const s=localStorage.getItem(goalsKey()); goals=s?JSON.parse(s):[]; }
+function saveGoals(){ localStorage.setItem(goalsKey(),JSON.stringify(goals)); queueSync('goals'); }
+function qscoresKey(){ return `learn_qscores_${currentUser?.id}`; }
+function loadQuizScores(){ const s=localStorage.getItem(qscoresKey()); quizScores=s?JSON.parse(s):{}; }
+function saveQuizScores(){ localStorage.setItem(qscoresKey(),JSON.stringify(quizScores)); queueSync('quizscores'); }
+
+// ── Student AI context ──
+function buildStudentContext(){
+  const s=activeStudent;
+  if(!s) return '';
+  let ctx=`You are teaching ${s.name}, a ${s.grade} student. `;
+  const styles={
+    visual:    'Use vivid descriptions, spatial analogies, and diagram-like text layouts to make concepts visible.',
+    auditory:  'Use a conversational tone with verbal step-by-step instructions and dialogue-style explanations.',
+    reading:   'Use well-organized text with clear headings, definitions, and structured notes.',
+    'hands-on':'Lead with concrete examples and practice before introducing theory — show before explaining.'
+  };
+  if(s.learningStyle && styles[s.learningStyle]) ctx+=styles[s.learningStyle]+' ';
+  if(s.pace==='accelerated') ctx+='This student is advanced — add depth, push their thinking, and make challenging connections. ';
+  if(s.pace==='relaxed') ctx+='This student needs more time. Use simpler language, shorter sentences, and reinforce key ideas multiple times. ';
+  const needsMap={
+    dyslexia:           'Student has dyslexia: use short paragraphs, bullet points, simple sentence structure. Avoid walls of dense text.',
+    adhd:               'Student has ADHD: keep content chunked into short sections with clear headers. Be direct, energetic, and engaging.',
+    autism:             'Student is on the autism spectrum: use literal, unambiguous language. Avoid idioms unless you explain them. Follow predictable structure.',
+    dyscalculia:        'Student has dyscalculia: use real-world context for all math concepts. Avoid timed pressure. Describe visual representations in words.',
+    gifted:             'Student is gifted: go deeper, make connections to advanced concepts, ask challenging Socratic questions to push their thinking.',
+    'processing-delays':'Student has processing delays: use simple vocabulary, present one idea at a time, and repeat key points in multiple ways.',
+    vision:             'Student has visual impairment: rely entirely on verbal/text explanations. Never reference visual-only content without describing it fully.',
+    hearing:            'Student has hearing impairment: text and written formats are preferred. Avoid references to audio content.'
+  };
+  if(s.specialNeeds?.length) s.specialNeeds.forEach(n=>{ if(needsMap[n]) ctx+=needsMap[n]+' '; });
+  if(s.notes) ctx+=`Additional context: ${s.notes}`;
+  return ctx.trim();
+}
+
+// ══════════════════════════════════════════
+// HOMESCHOOL — STUDENTS
+// ══════════════════════════════════════════
+function toggleAddStudentForm(){
+  const f=document.getElementById('add-student-form');
+  const isOpen=f.classList.contains('show');
+  f.classList.toggle('show');
+  if(!isOpen){
+    document.getElementById('ns-name').value='';
+    document.getElementById('ns-notes').value='';
+    document.getElementById('ns-grade').selectedIndex=0;
+    document.getElementById('ns-style').selectedIndex=0;
+    document.getElementById('ns-pace').selectedIndex=0;
+    document.querySelectorAll('#ns-needs .tog-btn').forEach(b=>b.classList.remove('on'));
+    selectedNeeds.clear();
+    document.getElementById('student-form-err').style.display='none';
+    setTimeout(()=>document.getElementById('ns-name').focus(),50);
+  }
+}
+function toggleNeed(btn){ btn.classList.toggle('on'); const n=btn.dataset.need; btn.classList.contains('on')?selectedNeeds.add(n):selectedNeeds.delete(n); }
+
+function gradeToLevel(grade){
+  const g=grade.toLowerCase();
+  if(/kindergarten|1st|2nd|3rd|4th|5th/.test(g)) return 'elementary school (grades 1-5)';
+  if(/6th|7th|8th/.test(g)) return 'middle school (grades 6-8)';
+  if(/9th|10th|11th|12th/.test(g)) return 'high school (grades 9-12)';
+  return 'high school (grades 9-12)';
+}
+
+function saveStudent(){
+  const name=document.getElementById('ns-name').value.trim();
+  const errEl=document.getElementById('student-form-err');
+  if(!name){ errEl.textContent='Please enter a name.'; errEl.style.display='block'; return; }
+  errEl.style.display='none';
+  const grade=document.getElementById('ns-grade').value;
+  const student={
+    id:Date.now(), name, grade,
+    gradeLevel:gradeToLevel(grade),
+    learningStyle:document.getElementById('ns-style').value,
+    pace:document.getElementById('ns-pace').value,
+    specialNeeds:Array.from(selectedNeeds),
+    notes:document.getElementById('ns-notes').value.trim(),
+    createdAt:new Date().toISOString()
+  };
+  students.push(student);
+  saveStudents();
+  renderStudents();
+  populateStudentSelects();
+  toggleAddStudentForm();
+}
+
+function deleteStudent(id){
+  if(!confirm('Delete this student profile?')) return;
+  students=students.filter(s=>s.id!==id);
+  saveStudents();
+  if(activeStudent?.id===id) clearActiveStudent();
+  renderStudents();
+  populateStudentSelects();
+}
+
+function setActiveStudent(id){
+  activeStudent=students.find(s=>s.id===id)||null;
+  if(activeStudent){
+    const lvl=activeStudent.gradeLevel;
+    // Sync level dropdowns
+    ['tutor-level','path-level'].forEach(elId=>{ const el=document.getElementById(elId); if(el) el.value=lvl; });
+    const shortLvl=lvl.includes('elementary')?'elementary':lvl.includes('middle')?'middle school':lvl.includes('high')?'high school':'college';
+    ['quiz-level','fc-level'].forEach(elId=>{ const el=document.getElementById(elId); if(el) el.value=shortLvl; });
+  }
+  updateActiveStudentUI();
+  renderStudents();
+}
+
+function clearActiveStudent(){
+  activeStudent=null;
+  updateActiveStudentUI();
+  renderStudents();
+}
+
+function updateActiveStudentUI(){
+  const bar=document.getElementById('active-student-bar');
+  const hint=document.getElementById('no-student-hint');
+  const wnext=document.getElementById('wnext-wrap');
+  if(activeStudent){
+    document.getElementById('asb-name').textContent='📚 Active: '+activeStudent.name;
+    const tags=[activeStudent.grade, ...(activeStudent.specialNeeds?.length?activeStudent.specialNeeds:[])].join(' · ');
+    document.getElementById('asb-grade').textContent=tags;
+    if(bar) bar.style.display='flex';
+    if(hint) hint.style.display='none';
+    if(wnext) wnext.style.display='block';
+    refreshWhatNext();
+  } else {
+    if(bar) bar.style.display='none';
+    if(hint) hint.style.display='block';
+    if(wnext) wnext.style.display='none';
+  }
+}
+
+function renderStudents(){
+  const list=document.getElementById('students-list');
+  const empty=document.getElementById('students-empty');
+  if(!list) return;
+  if(students.length===0){ list.innerHTML=''; if(empty) empty.style.display='block'; return; }
+  if(empty) empty.style.display='none';
+  list.innerHTML=students.map(s=>{
+    const isActive=activeStudent?.id===s.id;
+    const needTags=s.specialNeeds?.map(n=>`<span class="sc-tag">${n}</span>`).join('')||'';
+    return `<div class="student-card${isActive?' active-s':''}">
+      <div class="sc-av">${s.name[0].toUpperCase()}</div>
+      <div class="sc-body">
+        <div class="sc-name">${s.name}</div>
+        <div class="sc-meta">${s.grade}${s.learningStyle?' · '+s.learningStyle+' learner':''}${s.pace&&s.pace!=='standard'?' · '+s.pace:''}</div>
+        ${needTags?`<div class="sc-tags">${needTags}</div>`:''}
+        <div class="sc-actions">
+          <button class="btn-xs btn-xs-acc${isActive?' on':''}" onclick="setActiveStudent(${s.id})">${isActive?'✓ Active student':'Set as active'}</button>
+          <button class="btn-xs btn-xs-del" onclick="deleteStudent(${s.id})">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function populateStudentSelects(){
+  ['ll-student','af-student','att-student','gf-student','rpt-student','pf-student'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    const cur=el.value;
+    const placeholder=id==='ll-student'?'— All / unspecified —':'— Select student —';
+    el.innerHTML=`<option value="">${placeholder}</option>`+students.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+    if(cur) el.value=cur;
+  });
+}
+
+// ══════════════════════════════════════════
+// HOMESCHOOL — LESSON LOG
+// ══════════════════════════════════════════
+function toggleSubj(btn){ btn.classList.toggle('on'); const subj=btn.dataset.subj; btn.classList.contains('on')?selectedSubjects.add(subj):selectedSubjects.delete(subj); }
+
+function saveLesson(){
+  const errEl=document.getElementById('lesson-form-err');
+  const date=document.getElementById('ll-date').value;
+  if(!date){ errEl.textContent='Please select a date.'; errEl.style.display='block'; return; }
+  errEl.style.display='none';
+  const studentId=document.getElementById('ll-student').value;
+  const student=students.find(s=>s.id==studentId);
+  const logAtt=document.getElementById('ll-att').value==='yes';
+  const entry={
+    id:Date.now(), studentId:studentId||null, studentName:student?.name||'',
+    date, subjects:Array.from(selectedSubjects),
+    hours:document.getElementById('ll-hours').value,
+    notes:document.getElementById('ll-notes').value.trim(),
+    createdAt:new Date().toISOString()
+  };
+  lessons.unshift(entry);
+  saveLessons();
+  if(logAtt && studentId){ const data=loadAttData(studentId); data[date]=true; saveAttData(studentId,data); }
+  // Reset
+  document.getElementById('ll-notes').value='';
+  document.querySelectorAll('#ll-subjects .tog-btn').forEach(b=>b.classList.remove('on'));
+  selectedSubjects.clear();
+  const btn=document.getElementById('ll-save-btn');
+  const orig=btn.textContent; btn.textContent='✓ Logged!'; setTimeout(()=>btn.textContent=orig,2000);
+  renderLessons();
+}
+
+function renderLessons(){
+  const list=document.getElementById('lessons-list');
+  const empty=document.getElementById('lessons-empty');
+  if(!list) return;
+  if(lessons.length===0){ list.innerHTML=''; if(empty) empty.style.display='block'; return; }
+  if(empty) empty.style.display='none';
+  list.innerHTML=lessons.slice(0,60).map(e=>{
+    const d=new Date(e.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+    const subjs=e.subjects?.length?e.subjects.join(', '):'No subjects listed';
+    return `<div class="log-entry">
+      <div class="le-top">
+        <div>
+          <div class="le-date">${d}${e.studentName?' — <span class="le-student">'+e.studentName+'</span>':''}</div>
+          <div class="le-subjs">${subjs}</div>
+        </div>
+        <span class="le-hrs">${e.hours}h</span>
+      </div>
+      ${e.notes?`<div class="le-notes">${e.notes}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function downloadLessons(){
+  if(!lessons.length) return;
+  const date=new Date().toISOString().slice(0,10);
+  const text=lessons.map(e=>{
+    const d=new Date(e.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    return [
+      d+(e.studentName?' — '+e.studentName:''),
+      'Subjects: '+(e.subjects?.join(', ')||'Not specified'),
+      'Hours: '+e.hours,
+      e.notes?'Notes: '+e.notes:''
+    ].filter(Boolean).join('\n');
+  }).join('\n\n────────────────────────────────\n\n');
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent('INFINITY LEARN — LESSON LOG\nExported: '+date+'\n\n'+text);
+  a.download='lesson-log-'+date+'.txt';
+  a.click();
+}
+
+// ══════════════════════════════════════════
+// HOMESCHOOL — ASSIGNMENTS
+// ══════════════════════════════════════════
+function toggleAssignForm(){
+  const f=document.getElementById('assign-form');
+  const isOpen=f.classList.contains('show');
+  f.classList.toggle('show');
+  if(!isOpen){
+    const tomorrow=new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+    document.getElementById('af-due').value=tomorrow.toISOString().slice(0,10);
+    document.getElementById('af-title').value='';
+    document.getElementById('af-notes').value='';
+    document.getElementById('assign-form-err').style.display='none';
+  }
+}
+
+function setAssignFilter(btn,filter){
+  assignFilter=filter;
+  document.querySelectorAll('#assign-filter-bar .tog-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderAssignments();
+}
+
+function saveAssignment(){
+  const title=document.getElementById('af-title').value.trim();
+  const errEl=document.getElementById('assign-form-err');
+  if(!title){ errEl.textContent='Please enter a title.'; errEl.style.display='block'; return; }
+  errEl.style.display='none';
+  const studentId=document.getElementById('af-student').value;
+  const student=students.find(s=>s.id==studentId);
+  const a={
+    id:Date.now(), studentId:studentId||null, studentName:student?.name||'',
+    subject:document.getElementById('af-subject').value,
+    title, due:document.getElementById('af-due').value,
+    notes:document.getElementById('af-notes').value.trim(),
+    status:'assigned', completedDate:null, createdAt:new Date().toISOString()
+  };
+  assignments.unshift(a);
+  saveAssigns();
+  renderAssignments();
+  toggleAssignForm();
+}
+
+function toggleAssignment(id){
+  const a=assignments.find(x=>x.id===id);
+  if(!a) return;
+  a.status=a.status==='assigned'?'complete':'assigned';
+  a.completedDate=a.status==='complete'?new Date().toISOString():null;
+  saveAssigns();
+  renderAssignments();
+}
+
+function deleteAssignment(id){
+  assignments=assignments.filter(a=>a.id!==id);
+  saveAssigns();
+  renderAssignments();
+}
+
+function renderAssignments(){
+  const list=document.getElementById('assignments-list');
+  const empty=document.getElementById('assignments-empty');
+  if(!list) return;
+  const today=new Date().toISOString().slice(0,10);
+  let filtered=assignments;
+  if(assignFilter==='active') filtered=assignments.filter(a=>a.status==='assigned');
+  else if(assignFilter==='done') filtered=assignments.filter(a=>a.status==='complete');
+  if(filtered.length===0){ list.innerHTML=''; if(empty) empty.style.display='block'; return; }
+  if(empty) empty.style.display='none';
+  list.innerHTML=filtered.map(a=>{
+    const done=a.status==='complete';
+    let dueLabel='';
+    if(a.due){
+      if(done) dueLabel=`<span class="due-chip done">✓ Completed</span>`;
+      else if(a.due<today) dueLabel=`<span class="due-chip overdue">⚠ Overdue · ${a.due}</span>`;
+      else dueLabel=`<span class="due-chip upcoming">Due ${a.due}</span>`;
+    }
+    return `<div class="assign-item${done?' done':''}">
+      <div class="asgn-chk${done?' done':''}" onclick="toggleAssignment(${a.id})">${done?'✓':''}</div>
+      <div style="flex:1;min-width:0">
+        <div class="asgn-title">${a.title}</div>
+        <div class="asgn-meta">${a.subject}${a.studentName?' · '+a.studentName:''}</div>
+        ${dueLabel}
+        ${a.notes?`<div style="font-size:.72rem;color:var(--muted);margin-top:.3rem">${a.notes}</div>`:''}
+      </div>
+      <button class="btn-xs btn-xs-del" onclick="deleteAssignment(${a.id})" style="margin-top:1px">✕</button>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// HOMESCHOOL — ATTENDANCE
+// ══════════════════════════════════════════
+function changeAttMonth(dir){
+  attViewMonthNum+=dir;
+  if(attViewMonthNum>11){attViewMonthNum=0;attViewYear++;}
+  if(attViewMonthNum<0){attViewMonthNum=11;attViewYear--;}
+  renderAttCalendar();
+}
+
+function renderAttCalendar(){
+  const sid=document.getElementById('att-student')?.value;
+  const data=loadAttData(sid);
+  const cal=document.getElementById('att-cal');
+  const lbl=document.getElementById('att-month-label');
+  if(!cal) return;
+  const today=new Date().toISOString().slice(0,10);
+  const daysInMonth=new Date(attViewYear,attViewMonthNum+1,0).getDate();
+  const firstDay=new Date(attViewYear,attViewMonthNum,1).getDay();
+  if(lbl) lbl.textContent=new Date(attViewYear,attViewMonthNum,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  cal.innerHTML='';
+  ['S','M','T','W','T','F','S'].forEach(d=>{
+    const el=document.createElement('div');
+    el.className='att-d att-hdr'; el.textContent=d; cal.appendChild(el);
+  });
+  for(let i=0;i<firstDay;i++){
+    const el=document.createElement('div'); el.className='att-d att-emp'; cal.appendChild(el);
+  }
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=`${attViewYear}-${String(attViewMonthNum+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const el=document.createElement('div');
+    el.className='att-d'+(data[ds]?' school':'')+(ds===today?' today':'');
+    el.textContent=d;
+    if(sid) el.onclick=()=>toggleAttDay(sid,ds,el);
+    cal.appendChild(el);
+  }
+  updateAttStats(sid,data);
+}
+
+function toggleAttDay(sid,ds,el){
+  const data=loadAttData(sid);
+  if(data[ds]){delete data[ds];el.classList.remove('school');}
+  else{data[ds]=true;el.classList.add('school');}
+  saveAttData(sid,data);
+  updateAttStats(sid,data);
+}
+
+function updateAttStats(sid,data){
+  if(!data) data=loadAttData(sid);
+  const yr=new Date().getFullYear().toString();
+  const mo=new Date().toISOString().slice(0,7);
+  const yearTotal=Object.keys(data).filter(d=>data[d]&&d.startsWith(yr)).length;
+  const monthTotal=Object.keys(data).filter(d=>data[d]&&d.startsWith(mo)).length;
+  const el=id=>document.getElementById(id);
+  if(el('att-year-total'))  el('att-year-total').textContent=yearTotal;
+  if(el('att-month-total')) el('att-month-total').textContent=monthTotal;
+  if(el('att-remaining'))   el('att-remaining').textContent=Math.max(0,180-yearTotal);
+}
+
+function downloadAttendance(){
+  const sid=document.getElementById('att-student')?.value;
+  const student=students.find(s=>s.id==sid);
+  const data=loadAttData(sid);
+  const dates=Object.keys(data).filter(d=>data[d]).sort();
+  if(!dates.length) return;
+  const exportDate=new Date().toISOString().slice(0,10);
+  const text=[
+    'INFINITY LEARN — ATTENDANCE RECORD',
+    student?'Student: '+student.name:'',
+    'Exported: '+exportDate,
+    'Total school days logged: '+dates.length,
+    '',
+    ...dates.map(d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}))
+  ].filter(l=>l!==undefined).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(text);
+  a.download='attendance-'+(student?.name?.toLowerCase().replace(/\s/g,'-')||'log')+'-'+exportDate+'.txt';
+  a.click();
+}
+
+// ══════════════════════════════════════════
+// SUPABASE SYNC
+// ══════════════════════════════════════════
+// SETUP REQUIRED — run this once in your Supabase SQL editor:
+//
+//   create table if not exists hs_data (
+//     id uuid primary key default gen_random_uuid(),
+//     user_id text not null,
+//     data_key text not null,
+//     data_val jsonb not null default '[]'::jsonb,
+//     updated_at timestamptz not null default now(),
+//     constraint hs_data_user_key unique(user_id, data_key)
+//   );
+//   alter table hs_data enable row level security;
+//   create policy "own_data" on hs_data for all
+//     using (user_id = auth.uid()::text)
+//     with check (user_id = auth.uid()::text);
+
+const SB_REST = SUPABASE_URL + '/rest/v1/hs_data';
+
+function sbHeaders(extra){
+  const h={'apikey':SUPABASE_KEY,'Content-Type':'application/json'};
+  if(currentUser?.token) h['Authorization']='Bearer '+currentUser.token;
+  return Object.assign(h, extra||{});
+}
+
+function setSyncDot(state){
+  const dot=document.getElementById('sync-dot');
+  if(!dot) return;
+  dot.className='sync-dot '+state;
+}
+
+async function sbGet(key){
+  try{
+    const uid=currentUser?.id; if(!uid) return null;
+    const r=await fetch(`${SB_REST}?user_id=eq.${uid}&data_key=eq.${encodeURIComponent(key)}&select=data_val`,{headers:sbHeaders()});
+    if(!r.ok) return null;
+    const rows=await r.json();
+    return rows.length?rows[0].data_val:null;
+  }catch{ return null; }
+}
+
+async function sbSet(key, val){
+  try{
+    const uid=currentUser?.id; if(!uid) return false;
+    const r=await fetch(SB_REST,{
+      method:'POST',
+      headers:sbHeaders({'Prefer':'resolution=merge-duplicates'}),
+      body:JSON.stringify({user_id:uid, data_key:key, data_val:val, updated_at:new Date().toISOString()})
+    });
+    return r.ok;
+  }catch{ return false; }
+}
+
+function queueSync(key){
+  syncQueue.add(key);
+  setSyncDot('pending');
+  clearTimeout(syncTimer);
+  syncTimer=setTimeout(flushSync, 2500);
+}
+
+async function flushSync(){
+  if(!currentUser?.id){ setSyncDot('off'); return; }
+  let anyFailed=false;
+  for(const key of syncQueue){
+    const val=getSyncPayload(key);
+    if(val===null) continue;
+    const ok=await sbSet(key, val);
+    if(!ok) anyFailed=true;
+  }
+  syncQueue.clear();
+  syncAvailable=true;
+  setSyncDot(anyFailed?'pending':'ok');
+}
+
+function getSyncPayload(key){
+  if(key==='students')   return students;
+  if(key==='lessons')    return lessons.slice(0,500);
+  if(key==='assigns')    return assignments;
+  if(key==='goals')      return goals;
+  if(key==='quizscores') return quizScores;
+  if(key.startsWith('att_')){ const sid=key.slice(4); return loadAttData(sid); }
+  return null;
+}
+
+async function pullAllFromSupabase(){
+  if(!currentUser?.id){ setSyncDot('off'); return; }
+  setSyncDot('pending');
+  try{
+    const keys=['students','lessons','assigns','goals','quizscores'];
+    const results=await Promise.all(keys.map(k=>sbGet(k)));
+    let changed=false;
+    if(results[0]&&Array.isArray(results[0])){ students=results[0];    localStorage.setItem(studentsKey(),JSON.stringify(students));   changed=true; }
+    if(results[1]&&Array.isArray(results[1])){ lessons=results[1];     localStorage.setItem(lessonsKey(), JSON.stringify(lessons));    changed=true; }
+    if(results[2]&&Array.isArray(results[2])){ assignments=results[2]; localStorage.setItem(assignsKey(), JSON.stringify(assignments));changed=true; }
+    if(results[3]&&Array.isArray(results[3])){ goals=results[3];       localStorage.setItem(goalsKey(),   JSON.stringify(goals));      changed=true; }
+    if(results[4]&&typeof results[4]==='object'&&!Array.isArray(results[4])){ quizScores=results[4]; localStorage.setItem(qscoresKey(),JSON.stringify(quizScores)); changed=true; }
+    // Pull attendance for each known student
+    await Promise.all(students.map(async s=>{
+      const attVal=await sbGet('att_'+s.id);
+      if(attVal&&typeof attVal==='object'&&!Array.isArray(attVal)) localStorage.setItem(attKey(s.id),JSON.stringify(attVal));
+    }));
+    if(changed){
+      populateStudentSelects();
+      renderStudents();
+      renderLessons();
+      renderAssignments();
+      renderGoals();
+      updateDashStats();
+    }
+    syncAvailable=true;
+    setSyncDot('ok');
+  }catch{ setSyncDot('off'); }
+}
+
+// ══════════════════════════════════════════
+// QUIZ SCORE TRACKING
+// ══════════════════════════════════════════
+function recordQuizScore(subject, correct, total){
+  const sid=activeStudent?.id||'unlinked';
+  if(!quizScores[sid]) quizScores[sid]={};
+  if(!quizScores[sid][subject]) quizScores[sid][subject]=[];
+  quizScores[sid][subject].unshift({
+    score:Math.round(correct/total*100),
+    correct, total,
+    date:new Date().toISOString().slice(0,10)
+  });
+  // Keep last 20 per subject
+  quizScores[sid][subject]=quizScores[sid][subject].slice(0,20);
+  saveQuizScores();
+}
+
+function getRecentScores(sid, subject, n=5){
+  return (quizScores[sid]?.[subject]||[]).slice(0,n);
+}
+
+function getSubjectStrength(sid, subject){
+  const scores=getRecentScores(sid,subject,5);
+  if(!scores.length) return 'untested';
+  const avg=scores.reduce((t,s)=>t+s.score,0)/scores.length;
+  if(avg>=85) return 'strong';
+  if(avg>=65) return 'on-track';
+  return 'struggling';
+}
+
+function getAllSubjectStrengths(sid){
+  const data=quizScores[sid]||{};
+  const out={};
+  Object.keys(data).forEach(subj=>{ out[subj]=getSubjectStrength(sid,subj); });
+  return out;
+}
+
+function buildStrengthChips(sid){
+  const strengths=getAllSubjectStrengths(sid);
+  const entries=Object.entries(strengths);
+  if(!entries.length) return '';
+  const cls={strong:'str-strong','on-track':'str-ontarget',struggling:'str-struggling',untested:'str-untested'};
+  const chips=entries.map(([s,v])=>`<span class="str-chip ${cls[v]||'str-untested'}">${s}</span>`).join('');
+  return `<div class="strength-grid">${chips}</div>`;
+}
+
+// ══════════════════════════════════════════
+// WHAT'S NEXT WIDGET
+// ══════════════════════════════════════════
+async function refreshWhatNext(){
+  if(!activeStudent) return;
+  const wrap=document.getElementById('wnext-wrap');
+  const content=document.getElementById('wnext-content');
+  if(!wrap||!content) return;
+  wrap.style.display='block';
+  // Use cache if same student and less than 6 hours old
+  if(wnextStudentId===activeStudent.id && wnextCache && (Date.now()-wnextCache.ts)<6*3600*1000){
+    renderWhatNext(wnextCache.data); return;
+  }
+  content.innerHTML=`<div style="display:flex;align-items:center;gap:.6rem;padding:.75rem 0;color:var(--muted);font-size:.8rem"><div class="spinner" style="width:18px;height:18px;border-width:2px;flex-shrink:0"></div>Thinking about what ${activeStudent.name} should work on today…</div>`;
+  const sid=activeStudent.id;
+  const sLessons=lessons.filter(l=>l.studentId==sid).slice(0,5);
+  const sGoals=goals.filter(g=>g.studentId==sid&&!g.achieved).slice(0,5);
+  const strengths=getAllSubjectStrengths(sid);
+  const struggling=Object.entries(strengths).filter(([,v])=>v==='struggling').map(([k])=>k);
+  const strong=Object.entries(strengths).filter(([,v])=>v==='strong').map(([k])=>k);
+  const recentSubjs=[...new Set(sLessons.flatMap(l=>l.subjects||[]))].slice(0,6);
+  const prompt=`You are an adaptive homeschool assistant. Suggest ONE specific focus area for this student today.
+
+Student: ${activeStudent.name}, ${activeStudent.grade}
+Learning style: ${activeStudent.learningStyle||'not specified'}
+Pace: ${activeStudent.pace||'standard'}
+Special needs: ${activeStudent.specialNeeds?.join(', ')||'none'}
+Subjects studied recently: ${recentSubjs.join(', ')||'none yet'}
+Active learning goals: ${sGoals.map(g=>g.subject+': '+g.desc).join(' | ')||'none set'}
+Struggling subjects (recent quiz avg below 65%): ${struggling.join(', ')||'none identified'}
+Strong subjects (recent quiz avg above 85%): ${strong.join(', ')||'none identified'}
+
+Respond in this EXACT format with no extra text:
+SUBJECT: [subject name]
+ACTIVITY: [specific actionable activity — one line, concrete and age-appropriate]
+REASON: [2 sentences max explaining why this is the right focus today]`;
+  try{
+    const result=await callAI(prompt);
+    const subjectMatch=result.match(/SUBJECT:\s*(.+)/i);
+    const activityMatch=result.match(/ACTIVITY:\s*(.+)/i);
+    const reasonMatch=result.match(/REASON:\s*([\s\S]+)/i);
+    const parsed={
+      subject:subjectMatch?.[1]?.trim()||'Review',
+      activity:activityMatch?.[1]?.trim()||result.split('\n')[0],
+      reason:reasonMatch?.[1]?.trim()||'',
+      sid
+    };
+    wnextCache={data:parsed,ts:Date.now()};
+    wnextStudentId=sid;
+    renderWhatNext(parsed);
+  }catch{
+    content.innerHTML=`<div style="font-size:.78rem;color:var(--muted);padding:.4rem 0">Could not load suggestion — check back after a quiz or lesson.</div>`;
+  }
+}
+
+function renderWhatNext(data){
+  const content=document.getElementById('wnext-content');
+  if(!content) return;
+  const sid=activeStudent?.id;
+  const chips=sid?buildStrengthChips(sid):'';
+  content.innerHTML=`<div class="wnext-card">
+    <div class="wnext-subj">${data.subject}</div>
+    <div class="wnext-activity">${data.activity}</div>
+    ${data.reason?`<div class="wnext-reason">${data.reason}</div>`:''}
+    ${chips?`<div style="margin-top:.6rem;font-size:.68rem;color:var(--muted);margin-bottom:.2rem">Subject strengths (from quizzes)</div>${chips}`:''}
+    <div style="display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap">
+      <button class="btn btn-p" style="font-size:.78rem;padding:.35rem .9rem" onclick="goStudyNow(${JSON.stringify(data.subject)})">Study this now →</button>
+      <button class="btn btn-ghost" style="font-size:.78rem;padding:.35rem .9rem" onclick="forceRefreshWhatNext()">↻ New suggestion</button>
+    </div>
+  </div>`;
+}
+
+function goStudyNow(subject){
+  const sel=document.getElementById('tutor-subject');
+  if(sel){
+    // match option value, fallback to Other
+    const opt=[...sel.options].find(o=>o.value.toLowerCase().includes(subject.toLowerCase()));
+    sel.value=opt?opt.value:'Other';
+  }
+  const lvl=activeStudent?.gradeLevel||'high school (grades 9-12)';
+  const tutorLvl=document.getElementById('tutor-level');
+  if(tutorLvl) tutorLvl.value=lvl;
+  const q=document.getElementById('tutor-q');
+  if(q) q.value=`Teach me the most important thing I should know about ${subject} right now. Make it clear and engaging.`;
+  switchTool('tutor');
+}
+
+function forceRefreshWhatNext(){
+  wnextCache=null; wnextStudentId=null;
+  refreshWhatNext();
+}
+
+// ══════════════════════════════════════════
+// HOMESCHOOL — LEARNING GOALS
+// ══════════════════════════════════════════
+function toggleGoalForm(){
+  const f=document.getElementById('goal-form');
+  const isOpen=f.classList.contains('show');
+  f.classList.toggle('show');
+  if(!isOpen){
+    document.getElementById('gf-desc').value='';
+    document.getElementById('gf-metric').value='';
+    document.getElementById('gf-target').value='';
+    document.getElementById('gf-subject').selectedIndex=0;
+    document.getElementById('goal-form-err').style.display='none';
+    setTimeout(()=>document.getElementById('gf-desc').focus(),50);
+  }
+}
+
+function saveGoal(){
+  const desc=document.getElementById('gf-desc').value.trim();
+  const errEl=document.getElementById('goal-form-err');
+  const studentId=document.getElementById('gf-student').value;
+  if(!studentId){ errEl.textContent='Please select a student.'; errEl.style.display='block'; return; }
+  if(!desc){ errEl.textContent='Please enter a goal description.'; errEl.style.display='block'; return; }
+  errEl.style.display='none';
+  const student=students.find(s=>s.id==studentId);
+  const goal={
+    id:Date.now(),
+    studentId:studentId,
+    studentName:student?.name||'',
+    subject:document.getElementById('gf-subject').value,
+    desc,
+    metric:document.getElementById('gf-metric').value.trim(),
+    target:document.getElementById('gf-target').value,
+    achieved:false,
+    progressLog:[],
+    createdAt:new Date().toISOString()
+  };
+  goals.unshift(goal);
+  saveGoals();
+  renderGoals();
+  toggleGoalForm();
+}
+
+function deleteGoal(id){
+  if(!confirm('Delete this goal?')) return;
+  goals=goals.filter(g=>g.id!==id);
+  saveGoals();
+  renderGoals();
+}
+
+function toggleGoalAchieved(id){
+  const g=goals.find(g=>g.id===id);
+  if(!g) return;
+  g.achieved=!g.achieved;
+  saveGoals();
+  renderGoals();
+}
+
+function logProgress(goalId){
+  const ratingEl=document.querySelector(`#prog-rating-${goalId} .rating-btn.on`);
+  const rating=ratingEl?parseInt(ratingEl.dataset.val):0;
+  const notes=document.getElementById(`prog-notes-${goalId}`)?.value.trim()||'';
+  if(!rating){ return; }
+  const g=goals.find(g=>g.id===goalId);
+  if(!g) return;
+  g.progressLog.unshift({date:new Date().toISOString().slice(0,10),rating,notes,loggedAt:new Date().toISOString()});
+  saveGoals();
+  renderGoals();
+}
+
+function selectRating(goalId, val, btn){
+  document.querySelectorAll(`#prog-rating-${goalId} .rating-btn`).forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+async function generateGoalNarrative(goalId){
+  const g=goals.find(g=>g.id===goalId);
+  if(!g) return;
+  const btn=document.getElementById(`goal-ai-btn-${goalId}`);
+  const out=document.getElementById(`goal-ai-out-${goalId}`);
+  if(btn){ const orig=btn.textContent; btn.textContent='Generating…'; btn.disabled=true;
+    const logs=g.progressLog.slice(0,10).map(l=>`${l.date}: rating ${l.rating}/5${l.notes?' — '+l.notes:''}`).join('\n');
+    const prompt=`Write a brief, warm, professional narrative progress report for a student's IEP-style learning goal.\n\nStudent: ${g.studentName}\nSubject: ${g.subject}\nGoal: ${g.desc}\nMeasurable indicator: ${g.metric||'Not specified'}\nTarget date: ${g.target||'Not set'}\nStatus: ${g.achieved?'Achieved':'In progress'}\n\nProgress log (most recent first):\n${logs||'No progress logged yet.'}\n\nWrite 2-3 paragraphs describing the student's progress toward this goal, using warm and professional language suitable for a school record or IEP document. Be specific and encouraging.`;
+    try{
+      const result=await callAI(prompt);
+      if(out){ out.textContent=result; out.style.display='block'; }
+    }catch(e){if(out){out.textContent='Error generating narrative. Please try again.';out.style.display='block';}}
+    btn.textContent=orig; btn.disabled=false;
+  }
+}
+
+function renderGoals(){
+  const list=document.getElementById('goals-list');
+  const empty=document.getElementById('goals-empty');
+  if(!list) return;
+  if(goals.length===0){ list.innerHTML=''; if(empty) empty.style.display='block'; return; }
+  if(empty) empty.style.display='none';
+  const avgRating=log=>{ if(!log?.length) return 0; return log.reduce((s,l)=>s+l.rating,0)/log.length; };
+  list.innerHTML=goals.map(g=>{
+    const avg=avgRating(g.progressLog);
+    const pct=Math.round(avg/5*100);
+    const lastLogs=g.progressLog.slice(0,3);
+    const ratingBtns=[1,2,3,4,5].map(v=>`<button class="rating-btn" data-val="${v}" id="rb-${g.id}-${v}" onclick="selectRating(${g.id},${v},this)">${v}</button>`).join('');
+    const logItems=lastLogs.map(l=>`<div class="prog-log-item"><span class="prog-log-rating">${l.rating}/5</span><span>${l.date}${l.notes?' — '+l.notes:''}</span></div>`).join('');
+    return `<div class="goal-card${g.achieved?' achieved':''}">
+      <div class="goal-hd">
+        <div class="goal-title">${g.desc}</div>
+        ${g.achieved?'<span class="goal-achieved-badge">✓ Achieved</span>':''}
+      </div>
+      <div class="goal-subj">${g.subject}${g.studentName?' · '+g.studentName:''}</div>
+      ${g.metric?`<div class="goal-target">📏 ${g.metric}</div>`:''}
+      ${g.target?`<div class="goal-target">🗓 Target: ${g.target}</div>`:''}
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+      <div style="font-size:.7rem;color:var(--muted);margin-bottom:.5rem">${g.progressLog.length} entries · avg ${avg?avg.toFixed(1):0}/5</div>
+      ${logItems?`<div style="margin-bottom:.5rem">${logItems}</div>`:''}
+      ${!g.achieved?`
+      <div style="font-size:.75rem;color:var(--muted2);margin:.4rem 0 .2rem">Log progress:</div>
+      <div class="rating-btns" id="prog-rating-${g.id}">${ratingBtns}</div>
+      <textarea class="fi" id="prog-notes-${g.id}" rows="1" placeholder="Notes (optional)" style="font-size:.78rem;margin-bottom:.4rem"></textarea>
+      <button class="btn btn-ghost" style="font-size:.78rem;padding:.3rem .8rem" onclick="logProgress(${g.id})">+ Log Entry</button>
+      `:''}
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem">
+        <button class="btn btn-ghost" style="font-size:.75rem;padding:.28rem .7rem" id="goal-ai-btn-${g.id}" onclick="generateGoalNarrative(${g.id})">✨ AI Narrative</button>
+        <button class="btn btn-ghost" style="font-size:.75rem;padding:.28rem .7rem" onclick="toggleGoalAchieved(${g.id})">${g.achieved?'↩ Reopen':'✓ Mark Achieved'}</button>
+        <button class="btn-xs btn-xs-del" style="margin-top:0" onclick="deleteGoal(${g.id})">Delete</button>
+      </div>
+      <div class="goal-ai-output" id="goal-ai-out-${g.id}" style="display:none"></div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// HOMESCHOOL — STATE COMPLIANCE REPORT
+// ══════════════════════════════════════════
+const STATE_REQS=(()=>{
+  const d={
+    AL:{n:'Alabama',l:'low',days:180,r:'File a declaration of intent with the local school board. No curriculum approval or standardized testing required. Maintain basic attendance records.'},
+    AK:{n:'Alaska',l:'none',days:180,r:'No state filing required. Parents may homeschool freely with no state oversight or testing requirements.'},
+    AZ:{n:'Arizona',l:'low',days:180,r:'File a signed affidavit with the local school district or operate under an approved program. No curriculum approval required.'},
+    AR:{n:'Arkansas',l:'medium',days:178,r:'File a Notice of Intent annually with the local school district. Cover core subjects: math, science, social studies, language arts. Maintain attendance records.'},
+    CA:{n:'California',l:'low',days:175,r:'File a Private School Affidavit (PSA) each October, or enroll under an independent study program. Maintain enrollment and attendance records.'},
+    CO:{n:'Colorado',l:'low',days:172,r:'Provide written notification to the local school district annually. No required curriculum or standardized testing. Maintain attendance records.'},
+    CT:{n:'Connecticut',l:'none',days:180,r:'No formal filing required in most districts. Instruction must be equivalent to public school in required subjects. Contact your local district for any local policies.'},
+    DE:{n:'Delaware',l:'medium',days:180,r:'Register with the Department of Education. Provide instruction in math, language arts, social studies, science, and health. Annual progress reports may be required.'},
+    FL:{n:'Florida',l:'medium',days:180,r:'File a Letter of Intent with the county superintendent annually. Maintain a portfolio of work. Submit to an annual evaluation by a certified teacher or other qualified evaluator.'},
+    GA:{n:'Georgia',l:'low',days:180,r:'File a Declaration of Intent with the local school district annually. Cover required subjects. Parent must have a high school diploma or equivalent.'},
+    HI:{n:'Hawaii',l:'medium',days:180,r:'Submit a homeschool application to the Department of Education. Follow curriculum guidelines and submit to periodic assessment or review.'},
+    ID:{n:'Idaho',l:'none',days:175,r:'No state registration or notification required. Parents have full control over curriculum, materials, and schedule.'},
+    IL:{n:'Illinois',l:'none',days:176,r:'No registration or notification required. Homeschools are treated as private schools. No state testing or curriculum requirements apply.'},
+    IN:{n:'Indiana',l:'none',days:180,r:'No registration required. Homeschools operate as non-accredited private schools with no state oversight.'},
+    IA:{n:'Iowa',l:'medium',days:148,r:'File a Competent Private Instruction (CPI) form with the local school district. Annual assessments or evaluations are required.'},
+    KS:{n:'Kansas',l:'low',days:186,r:'Register as a non-accredited private school with the State Department of Education. No curriculum approval or testing required.'},
+    KY:{n:'Kentucky',l:'low',days:185,r:'Operate as a private school. Cover required subjects. No state notification or testing required.'},
+    LA:{n:'Louisiana',l:'medium',days:180,r:'Operate as a home study program. File annually with BESE. Cover five core subjects and maintain attendance records.'},
+    ME:{n:'Maine',l:'medium',days:175,r:'File an Equivalent Instruction Notice with the local superintendent. Cover required subjects. Annual assessment required.'},
+    MD:{n:'Maryland',l:'medium',days:180,r:'Notify the local school superintendent. Cover required subjects. Annual portfolio review required.'},
+    MA:{n:'Massachusetts',l:'high',days:180,r:'Submit a home education proposal to the local school committee for approval. Must cover all public school subjects and hours. Annual progress evaluations, portfolio reviews, or standardized testing required.'},
+    MI:{n:'Michigan',l:'none',days:180,r:'No registration or notification required. Parent must be competent to teach. No state testing required.'},
+    MN:{n:'Minnesota',l:'medium',days:170,r:'File a homeschool registration form with the local school district annually. Annual standardized testing required starting at Grade 3.'},
+    MS:{n:'Mississippi',l:'low',days:180,r:'File a Certificate of Enrollment with the local school district. No curriculum approval or testing required.'},
+    MO:{n:'Missouri',l:'none',days:1000,r:'No registration or notification required. Maintain records of subjects taught, activities, and samples of work. No state testing or inspection.'},
+    MT:{n:'Montana',l:'low',days:180,r:'Notify the county superintendent of schools. Maintain attendance and academic records. No testing required.'},
+    NE:{n:'Nebraska',l:'low',days:1032,r:'File an exemption form with the local school district. Cover required subjects. No standardized testing required.'},
+    NV:{n:'Nevada',l:'low',days:180,r:'File a Notice of Intent with the school district or operate under an umbrella program. Cover basic subjects. No state testing required.'},
+    NH:{n:'New Hampshire',l:'medium',days:180,r:'File a Notice of Intent with the local school district. Provide instruction in required subjects. Submit an annual evaluation by a qualified evaluator.'},
+    NJ:{n:'New Jersey',l:'none',days:180,r:'No registration or notification required. Instruction must be equivalent to public school in required subjects.'},
+    NM:{n:'New Mexico',l:'low',days:180,r:'No formal registration required. Provide instruction in core subjects. No standardized testing required.'},
+    NY:{n:'New York',l:'high',days:180,r:'File an IHIP (Individualized Home Instruction Plan) with the local school district annually. Submit quarterly progress reports. Annual assessment via standardized test or portfolio required. Specific subjects and instructional hours are mandated.'},
+    NC:{n:'North Carolina',l:'medium',days:180,r:'File a Notice of Intent with the Division of Non-Public Education. Parent must have a high school diploma. Administer a standardized test annually. Maintain immunization and attendance records.'},
+    ND:{n:'North Dakota',l:'medium',days:175,r:'Notify the local school district. Qualified instructor required or use accredited curriculum. Annual testing required at Grades 4, 6, 8, and 10.'},
+    OH:{n:'Ohio',l:'medium',days:900,r:'File written notification with the local school superintendent annually. Cover required subjects. Annual assessment by a certified teacher or standardized test. Portfolio may be requested.'},
+    OK:{n:'Oklahoma',l:'none',days:180,r:'No registration or notification required. Homeschools operate as private schools with no state oversight.'},
+    OR:{n:'Oregon',l:'medium',days:180,r:'File a Notice of Intent with the local Education Service District. Cover required subjects. Standardized testing required every three years starting at Grade 3.'},
+    PA:{n:'Pennsylvania',l:'high',days:180,r:'File an affidavit with the local school district superintendent. Submit a detailed educational objectives portfolio. Year-end evaluation by a certified teacher required. Standardized tests at Grades 3, 5, and 8. Minimum instructional hours per subject required.'},
+    RI:{n:'Rhode Island',l:'high',days:180,r:'File a homeschool approval application with the local school committee. Curriculum must be approved. Annual progress reports and assessments required.'},
+    SC:{n:'South Carolina',l:'medium',days:180,r:'Choose one of three approved options: local district enrollment, membership in a homeschool association, or operation as a private school. Cover required subjects and submit annual assessment.'},
+    SD:{n:'South Dakota',l:'low',days:175,r:'File a Notice of Intent with the local school district. No curriculum requirements or standardized testing mandated. Maintain attendance records.'},
+    TN:{n:'Tennessee',l:'medium',days:180,r:'File a Notice of Intent with the local school district or operate under a church umbrella school. Parent must have a high school diploma. Maintain records of subjects taught.'},
+    TX:{n:'Texas',l:'none',days:180,r:'No registration or notification required. Must cover five subjects in a bona fide manner: reading, spelling, grammar, math, and good citizenship. No testing or state oversight.'},
+    UT:{n:'Utah',l:'low',days:180,r:'File an Affidavit of Exemption or Notice of Intent with the local school district. Cover core subjects. No standardized testing required.'},
+    VT:{n:'Vermont',l:'medium',days:175,r:'File a written enrollment notice with the local school board. Cover required subject areas. Submit an annual progress assessment.'},
+    VA:{n:'Virginia',l:'medium',days:180,r:'File a Notice of Intent with the local school division annually. Parent must have a bachelor\'s degree, use approved curriculum, or be a licensed teacher. Annual evaluation by a qualified evaluator or standardized test required.'},
+    WA:{n:'Washington',l:'medium',days:180,r:'File an annual declaration of intent with the local school district. Parent must complete 45 hours of teacher training or be a certified teacher. Annual standardized testing required starting at Grade 3.'},
+    WV:{n:'West Virginia',l:'high',days:180,r:'File a Notice of Intent with the county superintendent. Parent must have a secondary school degree or be supervised by a licensed teacher. Maintain a portfolio of work. Annual standardized assessment and reporting required.'},
+    WI:{n:'Wisconsin',l:'medium',days:875,r:'File a PI-1206 homeschool form with the Department of Public Instruction annually. Cover 12 required subjects. Maintain records but no standardized testing required.'},
+    WY:{n:'Wyoming',l:'low',days:175,r:'Notify the local school district annually. No curriculum requirements or testing. Maintain basic records.'}
+  };
+  return d;
+})();
+
+function populateStateDropdown(){
+  const sel=document.getElementById('rpt-state');
+  if(!sel || sel.options.length>1) return;
+  Object.entries(STATE_REQS).sort((a,b)=>a[1].n.localeCompare(b[1].n)).forEach(([code,s])=>{
+    const o=document.createElement('option'); o.value=code; o.textContent=s.n; sel.appendChild(o);
+  });
+}
+
+function onStateChange(){
+  const code=document.getElementById('rpt-state').value;
+  const box=document.getElementById('rpt-state-info');
+  if(!code||!STATE_REQS[code]){ if(box) box.style.display='none'; return; }
+  const s=STATE_REQS[code];
+  const lvlLabels={none:'No requirements',low:'Low requirements',medium:'Moderate requirements',high:'High requirements'};
+  box.innerHTML=`<strong>${s.n}</strong><span class="state-level-pill spl-${s.l}">${lvlLabels[s.l]}</span><br><br>${s.r}`;
+  box.style.display='block';
+  updateReportDataPreview();
+}
+
+function updateReportDataPreview(){
+  const sid=document.getElementById('rpt-student')?.value;
+  const preview=document.getElementById('rpt-data-preview');
+  if(!sid||!preview){ if(preview) preview.style.display='none'; return; }
+  preview.style.display='block';
+  const student=students.find(s=>s.id==sid);
+  const sLessons=lessons.filter(l=>l.studentId==sid);
+  const attData=loadAttData(sid);
+  const yearDays=Object.keys(attData).filter(d=>attData[d]&&d.startsWith(new Date().getFullYear().toString())).length;
+  const subjSet=new Set(); sLessons.forEach(l=>l.subjects?.forEach(s=>subjSet.add(s)));
+  const sGoals=goals.filter(g=>g.studentId==sid);
+  document.getElementById('rpt-days').textContent=yearDays+' days';
+  document.getElementById('rpt-subjects').textContent=subjSet.size?Array.from(subjSet).join(', '):'None logged';
+  document.getElementById('rpt-goals').textContent=sGoals.filter(g=>!g.achieved).length;
+  document.getElementById('rpt-goals-done').textContent=sGoals.filter(g=>g.achieved).length;
+  document.getElementById('rpt-lessons').textContent=sLessons.length;
+}
+
+async function generateReport(){
+  const sid=document.getElementById('rpt-student')?.value;
+  const stateCode=document.getElementById('rpt-state')?.value;
+  const errEl=document.getElementById('rpt-error');
+  errEl.style.display='none';
+  if(!sid){ errEl.textContent='Please select a student.'; errEl.style.display='block'; return; }
+  if(!stateCode){ errEl.textContent='Please select your state.'; errEl.style.display='block'; return; }
+  const student=students.find(s=>s.id==sid);
+  const stateInfo=STATE_REQS[stateCode];
+  if(!student||!stateInfo){ errEl.textContent='Invalid selection.'; errEl.style.display='block'; return; }
+
+  // Collect data
+  const sLessons=lessons.filter(l=>l.studentId==sid);
+  const attData=loadAttData(sid);
+  const yr=new Date().getFullYear().toString();
+  const yearDays=Object.keys(attData).filter(d=>attData[d]&&d.startsWith(yr)).length;
+  const subjSet=new Set(); sLessons.forEach(l=>l.subjects?.forEach(s=>subjSet.add(s)));
+  const totalHours=sLessons.reduce((t,l)=>t+(parseFloat(l.hours)||0),0);
+  const sGoals=goals.filter(g=>g.studentId==sid);
+  const activeGoals=sGoals.filter(g=>!g.achieved);
+  const doneGoals=sGoals.filter(g=>g.achieved);
+  const context=document.getElementById('rpt-context')?.value.trim()||'';
+  const needsList=student.specialNeeds?.length?student.specialNeeds.join(', '):'None noted';
+
+  // Build prompt
+  const prompt=`You are writing a formal homeschool progress and compliance report for a parent in ${stateInfo.n}.
+
+STATE REQUIREMENTS FOR ${stateInfo.n.toUpperCase()}:
+${stateInfo.r}
+
+STUDENT INFORMATION:
+- Name: ${student.name}
+- Grade: ${student.grade}
+- Learning Style: ${student.learningStyle||'Not specified'}
+- Pace: ${student.pace||'Standard'}
+- Special Needs / Accommodations: ${needsList}
+- Notes: ${student.notes||'None'}
+
+ACADEMIC RECORDS (this school year):
+- School days logged: ${yearDays}
+- Total lesson hours logged: ${totalHours.toFixed(1)}
+- Total lessons recorded: ${sLessons.length}
+- Subjects covered: ${subjSet.size?Array.from(subjSet).join(', '):'None on record'}
+
+LEARNING GOALS:
+- Active goals: ${activeGoals.length}${activeGoals.length?'\n  '+activeGoals.map(g=>`• ${g.subject}: ${g.desc}`).join('\n  '):''}
+- Achieved goals: ${doneGoals.length}${doneGoals.length?'\n  '+doneGoals.map(g=>`• ${g.subject}: ${g.desc}`).join('\n  '):''}
+
+ADDITIONAL CONTEXT FROM PARENT:
+${context||'None provided.'}
+
+Write a complete, professional homeschool progress and compliance report that:
+1. Is addressed as a formal document (include date, student name, parent/guardian, school year)
+2. Summarizes the academic program and subjects covered
+3. Documents attendance and instructional time
+4. Describes progress toward learning goals
+5. Uses language appropriate for ${stateInfo.n}'s compliance level (${stateInfo.l})
+6. Is warm, professional, and suitable for submission to school authorities if needed
+7. Ends with a parent attestation section
+
+Format it as a real document with clear sections and headings.`;
+
+  const loading=document.getElementById('rpt-loading');
+  const output=document.getElementById('rpt-output');
+  if(loading) loading.style.display='flex';
+  if(output) output.style.display='none';
+
+  try{
+    const result=await callAI(prompt);
+    document.getElementById('rpt-result').textContent=result;
+    if(loading) loading.style.display='none';
+    if(output) output.style.display='block';
+  }catch(e){
+    if(loading) loading.style.display='none';
+    errEl.textContent='Error generating report. Please try again.'; errEl.style.display='block';
+  }
+}
+
+function downloadReport(){
+  const text=document.getElementById('rpt-result')?.textContent;
+  if(!text) return;
+  const sid=document.getElementById('rpt-student')?.value;
+  const student=students.find(s=>s.id==sid);
+  const date=new Date().toISOString().slice(0,10);
+  const name=student?.name?.toLowerCase().replace(/\s/g,'-')||'student';
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(text);
+  a.download=`homeschool-report-${name}-${date}.txt`;
+  a.click();
+}
+
+// ══════════════════════════════════════════
+// PORTFOLIO
+// ══════════════════════════════════════════
+function populatePortfolioYear(){
+  const sel=document.getElementById('pf-year');
+  if(!sel||sel.options.length>1) return;
+  const yr=new Date().getFullYear();
+  for(let y=yr;y>=yr-4;y--){
+    const o=document.createElement('option');
+    o.value=y;
+    o.textContent=`${y}–${y+1}`;
+    sel.appendChild(o);
+  }
+}
+
+function buildPortfolioPreview(){
+  const sid=document.getElementById('pf-student')?.value;
+  const yr=parseInt(document.getElementById('pf-year')?.value||new Date().getFullYear());
+  const preview=document.getElementById('pf-preview');
+  const empty=document.getElementById('pf-empty');
+  const errEl=document.getElementById('pf-error');
+  errEl.style.display='none';
+  if(!sid){ if(preview) preview.style.display='none'; if(empty) empty.style.display='block'; return; }
+  const student=students.find(s=>s.id==sid);
+  if(!student){ errEl.textContent='Student not found.'; errEl.style.display='block'; return; }
+
+  if(empty) empty.style.display='none';
+  if(preview) preview.style.display='block';
+
+  // ── Cover ──
+  document.getElementById('pf-cover-name').textContent=student.name;
+  document.getElementById('pf-cover-sub').textContent=`${student.grade} · Home Education Portfolio`;
+  document.getElementById('pf-cover-year').textContent=`School Year ${yr}–${yr+1}`;
+
+  // ── Student Profile ──
+  const needsList=student.specialNeeds?.length?student.specialNeeds.join(', '):'None noted';
+  document.getElementById('pf-profile').innerHTML=[
+    {k:'Full Name',v:student.name},
+    {k:'Grade Level',v:student.grade},
+    {k:'Learning Style',v:student.learningStyle||'Not specified'},
+    {k:'Pace',v:student.pace||'Standard'},
+    {k:'Accommodations / Special Needs',v:needsList},
+    student.notes?{k:'Notes',v:student.notes}:null
+  ].filter(Boolean).map(r=>`<div class="port-kv"><strong>${r.k}</strong><span>${r.v}</span></div>`).join('');
+
+  // ── Attendance ──
+  const attData=loadAttData(sid);
+  const yrStr=yr.toString();
+  const yrDays=Object.keys(attData).filter(d=>attData[d]&&d.startsWith(yrStr)).length;
+  const months={};
+  Object.keys(attData).filter(d=>attData[d]&&d.startsWith(yrStr)).forEach(d=>{
+    const mo=d.slice(0,7); months[mo]=(months[mo]||0)+1;
+  });
+  const moRows=Object.entries(months).sort(([a],[b])=>a>b?1:-1)
+    .map(([mo,cnt])=>{
+      const label=new Date(mo+'-01').toLocaleDateString('en-US',{month:'long',year:'numeric'});
+      return `<div class="port-kv"><strong>${label}</strong><span>${cnt} day${cnt!==1?'s':''}</span></div>`;
+    }).join('');
+  document.getElementById('pf-attendance').innerHTML=`
+    <div class="port-kv"><strong>Total school days logged</strong><span>${yrDays} / 180 target</span></div>
+    <div class="port-kv"><strong>Days remaining toward goal</strong><span>${Math.max(0,180-yrDays)}</span></div>
+    ${moRows}`;
+
+  // ── Academic Summary ──
+  const sLessons=lessons.filter(l=>l.studentId==sid&&l.date&&l.date.startsWith(yrStr));
+  const subjSet=new Set(); sLessons.forEach(l=>l.subjects?.forEach(s=>subjSet.add(s)));
+  const totalHours=sLessons.reduce((t,l)=>t+(parseFloat(l.hours)||0),0);
+  document.getElementById('pf-summary').innerHTML=[
+    {k:'Total lessons recorded',v:sLessons.length},
+    {k:'Total instructional hours',v:totalHours.toFixed(1)+' hrs'},
+    {k:'Subjects studied',v:subjSet.size?Array.from(subjSet).join(', '):'None logged'},
+  ].map(r=>`<div class="port-kv"><strong>${r.k}</strong><span>${r.v}</span></div>`).join('');
+
+  // ── Lesson Log ──
+  const lessonRows=sLessons.slice(0,40).map(e=>{
+    const d=new Date(e.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    const subjs=e.subjects?.length?e.subjects.join(', '):'No subjects listed';
+    return `<div class="port-lesson-row"><strong>${d} — ${e.hours}h — ${subjs}</strong>${e.notes?`<div style="margin-top:.1rem">${e.notes}</div>`:''}</div>`;
+  }).join('');
+  document.getElementById('pf-lesson-count').textContent=sLessons.length>40?`(showing 40 of ${sLessons.length})`:'';
+  document.getElementById('pf-lessons').innerHTML=lessonRows||'<div style="font-size:.8rem;color:var(--muted)">No lessons logged for this year.</div>';
+
+  // ── Assignments Completed ──
+  const doneAssigns=assignments.filter(a=>a.studentId==sid&&a.status==='complete');
+  const assignSection=document.getElementById('pf-assign-section');
+  if(doneAssigns.length){
+    assignSection.style.display='block';
+    document.getElementById('pf-assigns').innerHTML=doneAssigns.map(a=>{
+      const d=a.completedDate?new Date(a.completedDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
+      return `<div class="port-lesson-row"><strong>${a.title}</strong><div>${a.subject}${d?' — Completed '+d:''}</div></div>`;
+    }).join('');
+  } else {
+    assignSection.style.display='none';
+  }
+
+  // ── Learning Goals ──
+  const sGoals=goals.filter(g=>g.studentId==sid);
+  const goalsSection=document.getElementById('pf-goals-section');
+  if(sGoals.length){
+    goalsSection.style.display='block';
+    document.getElementById('pf-goals').innerHTML=sGoals.map(g=>{
+      const avgRating=g.progressLog?.length?g.progressLog.reduce((t,l)=>t+l.rating,0)/g.progressLog.length:0;
+      return `<div class="port-goal-row">
+        <strong>${g.subject}: ${g.desc}${g.achieved?'<span class="port-achieved">✓ Achieved</span>':''}</strong>
+        <div>${g.progressLog?.length||0} progress entries${avgRating?` · avg rating ${avgRating.toFixed(1)}/5`:''}${g.target?' · Target: '+g.target:''}</div>
+      </div>`;
+    }).join('');
+  } else {
+    goalsSection.style.display='none';
+  }
+
+  // ── Quiz Performance ──
+  const strengths=getAllSubjectStrengths(sid);
+  const scoresSection=document.getElementById('pf-scores-section');
+  if(Object.keys(strengths).length){
+    scoresSection.style.display='block';
+    const labels={strong:'Strong (85%+)','on-track':'On Track (65–84%)','struggling':'Needs Support (<65%)',untested:'Untested'};
+    document.getElementById('pf-scores').innerHTML=Object.entries(strengths).map(([subj,str])=>{
+      const scores=getRecentScores(sid,subj,5);
+      const avg=scores.length?Math.round(scores.reduce((t,s)=>t+s.score,0)/scores.length):0;
+      return `<div class="port-kv"><strong>${subj}</strong><span>${labels[str]||str}${avg?' · '+avg+'% avg':''}</span></div>`;
+    }).join('');
+  } else {
+    scoresSection.style.display='none';
+  }
+
+  // Show narrative button
+  const narrativeBtn=document.getElementById('pf-narrative-btn');
+  if(narrativeBtn) narrativeBtn.style.display='block';
+}
+
+async function generatePortfolioNarrative(){
+  const sid=document.getElementById('pf-student')?.value;
+  const yr=parseInt(document.getElementById('pf-year')?.value||new Date().getFullYear());
+  if(!sid) return;
+  const student=students.find(s=>s.id==sid);
+  if(!student) return;
+  const btn=document.getElementById('pf-narrative-btn');
+  const orig=btn.textContent;
+  btn.textContent='Generating…'; btn.disabled=true;
+
+  const sLessons=lessons.filter(l=>l.studentId==sid&&l.date?.startsWith(yr.toString()));
+  const subjSet=new Set(); sLessons.forEach(l=>l.subjects?.forEach(s=>subjSet.add(s)));
+  const totalHours=sLessons.reduce((t,l)=>t+(parseFloat(l.hours)||0),0);
+  const attData=loadAttData(sid);
+  const yrDays=Object.keys(attData).filter(d=>attData[d]&&d.startsWith(yr.toString())).length;
+  const sGoals=goals.filter(g=>g.studentId==sid);
+  const achieved=sGoals.filter(g=>g.achieved);
+  const strengths=getAllSubjectStrengths(sid);
+  const strongSubjs=Object.entries(strengths).filter(([,v])=>v==='strong').map(([k])=>k);
+  const struggleSubjs=Object.entries(strengths).filter(([,v])=>v==='struggling').map(([k])=>k);
+
+  const prompt=`Write a 2-paragraph academic narrative for a homeschool portfolio. It should read like a professional educator's summary of the student's school year — warm, specific, and suitable for official records.
+
+Student: ${student.name}, ${student.grade}
+School Year: ${yr}–${yr+1}
+Special needs / accommodations: ${student.specialNeeds?.join(', ')||'none'}
+Subjects studied: ${Array.from(subjSet).join(', ')||'various'}
+Total instructional hours: ${totalHours.toFixed(1)}
+School days logged: ${yrDays}
+Completed learning goals: ${achieved.map(g=>g.subject+': '+g.desc).join('; ')||'none recorded'}
+Quiz strengths: ${strongSubjs.join(', ')||'not assessed'}
+Areas for growth: ${struggleSubjs.join(', ')||'none identified'}
+
+Paragraph 1: Describe the academic program and the student's engagement.
+Paragraph 2: Describe progress, strengths, and goals for the coming year.`;
+
+  try{
+    const result=await callAI(prompt);
+    const section=document.getElementById('pf-narrative-section');
+    const text=document.getElementById('pf-narrative-text');
+    if(section) section.style.display='block';
+    if(text) text.textContent=result;
+  }catch(e){
+    const errEl=document.getElementById('pf-error');
+    if(errEl){ errEl.textContent='Could not generate narrative. Try again.'; errEl.style.display='block'; }
+  }
+  btn.textContent=orig; btn.disabled=false;
+}
+
+// ══════════════════════════════════════════
+// AUTO LOGIN
+// ══════════════════════════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  // 1. Own saved session
+  const saved=localStorage.getItem('learn_user');
+  if(saved){
+    try{
+      const u=JSON.parse(saved);
+      if(u?.id && u?.email){currentUser=u;initApp();return;}
+      else localStorage.removeItem('learn_user');
+    }catch{localStorage.removeItem('learn_user');}
+  }
+  // 2. Shared session set by account page (reliable)
+  try{
+    const token=localStorage.getItem('ig_account_token');
+    const email=localStorage.getItem('ig_account_email');
+    const name =localStorage.getItem('ig_account_name');
+    if(token && email){
+      const p=JSON.parse(atob(token.split('.')[1]));
+      if(!p.exp || Date.now()/1000 < p.exp){
+        loginSuccess({id:p.sub,email},token,name||email.split('@')[0]);
+        return;
+      }
+    }
+  }catch(e){}
+  // 2b. Fallback: raw Supabase session key (older sessions)
+  try{
+    const raw=localStorage.getItem('sb-zcvkgevcrgsujnqovxgd-auth-token');
+    if(raw){
+      const parsed=JSON.parse(raw);
+      const sess=parsed?.currentSession||parsed?.session||parsed;
+      const user=sess?.user;
+      const token=sess?.access_token;
+      const exp=sess?.expires_at;
+      if(user?.email && token && (!exp || Date.now()/1000 < exp)){
+        loginSuccess(user, token, user.user_metadata?.name||user.email.split('@')[0]);
+        return;
+      }
+    }
+  }catch(e){}
+  // 3. No session - pre-fill email if we know it
+  const storedEmail=localStorage.getItem('ig_account_email');
+  if(storedEmail){
+    const li=document.getElementById('li-email');
+    if(li)li.value=storedEmail;
+  }
+});
+
+// Register service worker for offline / PWA support
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').then(reg=>{
+      console.log('SW registered, scope:',reg.scope);
+    }).catch(e=>console.log('SW registration failed:',e));
+  });
+}
+</script>
+</body>
+</html>

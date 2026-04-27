@@ -1,0 +1,372 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InfinityMatch — Real Projects. Verified Contractors. No Fake Leads.</title>
+<meta name="description" content="InfinityMatch connects homeowners with verified, licensed, and insured local contractors. Free for homeowners. Flat monthly subscription for contractors. No fake leads, ever.">
+<link rel="canonical" href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch/">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080e;--bg2:#0c0e18;--bg3:#111422;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --text:#eef0f8;--muted:#6b7280;--muted2:#9ca3b8;
+  --accent:#f97316;--accent2:#fb923c;
+  --green:#34d399;--red:#ff6b6b;--gold:#f0b429;--blue:#4f8eff;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2rem;background:rgba(7,8,14,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}
+.logo-mark{width:28px;height:28px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+.logo em{color:var(--accent);font-style:normal}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-link{font-size:.82rem;color:var(--muted2);text-decoration:none;transition:color .18s}
+.nav-link:hover{color:var(--text)}
+.nav-btns{display:flex;align-items:center;gap:8px}
+.btn-nav-ghost{font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;padding:.42rem 1rem;border-radius:100px;background:transparent;border:1px solid var(--border2);color:var(--muted2);cursor:pointer;transition:all .18s;text-decoration:none;display:inline-block}
+.btn-nav-ghost:hover{color:var(--text)}
+.btn-nav-solid{font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;padding:.42rem 1rem;border-radius:100px;background:var(--accent);color:#fff;cursor:pointer;transition:all .18s;text-decoration:none;display:inline-block;border:none}
+.btn-nav-solid:hover{background:var(--accent2);transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{position:relative;z-index:1;padding:8rem 2rem 5rem;text-align:center;overflow:hidden}
+.hero-glow{position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(249,115,22,.09) 0%,transparent 60%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.4rem;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);border-radius:100px;padding:.3rem .9rem;font-size:.72rem;font-weight:600;color:var(--accent2);letter-spacing:.04em;margin-bottom:1.4rem;animation:up .5s ease both}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:800;line-height:1.04;letter-spacing:-.035em;margin-bottom:1.1rem;animation:up .6s .05s ease both}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero-sub{font-size:1.05rem;color:var(--muted2);max-width:560px;margin:0 auto 2.5rem;line-height:1.75;font-weight:300;animation:up .6s .1s ease both}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;animation:up .6s .15s ease both}
+.btn-hero-p{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;padding:.9rem 2.2rem;border-radius:100px;border:none;cursor:pointer;background:var(--accent);color:#fff;transition:all .2s;text-decoration:none;display:inline-block}
+.btn-hero-p:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 12px 32px rgba(249,115,22,.25)}
+.btn-hero-g{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;padding:.9rem 2.2rem;border-radius:100px;border:1px solid var(--border2);cursor:pointer;background:transparent;color:var(--muted2);transition:all .2s;text-decoration:none;display:inline-block}
+.btn-hero-g:hover{color:var(--text);border-color:rgba(255,255,255,.25)}
+.hero-note{font-size:.75rem;color:var(--muted);margin-top:1.2rem;animation:up .6s .2s ease both}
+.hero-note em{color:var(--green);font-style:normal}
+
+/* ── TRUST BAR ── */
+.trust-bar{position:relative;z-index:1;display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;padding:1.5rem 2rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.02);margin-bottom:5rem}
+.trust-item{display:flex;align-items:center;gap:.45rem;font-size:.78rem;color:var(--muted2)}
+.trust-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* ── SPLIT SECTION ── */
+.split{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 2rem 6rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.split-head{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem}
+.split h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:.8rem}
+.split h2 em{color:var(--accent);font-style:normal}
+.split p{font-size:.9rem;color:var(--muted2);line-height:1.75;font-weight:300;margin-bottom:1.5rem}
+.split-cta{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;padding:.7rem 1.6rem;border-radius:100px;border:none;cursor:pointer;background:var(--accent);color:#fff;transition:all .2s;text-decoration:none;display:inline-block}
+.split-cta:hover{background:var(--accent2);transform:translateY(-1px)}
+.split-cta-ghost{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;padding:.7rem 1.6rem;border-radius:100px;border:1px solid var(--border2);cursor:pointer;background:transparent;color:var(--muted2);transition:all .2s;text-decoration:none;display:inline-block}
+.split-cta-ghost:hover{color:var(--text)}
+.split-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:1.8rem;position:relative;overflow:hidden}
+.split-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.split-divider{width:1px;background:var(--border);align-self:stretch}
+
+/* ── HOW IT WORKS ── */
+.how{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 6rem;text-align:center}
+.section-eyebrow{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.6rem}
+.section-sub{font-size:.92rem;color:var(--muted2);font-weight:300;line-height:1.7;max-width:500px;margin:0 auto 3rem}
+
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:1.5rem}
+.step-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.4rem;text-align:left;position:relative}
+.step-num{font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem}
+.step-icon{font-size:1.5rem;margin-bottom:.5rem}
+.step-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.3rem}
+.step-desc{font-size:.78rem;color:var(--muted2);line-height:1.55;font-weight:300}
+
+/* ── CONTRACTOR VS OTHERS ── */
+.compare{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:0 2rem 6rem}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.compare-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.5rem;overflow:hidden;position:relative}
+.compare-card.good{border-color:rgba(52,211,153,.25)}
+.compare-card.good::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--green)}
+.compare-card.bad{border-color:rgba(255,107,107,.15);opacity:.85}
+.compare-label{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:.4rem}
+.compare-label.green{color:var(--green)}
+.compare-label.red{color:var(--red)}
+.compare-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.65rem;font-size:.82rem;color:var(--muted2);line-height:1.4}
+.compare-item::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px}
+.compare-item.bad::before{content:'✗';color:var(--red)}
+.compare-item strong{color:var(--text)}
+
+/* ── PRICING ── */
+.pricing{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:0 2rem 6rem;text-align:center}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:2.5rem}
+.price-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;text-align:left;position:relative;overflow:hidden}
+.price-card.featured{border-color:rgba(249,115,22,.3)}
+.price-card.featured::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.price-who{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.price-amount{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:var(--text);margin-bottom:.15rem;line-height:1}
+.price-amount span{font-size:.9rem;font-weight:400;color:var(--muted2)}
+.price-desc{font-size:.8rem;color:var(--muted2);margin-bottom:1.3rem;line-height:1.5}
+.price-features{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem}
+.price-feat{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--muted2)}
+.price-feat::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.price-btn{width:100%;font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;padding:.78rem;border-radius:100px;border:none;cursor:pointer;transition:all .2s;text-decoration:none;display:block;text-align:center}
+.price-btn-p{background:var(--accent);color:#fff}
+.price-btn-p:hover{background:var(--accent2);transform:translateY(-1px)}
+.price-btn-g{background:var(--bg3);border:1px solid var(--border2);color:var(--muted2)}
+.price-btn-g:hover{color:var(--text)}
+
+/* ── FINAL CTA ── */
+.final-cta{position:relative;z-index:1;text-align:center;padding:5rem 2rem 6rem;overflow:hidden}
+.final-cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(249,115,22,.08) 0%,transparent 65%);pointer-events:none}
+.final-cta h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+.final-cta h2 em{color:var(--accent);font-style:normal}
+.final-cta p{font-size:.95rem;color:var(--muted2);margin-bottom:2rem;font-weight:300;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem;color:var(--muted2);text-decoration:none}
+.footer-logo em{color:var(--accent);font-style:normal}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+.footer-link{font-size:.75rem;color:var(--muted);text-decoration:none;transition:color .18s}
+.footer-link:hover{color:var(--text)}
+.footer-copy{font-size:.72rem;color:var(--muted)}
+
+/* ── CATEGORY CHIPS ── */
+.cat-row{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:2rem 0 3rem;animation:up .6s .25s ease both}
+.cat-chip{background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:.3rem .85rem;font-size:.75rem;color:var(--muted2);display:flex;align-items:center;gap:.3rem}
+
+@media(max-width:700px){
+  nav{padding:.9rem 1rem}
+  .nav-links{display:none}
+  .split{grid-template-columns:1fr;gap:2rem}
+  .split-divider{display:none}
+  .compare-grid,.pricing-grid{grid-template-columns:1fr}
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-mark">🔨</div>
+    Infinity<em>Match</em>
+  </a>
+  <div class="nav-links">
+    <a href="#how-it-works" class="nav-link">How it works</a>
+    <a href="#for-contractors" class="nav-link">For contractors</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="https://contact.infinityhub.dev" class="nav-link">Support</a>
+  </div>
+  <div class="nav-btns">
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/contractor-dashboard/" class="btn-nav-ghost">Contractor login</a>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch-submit/" class="btn-nav-solid">Post a project</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">🔒 Verified contractors only · Free for homeowners</div>
+  <h1>Real projects.<br><em>Real contractors.</em><br>No fake leads.</h1>
+  <p class="hero-sub">InfinityMatch connects homeowners with verified, licensed, and insured local contractors — one exclusive match at a time. No bidding wars. No spam calls. No paying for contacts that never respond.</p>
+  <div class="hero-btns">
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch-submit/" class="btn-hero-p">Post your project — it's free →</a>
+    <a href="#for-contractors" class="btn-hero-g">Are you a contractor?</a>
+  </div>
+  <div class="hero-note"><em>Free for homeowners.</em> Always. Contractors pay a flat monthly subscription — never per lead.</div>
+</div>
+
+<!-- ── TRUST BAR ── */
+<div class="trust-bar">
+  <div class="trust-item"><div class="trust-dot"></div>Licensed &amp; insured contractors only</div>
+  <div class="trust-item"><div class="trust-dot"></div>One contractor per project — exclusive</div>
+  <div class="trust-item"><div class="trust-dot"></div>AI-scored leads — no spam submissions</div>
+  <div class="trust-item"><div class="trust-dot"></div>2-hour response window or we find another</div>
+  <div class="trust-item"><div class="trust-dot"></div>No per-lead charges, ever</div>
+</div>
+
+<!-- ── CATEGORIES ── -->
+<div class="cat-row">
+  <div class="cat-chip">🔧 Plumbing</div>
+  <div class="cat-chip">⚡ Electrical</div>
+  <div class="cat-chip">🏠 Roofing</div>
+  <div class="cat-chip">❄️ HVAC</div>
+  <div class="cat-chip">🪚 Carpentry</div>
+  <div class="cat-chip">🎨 Painting</div>
+  <div class="cat-chip">🏗️ Flooring</div>
+  <div class="cat-chip">🌿 Landscaping</div>
+  <div class="cat-chip">🧱 Masonry</div>
+  <div class="cat-chip">🔨 Remodeling</div>
+  <div class="cat-chip">🛠️ Handyman</div>
+</div>
+
+<!-- ── HOW IT WORKS ── -->
+<div class="how" id="how-it-works">
+  <div class="section-eyebrow">For homeowners</div>
+  <div class="section-title">Get matched in minutes</div>
+  <p class="section-sub">No account required. No spam calls. Just describe your project and let us do the work.</p>
+
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">Step 01</div>
+      <div class="step-icon">📋</div>
+      <div class="step-title">Describe your project</div>
+      <div class="step-desc">Tell us what you need — as much or as little detail as you have. Upload a couple photos if you have them.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">Step 02</div>
+      <div class="step-icon">🔍</div>
+      <div class="step-title">We find your match</div>
+      <div class="step-desc">Our system matches you with the highest-rated verified contractor in your area for your specific trade.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">Step 03</div>
+      <div class="step-icon">📞</div>
+      <div class="step-title">Contractor reaches out</div>
+      <div class="step-desc">Your matched contractor has 2 hours to respond. If they don't, we automatically find the next best one.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">Step 04</div>
+      <div class="step-icon">✅</div>
+      <div class="step-title">You decide</div>
+      <div class="step-desc">Talk it through, get a quote, and decide. You're never obligated to hire. No pressure, ever.</div>
+    </div>
+  </div>
+
+  <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch-submit/" class="split-cta" style="margin-top:1rem;display:inline-block">Post your project for free →</a>
+</div>
+
+<!-- ── SPLIT: HOMEOWNER VS CONTRACTOR ── -->
+<div class="split" id="for-contractors">
+
+  <div>
+    <div class="split-head">For homeowners</div>
+    <h2>Stop getting<br><em>ghosted.</em></h2>
+    <p>Post your project once and get a single, verified contractor who actually responds. No more calling five numbers and hearing back from none of them.</p>
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem">
+      <li style="display:flex;gap:.5rem;font-size:.84rem;color:var(--muted2)"><span style="color:var(--green);font-weight:700">✓</span> 100% free — always</li>
+      <li style="display:flex;gap:.5rem;font-size:.84rem;color:var(--muted2)"><span style="color:var(--green);font-weight:700">✓</span> Your info shared only with your matched contractor</li>
+      <li style="display:flex;gap:.5rem;font-size:.84rem;color:var(--muted2)"><span style="color:var(--green);font-weight:700">✓</span> Every contractor is licensed and insured — verified by us</li>
+      <li style="display:flex;gap:.5rem;font-size:.84rem;color:var(--muted2)"><span style="color:var(--green);font-weight:700">✓</span> No obligation to hire</li>
+    </ul>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch-submit/" class="split-cta">Post a project →</a>
+  </div>
+
+  <div class="split-divider"></div>
+
+  <div>
+    <div class="split-head">For contractors</div>
+    <h2>Jobs without<br><em>fake leads.</em></h2>
+    <p>One flat monthly subscription. Every project that comes to you is exclusive — nobody else is seeing it at the same time. No more competing with 4 other contractors on a lead that turns out to be fake.</p>
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem">
+      <li style="display:flex;gap:.5rem;font-size:.84rem;color:var(--muted2)"><span style="color:var(--green);font-weight:700">✓</span> $49/month flat — no per-lead charges</li>
+      <li style="display:flex;gap:.5rem;font-size:.84rem;color:var(--muted2)"><span style="color:var(--green);font-weight:700">✓</span> Exclusive — you see it, nobody else does</li>
+      <li style="display:flex;gap:.5rem;font-size:.84rem;color:var(--muted2)"><span style="color:var(--green);font-weight:700">✓</span> AI-scored submissions — low quality filtered out</li>
+      <li style="display:flex;gap:.5rem;font-size:.84rem;color:var(--muted2)"><span style="color:var(--green);font-weight:700">✓</span> AI-generated contracts for every accepted job</li>
+    </ul>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/contractor/" class="split-cta">Join as a contractor →</a>
+  </div>
+
+</div>
+
+<!-- ── COMPARE ── -->
+<div class="compare">
+  <div style="text-align:center;margin-bottom:2.5rem">
+    <div class="section-eyebrow">For contractors</div>
+    <div class="section-title">Why InfinityMatch beats<br>the other platforms</div>
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-card good">
+      <div class="compare-label green">✓ InfinityMatch</div>
+      <div class="compare-item"><strong>Flat $49/month</strong> — unlimited matches, no per-lead fees</div>
+      <div class="compare-item"><strong>Exclusive leads</strong> — one contractor per project at a time</div>
+      <div class="compare-item"><strong>AI-scored submissions</strong> — fake and low-quality filtered before you see them</div>
+      <div class="compare-item"><strong>Verified homeowners</strong> — real address and phone required</div>
+      <div class="compare-item"><strong>AI contracts</strong> — generated automatically for every accepted job</div>
+      <div class="compare-item"><strong>Cancel anytime</strong> — no annual commitments</div>
+    </div>
+    <div class="compare-card bad">
+      <div class="compare-label red">✗ HomeAdvisor / Angi / Thumbtack</div>
+      <div class="compare-item bad"><strong>$15–80 per lead</strong> — whether real or fake</div>
+      <div class="compare-item bad"><strong>Same lead sold to 4–5 contractors</strong> simultaneously</div>
+      <div class="compare-item bad"><strong>No quality filter</strong> — you pay for spam submissions</div>
+      <div class="compare-item bad"><strong>Fake contacts</strong> — generated leads with no real homeowner</div>
+      <div class="compare-item bad"><strong>No contract tools</strong> — you're on your own</div>
+      <div class="compare-item bad"><strong>Annual contracts</strong> — locked in regardless of results</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PRICING ── -->
+<div class="pricing" id="pricing">
+  <div class="section-eyebrow">Pricing</div>
+  <div class="section-title">Simple. Transparent. Fair.</div>
+  <p class="section-sub">Free for homeowners, always. Contractors pay one flat monthly rate — no surprises.</p>
+
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-who">For homeowners</div>
+      <div class="price-amount">$0<span>/forever</span></div>
+      <div class="price-desc">Posting a project and getting matched is always free. No account required.</div>
+      <div class="price-features">
+        <div class="price-feat">Post unlimited projects</div>
+        <div class="price-feat">Get matched with a verified contractor</div>
+        <div class="price-feat">Photo upload for better matches</div>
+        <div class="price-feat">AI project assessment included</div>
+        <div class="price-feat">No obligation to hire</div>
+      </div>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch-submit/" class="price-btn price-btn-g">Post a project →</a>
+    </div>
+
+    <div class="price-card featured">
+      <div class="price-who">For contractors</div>
+      <div class="price-amount">$49<span>/month</span></div>
+      <div class="price-desc">One flat subscription. Cancel anytime. No per-lead charges, ever.</div>
+      <div class="price-features">
+        <div class="price-feat">Unlimited exclusive job matches</div>
+        <div class="price-feat">AI-generated contracts per job</div>
+        <div class="price-feat">Verified contractor badge</div>
+        <div class="price-feat">Priority routing by rating</div>
+        <div class="price-feat">2-hour exclusive response window</div>
+        <div class="price-feat">Email notifications for new matches</div>
+      </div>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/contractor/" class="price-btn price-btn-p">Join as a contractor →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── FINAL CTA ── -->
+<div class="final-cta">
+  <div class="final-cta-glow"></div>
+  <h2>Ready to get<br><em>matched?</em></h2>
+  <p>Homeowners — post your project free in under 3 minutes. Contractors — join and start receiving real, exclusive leads today.</p>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch-submit/" class="btn-hero-p">Post a project — free →</a>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/contractor/" class="btn-hero-g">Join as a contractor</a>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <a href="#" class="footer-logo">Infinity<em>Match</em></a>
+  <div class="footer-links">
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch-submit/" class="footer-link">Post a project</a>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/contractor/" class="footer-link">Contractor onboarding</a>
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/contractor-dashboard/" class="footer-link">Contractor login</a>
+    <a href="https://contact.infinityhub.dev" class="footer-link">Support</a>
+    <a href="https://infinityhub.dev" class="footer-link">Infinity Solutions</a>
+  </div>
+  <div class="footer-copy">© 2026 Infinity Solutions LLC</div>
+</footer>
+
+</body>
+</html>

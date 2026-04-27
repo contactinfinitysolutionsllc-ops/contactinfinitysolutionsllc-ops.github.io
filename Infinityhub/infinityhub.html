@@ -1,0 +1,404 @@
+<!-- Copyright 2026 Infinity Solutions LLC. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinity Solutions LLC — AI Tools for Real People</title>
+<meta name="description" content="Affordable AI-powered tools for legal documents, wellness, education, and small business. Built for real people, not corporations.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;--bg2:#0e1320;--bg3:#141928;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);
+  --text:#f0f2f8;--muted:#7a8099;--muted2:#a0a8c0;
+  --accent:#4f8eff;--accent2:#7eb0ff;
+  --gold:#f0b429;--teal:#2dd4bf;--purple:#a78bfa;--green:#34d399;
+  --orange:#f97316;--orange2:#fb923c;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;background:rgba(8,11,18,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:-.01em;color:var(--text);text-decoration:none}
+.logo em{color:var(--accent);font-style:normal}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:.83rem;font-weight:500;letter-spacing:.03em;color:var(--muted2);text-decoration:none;transition:color .18s}
+.nav-links a:hover{color:var(--text)}
+.nav-right{display:flex;align-items:center;gap:.8rem}
+.nav-btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;background:var(--accent);color:#fff;padding:.48rem 1.2rem;border-radius:100px;text-decoration:none;transition:all .18s;border:none;cursor:pointer}
+.nav-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:9rem 2rem 5rem;position:relative}
+.hero-glow{position:absolute;top:15%;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse,rgba(79,142,255,.11) 0%,transparent 68%);pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:.45rem;border:1px solid rgba(79,142,255,.28);background:rgba(79,142,255,.07);color:var(--accent2);border-radius:100px;padding:.32rem 1rem;font-size:.74rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;margin-bottom:2rem;animation:up .6s ease both}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2.2s ease infinite}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,5.4rem);font-weight:800;line-height:1.06;letter-spacing:-.03em;max-width:880px;margin-bottom:1.5rem;animation:up .7s .08s ease both}
+h1 .ac{color:var(--accent)}
+h1 .soft{color:var(--muted);font-weight:400;font-style:italic;font-family:'Instrument Sans',sans-serif;font-size:72%}
+.hero-sub{font-size:1.05rem;color:var(--muted2);max-width:520px;line-height:1.75;font-weight:300;margin-bottom:2.4rem;animation:up .7s .16s ease both}
+.hero-sub strong{color:var(--text);font-weight:500}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;animation:up .7s .24s ease both}
+.btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;padding:.85rem 1.9rem;border-radius:100px;text-decoration:none;border:none;cursor:pointer;transition:all .2s;display:inline-block}
+.btn-solid{background:var(--accent);color:#fff}
+.btn-solid:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 10px 28px rgba(79,142,255,.28)}
+.btn-outline{background:transparent;color:var(--muted2);border:1px solid var(--border2)}
+.btn-outline:hover{color:var(--text);border-color:rgba(255,255,255,.28)}
+.stats{display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;margin-top:4rem;padding-top:3rem;border-top:1px solid var(--border);animation:up .7s .32s ease both}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800}
+.stat-num em{color:var(--accent);font-style:normal}
+.stat-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-top:3px}
+
+/* MISSION */
+.mission{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2rem;text-align:center}
+.mission-inner{max-width:680px;margin:0 auto}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem}
+.mission h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;line-height:1.22;margin-bottom:1.2rem}
+.mission p{font-size:.98rem;color:var(--muted2);line-height:1.82;font-weight:300}
+.mission p+p{margin-top:.9rem}
+.mission p strong{color:var(--text);font-weight:500}
+
+/* INFINITYMATCH FEATURE */
+.im-feature{padding:6rem 2rem;max-width:1080px;margin:0 auto}
+.im-card{background:var(--bg2);border:1px solid rgba(249,115,22,.2);border-radius:24px;padding:3rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;overflow:hidden}
+.im-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--orange2))}
+.im-glow{position:absolute;top:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(ellipse,rgba(249,115,22,.07) 0%,transparent 65%);pointer-events:none}
+.im-eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-bottom:.7rem;display:flex;align-items:center;gap:.4rem}
+.im-new{background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);border-radius:100px;padding:.15rem .6rem;font-size:.6rem;color:var(--orange2)}
+.im-card h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:800;letter-spacing:-.025em;line-height:1.1;margin-bottom:.8rem}
+.im-card h2 em{color:var(--orange);font-style:normal}
+.im-card p{font-size:.92rem;color:var(--muted2);line-height:1.75;font-weight:300;margin-bottom:1.5rem}
+.im-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-orange:hover{background:var(--orange2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(249,115,22,.25)}
+.btn-orange-ghost{background:transparent;border:1px solid rgba(249,115,22,.3);color:var(--orange2)}
+.btn-orange-ghost:hover{background:rgba(249,115,22,.08)}
+.im-stats{display:flex;flex-direction:column;gap:12px}
+.im-stat{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.3rem}
+.im-stat-num{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--orange);margin-bottom:.15rem}
+.im-stat-label{font-size:.72rem;color:var(--muted2)}
+.im-badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem}
+.im-badge{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.18);border-radius:100px;padding:.22rem .75rem;font-size:.7rem;color:var(--orange2)}
+
+/* PRODUCTS */
+.products{padding:4rem 2rem 6rem;max-width:1080px;margin:0 auto}
+.cat-section{margin-bottom:3.5rem}
+.cat-label{display:flex;align-items:center;gap:.7rem;margin-bottom:1rem}
+.cat-label-text{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);white-space:nowrap}
+.cat-label-line{flex:1;height:1px;background:var(--border)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.pcard{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.6rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:all .22s}
+.pcard::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--c,var(--accent));opacity:0;transition:opacity .22s}
+.pcard:hover{border-color:var(--border2);transform:translateY(-3px);background:var(--bg3)}
+.pcard:hover::after{opacity:1}
+.pcard-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:1rem;background:var(--ib,rgba(79,142,255,.1))}
+.pcard-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.35rem}
+.pcard-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.chip{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:100px}
+.chip-live{background:rgba(52,211,153,.13);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+.pcard-desc{font-size:.84rem;color:var(--muted2);line-height:1.65;font-weight:300;flex:1;margin-bottom:1rem}
+.pcard-foot{display:flex;align-items:center;justify-content:space-between;padding-top:.85rem;border-top:1px solid var(--border)}
+.pcard-price{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700}
+.pcard-price small{font-size:.7rem;color:var(--muted);font-weight:400;font-family:'Instrument Sans',sans-serif}
+.arrow{width:26px;height:26px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.78rem;color:var(--muted2);transition:all .2s}
+.pcard:hover .arrow{background:var(--accent);color:#fff;transform:translateX(2px)}
+
+/* WHY */
+.why{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:6rem 2rem}
+.why-inner{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.why h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:1.1rem}
+.why h2 em{color:var(--accent);font-style:normal}
+.why p{color:var(--muted2);font-size:.94rem;line-height:1.8;font-weight:300}
+.why p+p{margin-top:.8rem}
+.why p strong{color:var(--text);font-weight:500}
+.pillars{display:flex;flex-direction:column;gap:11px}
+.pillar{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.3rem;display:flex;gap:.9rem;align-items:flex-start}
+.pillar-icon{width:34px;height:34px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.p-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;margin-bottom:2px}
+.p-desc{font-size:.78rem;color:var(--muted2);line-height:1.55;font-weight:300}
+
+/* CTA */
+.cta{padding:7rem 2rem;text-align:center;max-width:640px;margin:0 auto}
+.cta h2{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-.025em;line-height:1.1;margin-bottom:1rem}
+.cta p{color:var(--muted2);font-size:.98rem;line-height:1.75;margin-bottom:2rem;font-weight:300}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--muted2);text-decoration:none}
+.footer-logo em{color:var(--accent);font-style:normal}
+.footer-links{display:flex;gap:1.5rem;list-style:none;flex-wrap:wrap}
+.footer-links a{font-size:.76rem;color:var(--muted);text-decoration:none;transition:color .18s}
+.footer-links a:hover{color:var(--text)}
+.copy{font-size:.73rem;color:var(--muted)}
+
+@media(max-width:860px){
+  .im-card{grid-template-columns:1fr}
+  .im-glow{display:none}
+}
+@media(max-width:680px){
+  nav{padding:1rem 1.2rem}
+  .nav-links{display:none}
+  .why-inner{grid-template-columns:1fr;gap:2.5rem}
+  .stats{gap:1.5rem}
+  footer{flex-direction:column;text-align:center}
+  .footer-links{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://infinityhub.dev" class="logo">Infinity<em>.</em>Solutions</a>
+  <ul class="nav-links">
+    <li><a href="#infinitymatch">InfinityMatch</a></li>
+    <li><a href="#products">AI Tools</a></li>
+    <li><a href="#mission">Mission</a></li>
+    <li><a href="https://contact.infinityhub.dev">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/account/" class="nav-btn">My Account</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="badge"><span class="badge-dot"></span> AI-powered · Affordable · Built for real people</div>
+  <h1>Tools that work<br><span class="ac">for everyone.</span><br><span class="soft">not just those who can afford them.</span></h1>
+  <p class="hero-sub">Infinity Solutions LLC builds <strong>AI-powered apps</strong> that give ordinary people access to the same quality tools that used to cost thousands — legal, wellness, education, business, and a contractor marketplace that actually works.</p>
+  <div class="hero-actions">
+    <a href="#products" class="btn btn-solid">Explore AI Tools</a>
+    <a href="#infinitymatch" class="btn btn-outline">InfinityMatch Platform</a>
+  </div>
+  <div class="stats">
+    <div><div class="stat-num">97<em>%</em></div><div class="stat-lbl">Cheaper than lawyers</div></div>
+    <div><div class="stat-num"><em>$</em>0</div><div class="stat-lbl">To get started</div></div>
+    <div><div class="stat-num">60<em>s</em></div><div class="stat-lbl">To generate a doc</div></div>
+    <div><div class="stat-num">20<em>+</em></div><div class="stat-lbl">Tools and growing</div></div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission" id="mission">
+  <div class="mission-inner">
+    <div class="eyebrow">Our mission</div>
+    <h2>Democratize access to tools that actually change lives.</h2>
+    <p>Big corporations charge hundreds per month for tools that should cost a few dollars. They dumb down education to sell more curriculum. They make legal help so expensive that regular people have no recourse. <strong>We're done with that.</strong></p>
+    <p>Infinity Solutions LLC is a solo-built, AI-powered company with one goal: give <strong>every person</strong> — regardless of income — the same quality of legal, educational, wellness, and business tools that used to be reserved for those who could afford professionals.</p>
+  </div>
+</section>
+
+<!-- INFINITYMATCH -->
+<section class="im-feature" id="infinitymatch">
+  <div style="text-align:center;margin-bottom:2rem">
+    <div class="eyebrow" style="color:var(--orange)">New platform</div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;letter-spacing:-.02em">InfinityMatch — The Contractor Platform</h2>
+  </div>
+  <div class="im-card">
+    <div class="im-glow"></div>
+    <div>
+      <div class="im-eyebrow">🔨 InfinityMatch <span class="im-new">NEW</span></div>
+      <h2>Real projects.<br><em>No fake leads.</em></h2>
+      <p>A contractor marketplace built by a contractor who got burned by HomeAdvisor. One flat subscription for contractors — $49/month. Exclusively yours, one project at a time. Free for homeowners, always.</p>
+      <div class="im-btns">
+        <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitymatch/" class="btn btn-orange">Post a project — free →</a>
+        <a href="https://contactinfinitysolutionsllc-ops.github.io/contractor/" class="btn btn-orange-ghost">Join as a contractor</a>
+      </div>
+      <div class="im-badge-row">
+        <span class="im-badge">✓ Verified contractors only</span>
+        <span class="im-badge">✓ No per-lead charges</span>
+        <span class="im-badge">✓ AI lead scoring</span>
+        <span class="im-badge">✓ Exclusive matching</span>
+        <span class="im-badge">✓ AI-generated contracts</span>
+      </div>
+    </div>
+    <div class="im-stats">
+      <div class="im-stat"><div class="im-stat-num">$0</div><div class="im-stat-label">Cost for homeowners — always free to post</div></div>
+      <div class="im-stat"><div class="im-stat-num">$49<span style="font-size:.9rem;font-weight:400;color:var(--muted2)">/mo</span></div><div class="im-stat-label">Flat contractor subscription — no per-lead fees</div></div>
+      <div class="im-stat"><div class="im-stat-num">2hr</div><div class="im-stat-label">Exclusive response window — or it moves to the next contractor</div></div>
+      <div class="im-stat"><div class="im-stat-num">0</div><div class="im-stat-label">Fake leads — AI scores every submission before routing</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AI TOOLS -->
+<section class="products" id="products">
+  <div style="text-align:center;margin-bottom:3rem">
+    <div class="eyebrow">The AI suite</div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.7rem);font-weight:800;letter-spacing:-.025em;margin-bottom:.5rem">Everything you need. Nothing you don't.</h2>
+    <p style="color:var(--muted2);font-size:.98rem;font-weight:300">One company. Multiple tools. All affordable. All AI-powered.</p>
+  </div>
+
+  <!-- LEGAL & FINANCIAL -->
+  <div class="cat-section">
+    <div class="cat-label"><span class="cat-label-text">⚖️ Legal &amp; Financial</span><div class="cat-label-line"></div></div>
+    <div class="grid">
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/justdocs/" class="pcard" style="--c:#4f8eff;--ib:rgba(79,142,255,.1)">
+        <div class="pcard-icon">⚖️</div><div class="pcard-top"><div class="pcard-name">JustDocs AI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">Professional legal documents drafted by AI in 60 seconds. Demand letters, cease &amp; desist, landlord notices, dispute letters, NDAs and more.</p>
+        <div class="pcard-foot"><div class="pcard-price">From $3.99 <small>/ document</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/contractai/" class="pcard" style="--c:#f97316;--ib:rgba(249,115,22,.1)">
+        <div class="pcard-icon">📜</div><div class="pcard-top"><div class="pcard-name">ContractAI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">Paste any contract and get a plain-English breakdown — red flags, risky clauses, missing protections, and recommendations. Lawyers charge $300/hr. We charge $4.99.</p>
+        <div class="pcard-foot"><div class="pcard-price">From $4.99 <small>/ analysis</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/smallclaims/" class="pcard" style="--c:#f59e0b;--ib:rgba(245,158,11,.1)">
+        <div class="pcard-icon">🏛️</div><div class="pcard-top"><div class="pcard-name">SmallClaimsAI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">Demand letters, case summaries, court talking points, and evidence checklists for small claims court. Win without a lawyer.</p>
+        <div class="pcard-foot"><div class="pcard-price">From $3.99 <small>/ document</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/creditai/" class="pcard" style="--c:#06b6d4;--ib:rgba(6,182,212,.1)">
+        <div class="pcard-icon">📊</div><div class="pcard-top"><div class="pcard-name">CreditAI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">Dispute letters, score improvement plans, goodwill letters, and credit rights education. Credit agencies charge $100/mo. We charge $4.99.</p>
+        <div class="pcard-foot"><div class="pcard-price">From $4.99 <small>/ letter</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/meddispute/" class="pcard" style="--c:#818cf8;--ib:rgba(129,140,248,.1)">
+        <div class="pcard-icon">🏥</div><div class="pcard-top"><div class="pcard-name">MedDispute AI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">Fight medical billing errors, insurance denials, surprise charges, and unfair medical debt. AI-drafted letters that reference the right laws.</p>
+        <div class="pcard-foot"><div class="pcard-price">From $1.99 <small>/ letter</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/policyai/" class="pcard" style="--c:#0ea5e9;--ib:rgba(14,165,233,.1)">
+        <div class="pcard-icon">🔒</div><div class="pcard-top"><div class="pcard-name">PolicyAI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">Privacy Policy, Terms of Service, Cookie Policy, Disclaimer, and Refund Policy for your website. Lawyers charge $500+. We charge $9.99 once.</p>
+        <div class="pcard-foot"><div class="pcard-price">From $9.99 <small>one-time</small></div><div class="arrow">→</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- BUSINESS & CAREER -->
+  <div class="cat-section">
+    <div class="cat-label"><span class="cat-label-text">💼 Business &amp; Career</span><div class="cat-label-line"></div></div>
+    <div class="grid">
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/infinitybiz/" class="pcard" style="--c:#a78bfa;--ib:rgba(167,139,250,.1)">
+        <div class="pcard-icon">💼</div><div class="pcard-top"><div class="pcard-name">Infinity Biz</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">AI back-office for solo businesses and freelancers. Invoices, emails, social captions, product descriptions — replace $100/mo of tools for $12.</p>
+        <div class="pcard-foot"><div class="pcard-price">$12 <small>/ month</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/resumeai/" class="pcard" style="--c:#34d399;--ib:rgba(52,211,153,.1)">
+        <div class="pcard-icon">📄</div><div class="pcard-top"><div class="pcard-name">ResumeAI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">AI-powered resumes, cover letters, LinkedIn optimization, and interview prep. Land more interviews for less than a coffee.</p>
+        <div class="pcard-foot"><div class="pcard-price">From $1.99 <small>/ document</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/reputationai/" class="pcard" style="--c:#34d399;--ib:rgba(52,211,153,.1)">
+        <div class="pcard-icon">⭐</div><div class="pcard-top"><div class="pcard-name">Reputation AI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">AI-powered review responses for local businesses. Restaurants, salons, contractors — look professional online without lifting a finger.</p>
+        <div class="pcard-foot"><div class="pcard-price">$12 <small>/ month</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/listingwriter/" class="pcard" style="--c:#4f8eff;--ib:rgba(79,142,255,.1)">
+        <div class="pcard-icon">🏠</div><div class="pcard-top"><div class="pcard-name">Listing Writer AI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">MLS descriptions, social captions, and buyer emails for real estate agents — all generated from 5 bullet points in 30 seconds.</p>
+        <div class="pcard-foot"><div class="pcard-price">From $2.99 <small>/ listing</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/mailai/" class="pcard" style="--c:#e879f9;--ib:rgba(232,121,249,.1)">
+        <div class="pcard-icon">✉️</div><div class="pcard-top"><div class="pcard-name">MailAI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">Welcome sequences, promos, newsletters, re-engagement campaigns — written by AI. Copywriters charge $300/email. We charge $2.99.</p>
+        <div class="pcard-foot"><div class="pcard-price">From $2.99 <small>/ email</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/socialai/" class="pcard" style="--c:#f43f5e;--ib:rgba(244,63,94,.1)">
+        <div class="pcard-icon">📱</div><div class="pcard-top"><div class="pcard-name">SocialAI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">Captions, hashtags, content calendars, post ideas, and full platform strategy for every major social network. Hootsuite charges $99/mo. We charge $15.</p>
+        <div class="pcard-foot"><div class="pcard-price">$12 <small>/ month</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/grantai/" class="pcard" style="--c:#22c55e;--ib:rgba(34,197,94,.1)">
+        <div class="pcard-icon">🏆</div><div class="pcard-top"><div class="pcard-name">GrantAI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">Find grants you qualify for and generate full professional proposals. Grant writers charge $5,000. We charge $9.99.</p>
+        <div class="pcard-foot"><div class="pcard-price">From $2.99 <small>/ search</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/nameai/" class="pcard" style="--c:#8b5cf6;--ib:rgba(139,92,246,.1)">
+        <div class="pcard-icon">✨</div><div class="pcard-top"><div class="pcard-name">NameAI</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">15 creative business name ideas with taglines, domain suggestions, and branding notes. 5 free — unlock all for $2.99.</p>
+        <div class="pcard-foot"><div class="pcard-price">From <small>free /</small> $2.99</div><div class="arrow">→</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- LIFE & WELLNESS -->
+  <div class="cat-section">
+    <div class="cat-label"><span class="cat-label-text">🌿 Life &amp; Wellness</span><div class="cat-label-line"></div></div>
+    <div class="grid">
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/wellness/" class="pcard" style="--c:#2dd4bf;--ib:rgba(45,212,191,.1)">
+        <div class="pcard-icon">🌿</div><div class="pcard-top"><div class="pcard-name">Infinity Wellness</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">AI therapy chat, guided journaling, mood tracking, meditation, and habit coaching. Mental health support that doesn't cost $300/month.</p>
+        <div class="pcard-foot"><div class="pcard-price">$12 <small>/ month</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/education/" class="pcard" style="--c:#f0b429;--ib:rgba(240,180,41,.1)">
+        <div class="pcard-icon">📚</div><div class="pcard-top"><div class="pcard-name">Infinity Learn</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">AI tutoring, flashcards, quizzes, study plans, and progress tracking. Every subject, every age — from elementary to college level.</p>
+        <div class="pcard-foot"><div class="pcard-price">$12 <small>/ month</small></div><div class="arrow">→</div></div>
+      </a>
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/legacyplanner/" class="pcard" style="--c:#2dd4bf;--ib:rgba(45,212,191,.1)">
+        <div class="pcard-icon">🕯️</div><div class="pcard-top"><div class="pcard-name">Legacy Planner</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">Grief journaling, memory preservation, letters to loved ones, estate checklists, and obituary writing. Gentle support when you need it most.</p>
+        <div class="pcard-foot"><div class="pcard-price">$12 <small>/ month</small></div><div class="arrow">→</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- STORE -->
+  <div class="cat-section">
+    <div class="cat-label"><span class="cat-label-text">🗂️ Digital Store</span><div class="cat-label-line"></div></div>
+    <div class="grid">
+      <a href="https://contactinfinitysolutionsllc-ops.github.io/store/" class="pcard" style="--c:#f0b429;--ib:rgba(240,180,41,.1)">
+        <div class="pcard-icon">🗂️</div><div class="pcard-top"><div class="pcard-name">Digital Store</div><span class="chip chip-live">Live</span></div>
+        <p class="pcard-desc">AI prompt packs, done-for-you business kits, and templates. Buy once, use forever. Niche-specific packs for creators, coaches, and small business owners.</p>
+        <div class="pcard-foot"><div class="pcard-price">From $9 <small>one-time</small></div><div class="arrow">→</div></div>
+      </a>
+    </div>
+  </div>
+
+</section>
+
+<!-- WHY -->
+<section class="why" id="why">
+  <div class="why-inner">
+    <div>
+      <div class="eyebrow">Why Infinity Solutions</div>
+      <h2>Built because <em>we needed it too.</em></h2>
+      <p>This company was started by a single parent who got tired of watching <strong>ordinary people get priced out</strong> of the tools they need most.</p>
+      <p>Every product starts with one question: what would this cost from a professional, and <strong>how do we make it 95% cheaper</strong> without sacrificing quality?</p>
+      <p>The answer is AI — not as a gimmick, but as genuine infrastructure that lets one person build what used to take a whole company.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar"><div class="pillar-icon" style="background:rgba(79,142,255,.12)">💸</div><div><div class="p-title">Radical affordability</div><div class="p-desc">We price to be accessible, not to maximize margins. If you can't afford it, it doesn't work.</div></div></div>
+      <div class="pillar"><div class="pillar-icon" style="background:rgba(52,211,153,.1)">🧠</div><div><div class="p-title">AI that actually helps</div><div class="p-desc">Powered by Claude — not cheap cut-rate models that hallucinate and embarrass you.</div></div></div>
+      <div class="pillar"><div class="pillar-icon" style="background:rgba(240,180,41,.1)">🔒</div><div><div class="p-title">No corporate nonsense</div><div class="p-desc">No VC pressure. No dark patterns. No dumbing down. Just tools that work.</div></div></div>
+      <div class="pillar"><div class="pillar-icon" style="background:rgba(167,139,250,.1)">♾️</div><div><div class="p-title">Built to grow with you</div><div class="p-desc">Start free or cheap. Upgrade when it makes sense. Every product scales to your needs.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="eyebrow">Get started</div>
+  <h2>Your first document is waiting.</h2>
+  <p>Try any tool right now — most have free uses to start. Pay only for what you need, get it in 60 seconds.</p>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <a href="https://contactinfinitysolutionsllc-ops.github.io/justdocs/" class="btn btn-solid">Try JustDocs free →</a>
+    <a href="#products" class="btn btn-outline">See all tools</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://infinityhub.dev" class="footer-logo">Infinity<em>.</em>Solutions <span style="color:var(--muted);font-weight:400;font-family:'Instrument Sans',sans-serif;font-size:.85rem">LLC</span></a>
+  <ul class="footer-links">
+    <li><a href="#products">AI Tools</a></li>
+    <li><a href="#infinitymatch">InfinityMatch</a></li>
+    <li><a href="#mission">Mission</a></li>
+    <li><a href="https://contact.infinityhub.dev">Contact &amp; Support</a></li>
+    <li><a href="https://contactinfinitysolutionsllc-ops.github.io/account/">My Account</a></li>
+  </ul>
+  <p class="copy">© 2026 Infinity Solutions LLC</p>
+</footer>
+
+<script src="https://contactinfinitysolutionsllc-ops.github.io/account/ig-auth-nav.js"></script>
+</body>
+</html>
